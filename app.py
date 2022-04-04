@@ -6,6 +6,11 @@ def _():
     return static_file("app.css", root=".")
 
 ##############################
+@get("/images/<image>")
+def _(image):
+    return static_file(image, root="./images", mimetype="image/*")
+
+##############################
 @get("/")
 @view("index")
 def _():

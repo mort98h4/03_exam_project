@@ -1,3 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --twitter-blue1: rgba(29, 155, 240, 1);
+        --twitter-grey1: rgba(83, 100, 113, 1);
+    }
+
+    body {
+        font-family: 'Work Sans', sans-serif;
+    }
+
+    h1 {
+        font-weight: 700;
+        @apply text-5xl sm:text-7xl;
+    }
+
+    h2 {
+        font-weight: 700;
+        @apply text-3xl sm:text-4xl;
+    }
+}
+
+@layer components {
+    .splash-img {
+        background-image: url("./images/frontpage_image.png");
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .btn {
+        @apply rounded-full px-8 py-2 font-semibold transition-colors;
+    }
+
+    .btn-primary {
+        @apply bg-twitter-blue1 text-white hover:bg-twitter-blue2;
+    }
+
+    .btn-secondary {
+        @apply bg-transparent border-twitter-grey1 border border-solid text-twitter-blue1 hover:bg-twitter-blue1-10;
+    }
+
+    .overlay {
+        @apply bg-black bg-opacity-20 w-full h-full;
+    }
+
+    input {
+        @apply text-base border border-solid border-twitter-grey1 w-full rounded-md px-2 pt-6 pb-2 transition-all outline-none focus:border-twitter-blue1 h-[56px];
+    }
+
+    input:focus {
+        box-shadow: 0 0 0 1px var(--twitter-blue1);
+    }
+
+    .dynamic-label {
+        position: absolute;
+        left: calc(0.5rem + 1px);
+        top: calc((56px/3) - 2px);
+        pointer-events: none;
+        cursor: text;
+        transition: all .15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    input:focus ~ .dynamic-label, input:not(:placeholder-shown) ~ .dynamic-label {
+        font-size: .8rem;
+        top: .5rem;
+        color: var(--twitter-blue1);
+    }
+
+    input:not(:placeholder-shown):not(:focus) ~ .dynamic-label {
+        color: var(--twitter-grey1);
+    }
+
+    .character-counter {
+        display: none;
+        position: absolute;
+        top: .5rem;
+        font-size: .8rem;
+        right: .5rem;
+    }
+
+    input:focus ~ .character-counter {
+        display: block;
+    }
+}
