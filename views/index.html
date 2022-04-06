@@ -20,7 +20,7 @@
         <div class="overlay absolute" onclick="toggleModal('#sign-up')"></div>
         <form onsubmit="return false;" novalidate="true" class="relative w-full m-4 px-8 pb-8 pt-2 bg-white rounded-lg lg:w-1/2">
             <header class="relative flex justify-center flex-wrap">
-                <button onclick="toggleModal('#sign-up')" class="absolute top-0 left-[-1rem] rounded-full w-8 h-8 flex items-center justify-center transition-colors bg-transparent hover:bg-twitter-grey1-10">
+                <button onclick="toggleModal('#sign-up')" class="absolute top-[.5rem] left-[-1rem] rounded-full w-8 h-8 flex items-center justify-center transition-colors bg-transparent hover:bg-twitter-grey1-10">
                     <i class="fa-solid fa-xmark text-2xl"></i>
                 </button>
                 <i class="fa-brands fa-twitter text-4xl mb-6"></i>
@@ -33,12 +33,14 @@
                     name="user_first_name" 
                     type="text" 
                     placeholder=" " 
+                    minlength="2"
                     maxlength="25" 
                     autocomplete="given-name"
                     required
                 >
                 <label for="user_first_name" class="dynamic-label">First name</label>
                 <span class="character-counter" data-input-name="user_first_name">0 / 25</span>
+                <span class="hint" data-input-name="user_first_name">First name must be between 2 and 25 characters.</span>
             </div>
             <div class="relative w-full mb-6">
                 <input 
@@ -47,12 +49,14 @@
                     name="user_last_name" 
                     type="text" 
                     placeholder=" " 
+                    minlength="2"
                     maxlength="25"
                     autocomplete="family-name" 
                     required
                 >
                 <label for="user_last_name" class="dynamic-label">Last name</label>
                 <span class="character-counter" data-input-name="user_last_name">0 / 25</span>
+                <span class="hint" data-input-name="user_last_name">Last name must be between 2 and 25 characters.</span>
             </div>
             <div class="relative w-full mb-6">
                 <input 
@@ -61,10 +65,11 @@
                     type="email" 
                     placeholder=" "
                     autocomplete="email"
-                    pattern=""
+                    pattern='^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
                     required
                 >
                 <label for="user_email" class="dynamic-label">E-mail</label>
+                <span class="hint" data-input-name="user_email">Please enter a valid e-mail.</span>
             </div>
             <div class="relative w-full mb-6">
                 <input 
@@ -74,12 +79,14 @@
                     type="text"
                     placeholder=" "
                     autocomplete="username"
-                    maxlength="25"
-                    pattern=""
+                    minlength="2"
+                    maxlength="30"
+                    pattern='^(?!.*[\.\-\_]{2}).*^[a-zA-Z0-9\.\-\_]*$'
                     required
                 >
                 <label for="user_handle" class="dynamic-label">Username</label>
-                <span class="character-counter" data-input-name="user_handle">0 / 25</span>
+                <span class="character-counter" data-input-name="user_handle">0 / 30</span>
+                <span class="hint" data-input-name="user_handle">Username should only contain alphanumeric characters and '.', '-' or '_', and at least be 2 characters.</span>
             </div>
             <div class="relative w-full mb-6">
                 <input 
@@ -87,37 +94,27 @@
                     name="user_password"    
                     type="password"
                     placeholder=" "
-                    pattern=""
+                    minlength="8"
+                    pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$'
                     required
                 >
                 <label for="user_password" class="dynamic-label">Password</label>
+                <span class="hint" data-input-name="user_password">Password should at least be 8 characters. Min. one lowercase letter, one uppercase letter and one number.</span>
             </div>
             <div class="relative w-full mb-6">
                 <input 
                     id="user_confirm_password"
                     name="user_confirm_password"
                     type="password"
-                    pattern=""
+                    pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$'
                     placeholder=" "
                     required
                 >
                 <label for="user_confirm_password" class="dynamic-label">Confirm password</label>
+                <span class="hint" data-input-name="user_confirm_password">Confirmed password must be identical to password.</span>
             </div>
-            <button class="btn btn-primary w-full">Sign up</button>
+            <span id="error_message" class="hidden"></span>
+            <button onclick="createUser()" class="btn btn-primary w-full">Sign up</button>
         </form>
     </section>
-    <script>
-
-        function toggleModal(elem) {
-            document.querySelector("body").classList.toggle("overflow-hidden");
-            document.querySelector(elem).classList.toggle("hidden");
-        }
-
-        function updateCharacterCounter(input) {
-            const counter = document.querySelector(`[data-input-name='${input.name}']`);
-            counter.textContent = `${input.value.length} / ${input.getAttribute("maxlength")}`;
-        }
-
-
-    </script>
 % include("footer")

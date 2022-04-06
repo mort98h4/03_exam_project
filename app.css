@@ -579,12 +579,28 @@ input:focus{
   box-shadow: 0 0 0 1px var(--twitter-blue1);
 }
 
+input:not(:-moz-placeholder-shown):not(:focus):invalid{
+  --tw-border-opacity: 1;
+  border-color: rgb(220 38 38 / var(--tw-border-opacity));
+}
+
+input:not(:-ms-input-placeholder):not(:focus):invalid{
+  --tw-border-opacity: 1;
+  border-color: rgb(220 38 38 / var(--tw-border-opacity));
+}
+
+input:not(:placeholder-shown):not(:focus):invalid, input:not(:focus):not(:valid).invalid{
+  --tw-border-opacity: 1;
+  border-color: rgb(220 38 38 / var(--tw-border-opacity));
+}
+
 .dynamic-label {
   position: absolute;
   left: calc(0.5rem + 1px);
   top: calc((56px/3) - 2px);
   pointer-events: none;
   cursor: text;
+  color: var(--twitter-grey1);
   transition: all .15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -624,11 +640,43 @@ input:not(:placeholder-shown):not(:focus) ~ .dynamic-label {
   top: .5rem;
   font-size: .8rem;
   right: .5rem;
+  color: var(--twitter-grey1);
 }
 
 input:focus ~ .character-counter {
   display: block;
 }
+
+.hint{
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  display: none;
+  width: 100%;
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity));
+  font-size: .8rem;
+}
+
+input:not(:-moz-placeholder-shown):invalid:not(:focus) ~ .hint, input:-moz-placeholder-shown.invalid ~ .hint{
+  display: block;
+}
+
+input:not(:-ms-input-placeholder):invalid:not(:focus) ~ .hint, input:-ms-input-placeholder.invalid ~ .hint{
+  display: block;
+}
+
+input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~ .hint, input:placeholder-shown.invalid ~ .hint{
+  display: block;
+}
+
+/* input:not(:placeholder-shown):not(:focus):invalid ~ .hint, input:not(:placeholder-shown):valid.invalid ~ .hint {
+        @apply block;
+    }
+
+    input:not(:placeholder-shown):not(:focus):not(.invalid):valid ~ .hint, input:focus:valid ~ .hint{
+        @apply hidden;
+    } */
 
 .fixed{
   position: fixed;
@@ -644,6 +692,10 @@ input:focus ~ .character-counter {
 
 .top-0{
   top: 0px;
+}
+
+.top-\[\.5rem\]{
+  top: .5rem;
 }
 
 .left-\[-1rem\]{
@@ -818,6 +870,14 @@ input:focus ~ .character-counter {
 
 .font-bold{
   font-weight: 700;
+}
+
+.uppercase{
+  text-transform: uppercase;
+}
+
+.lowercase{
+  text-transform: lowercase;
 }
 
 .transition-colors{

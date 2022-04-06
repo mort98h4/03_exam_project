@@ -56,12 +56,17 @@
         box-shadow: 0 0 0 1px var(--twitter-blue1);
     }
 
+    input:not(:placeholder-shown):not(:focus):invalid, input:not(:focus):not(:valid).invalid {
+        @apply border-red-600;
+    }
+
     .dynamic-label {
         position: absolute;
         left: calc(0.5rem + 1px);
         top: calc((56px/3) - 2px);
         pointer-events: none;
         cursor: text;
+        color: var(--twitter-grey1);
         transition: all .15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -81,9 +86,29 @@
         top: .5rem;
         font-size: .8rem;
         right: .5rem;
+        color: var(--twitter-grey1);
     }
 
     input:focus ~ .character-counter {
         display: block;
     }
+
+    .hint {
+        @apply absolute top-full text-red-600 w-full left-0 hidden;
+        font-size: .8rem;
+    }
+
+     
+    input:not(:placeholder-shown):invalid:not(:focus) ~ .hint,
+    input.invalid:focus ~ .hint,
+    input:placeholder-shown.invalid ~ .hint {
+        @apply block;
+    }
+    /* input:not(:placeholder-shown):not(:focus):invalid ~ .hint, input:not(:placeholder-shown):valid.invalid ~ .hint {
+        @apply block;
+    }
+
+    input:not(:placeholder-shown):not(:focus):not(.invalid):valid ~ .hint, input:focus:valid ~ .hint{
+        @apply hidden;
+    } */
 }
