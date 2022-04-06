@@ -1,9 +1,14 @@
-from bottle import get, view, run, static_file
+from bottle import default_app, get, view, run, static_file
 
 ##############################
 @get("/app.css")
 def _():
     return static_file("app.css", root=".")
+
+##############################
+@get("/scripts/<script>")
+def _(script):
+    return static_file(script, root="./scripts")
 
 ##############################
 @get("/images/<image>")
@@ -15,6 +20,9 @@ def _(image):
 @view("index")
 def _():
     return
+
+##############################
+import signup_post          # POST
 
 ##############################
 try:
