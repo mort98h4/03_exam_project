@@ -56,7 +56,7 @@
         box-shadow: 0 0 0 1px var(--twitter-blue1);
     }
 
-    input:not(:placeholder-shown):not(:focus):invalid, input:not(:focus):not(:valid).invalid {
+    input:not(:placeholder-shown):not(:focus):invalid, input:not(:focus):valid.invalid {
         @apply border-red-600;
     }
 
@@ -101,7 +101,8 @@
      
     input:not(:placeholder-shown):invalid:not(:focus) ~ .hint,
     input.invalid:focus ~ .hint,
-    input:placeholder-shown.invalid ~ .hint {
+    input:placeholder-shown.invalid ~ .hint,
+    input:valid.invalid ~ .hint {
         @apply block;
     }
     /* input:not(:placeholder-shown):not(:focus):invalid ~ .hint, input:not(:placeholder-shown):valid.invalid ~ .hint {
