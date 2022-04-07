@@ -8,13 +8,16 @@ DB_CONFIG = {
             "port":8889,
             "user":"root",
             "password":"root",
-            "database":"twatter"
+            "database":"twatter",
+            "cursorclass": pymysql.cursors.DictCursor
         }
 
 ERRORS = {
     "en_server_error": "Server error",
     "da_server_error": "Server fejl"
 }
+
+JWT_SECRET = "4w50m3 k3Y"
 
 REGEX_EMAIL = '^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
 
