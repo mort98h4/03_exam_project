@@ -33,7 +33,7 @@
     }
 
     .btn {
-        @apply rounded-full px-8 py-2 font-semibold transition-colors;
+        @apply rounded-full px-8 py-2 font-semibold transition-colors text-center;
     }
 
     .btn-primary {
