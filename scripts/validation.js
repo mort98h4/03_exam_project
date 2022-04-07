@@ -81,7 +81,7 @@ function validPassword(input) {
 
     if (validity.valueMissing) {
         input.classList.add("invalid");
-        hint.textContent = `Please enter your desired password.`;
+        hint.textContent = `Please enter a password.`;
         return false;
     } else if (validity.tooShort || input.value.length < min) {
         input.classList.add("invalid");
