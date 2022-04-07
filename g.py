@@ -1,6 +1,15 @@
 from bottle import response
 import re
 import sqlite3
+import pymysql
+
+DB_CONFIG = {
+            "host":"localhost",
+            "port":8889,
+            "user":"root",
+            "password":"root",
+            "database":"twatter"
+        }
 
 ERRORS = {
     "en_server_error": "Server error",

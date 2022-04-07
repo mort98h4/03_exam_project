@@ -1,8 +1,9 @@
 from bottle import post, request, response, redirect
 import g
-import uuid
 import time
 from datetime import datetime
+import pymysql
+import json
 
 ##############################
 @post("/signup")
@@ -36,41 +37,46 @@ def _(language = "en"):
             }
             return g._SEND(400, errors[language])
 
-        user = {
-            "user_id": str(uuid.uuid4()),
-            "user_first_name": user_first_name,
-            "user_last_name": user_last_name,
-            "user_email": user_email,
-            "user_handle": user_handle,
-            "user_password": user_password,
-            "user_image_src": "",
-            "user_description": "",
-            "user_created_at": str(int(time.time())),
-            "user_created_at_date": datetime.now().strftime("%Y-%B-%d-%A %H:%M:%S")
-        }
+        user = (
+            user_first_name,
+            user_last_name,
+            user_email,
+            user_handle,
+            user_password,
+            "",
+            "",
+            str(int(time.time())),
+            datetime.now().strftime("%Y-%B-%d-%A %H:%M:%S")
+        )
 
     except Exception as ex:
         print(ex)
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])
 
     try: 
-        db = g._DB_CONNECT("database.sqlite")
-        users = db.execute("""INSERT INTO users
-                              VALUES(:user_id, 
-                                   :user_handle, 
-                                   :user_first_name, 
-                                   :user_last_name, 
-                                   :user_email, 
-                                   :user_password, 
-                                   :user_image_src, 
-                                   :user_description, 
-                                   :user_created_at, 
-                                   :user_created_at_date)""", user)
-        db.commit()
+        db_connect = pymysql.connect(**g.DB_CONFIG)
+        db = db_connect.cursor()
+
+        query = """
+                INSERT INTO users
+                (user_first_name,
+                user_last_name,
+                user_email,
+                user_handle,
+                user_password,
+                user_image_src,
+                user_description,
+                user_created_at,
+                user_created_at_date)
+                VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
+         """
+        db.execute(query, user)
+        db_connect.commit()
+
         response.status = 201
-        return user
+        return json.dumps(user)
     except Exception as ex:
-        print(type(ex))
+        print(ex)
         if "user_handle" in str(ex): 
             print("user_handle already exists.")
             error = {
