@@ -16,12 +16,7 @@ def _(image):
     return static_file(image, root="./images", mimetype="image/*")
 
 ##############################
-@get("/")
-@view("index")
-def _():
-    return
-
-##############################
+import home_get             # GET
 import login_get            # GET
 
 import signup_post          # POST
