@@ -49,12 +49,12 @@ async function createUser() {
         const info = response.info.toLowerCase();
         if (info.includes("email")) {
             document.querySelector(`.hint[data-input-name='${userEmail.name}']`).textContent = response.info;
-            document.querySelector(`.hint[data-input-name='${userEmail.name}']`).classList.remove("hidden");
+            userEmail.classList.add("invalid");
             return false;
         }
         if (info.includes("username") || info.includes("brugernavn")) {
             document.querySelector(`.hint[data-input-name='${userHandle.name}']`).textContent = response.info;
-            document.querySelector(`.hint[data-input-name='${userHandle.name}']`).classList.remove("hidden");
+            userHandle.classList.add("invalid");
             return false;
         }
         if (connection.status === 500) {
