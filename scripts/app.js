@@ -10,7 +10,6 @@ function updateCharacterCounter(input) {
 
 async function createUser() {
     const form = event.target.form;
-    // console.log(form.user_first_name);
 
     const userFirstName = form.user_first_name;
     const userLastName = form.user_last_name;
@@ -26,22 +25,17 @@ async function createUser() {
     const userPasswordValid = validPassword(userPassword)
     
     if (!userFirstNameValid || !userLastNameValid || !userEmailValid || !userHandleValid || !userPasswordValid) {
-        return invalidInput();
+        userPassword.value = "";
+        userConfirmPassword.value = "";
+        return false;
     }
 
-    const confirmPasswordHint = document.querySelector(`.hint[data-input-name='${userConfirmPassword.name}']`);
     if (userPassword.value != userConfirmPassword.value) {
         userConfirmPassword.value = "";
         userConfirmPassword.classList.add("invalid");
         return false;
     } else {
         userConfirmPassword.classList.remove("invalid");
-    }
-
-    function invalidInput() {
-        userPassword.value = "";
-        userConfirmPassword.value = "";
-        return false;
     }
 
     const connection = await fetch('/signup', {
