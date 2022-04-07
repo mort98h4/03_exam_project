@@ -18,6 +18,7 @@ def _(image):
 ##############################
 import home_get             # GET
 import login_get            # GET
+import explore_get          # GET
 
 import signup_post          # POST
 import login_post           # POST
