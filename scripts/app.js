@@ -65,3 +65,46 @@ async function createUser() {
     }
 }
 
+async function logIn() {
+    const form = event.target.form;
+
+    const userEmail = form.user_email;
+    const userPassword = form.user_password;
+
+    const userEmailValid = validEmail(userEmail);
+    const userPasswordValid = validPassword(userPassword);
+    if (!userEmailValid || !userPasswordValid) {
+        userPassword.value = "";
+        return false;
+    }
+
+    const connection = await fetch('/da/login', {
+        method: "POST",
+        body: new FormData(form)
+    });
+    const response = await connection.json();
+    console.log(connection);
+    console.log(response);
+
+    if (!connection.ok) {
+        const info = response.info.toLowerCase();
+        if (info.includes("email")) {
+            document.querySelector(`.hint[data-input-name='${userEmail.name}']`).textContent = response.info;
+            userEmail.classList.add("invalid");
+            return false;
+        }
+        if (info.includes("password") || info.includes("kodeordet")) {
+            document.querySelector(`.hint[data-input-name='${userPassword.name}']`).textContent = response.info;
+            userPassword.classList.add("invalid");
+            return false;
+        }
+        if (connection.status === 500) {
+            document.querySelector("#error_message").textContent = "An error occured. Please try again.";
+            document.querySelector("#error_message").classList.remove("hidden");
+            return false;
+        }
+    } else {
+        window.location.href = "/explore"
+    }
+}
+
