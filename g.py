@@ -113,6 +113,41 @@ def _IS_PASSWORD(password=None, language="en"):
     return password, None
 
 ##############################
+def _DELETE_SESSION(session=None, language = "en"):
+    try:
+        db_connect = pymysql.connect(**DB_CONFIG)
+        db = db_connect.cursor() 
+        db.execute("DELETE FROM sessions WHERE session_id = %s", (session["session_id"],))
+        counter = db.rowcount
+        db_connect.commit()
+        if not counter: print("Ups!")
+        print(f"Rows deleted: {counter}")
+    except Exception as ex:
+        print(ex)
+        return _SEND(500, ERRORS[f"{language}_server_error"])
+    finally:
+        db.close()
+
+##############################
+def _UPDATE_SESSION(session=None, now=None, language = "en"):
+    try: 
+        db_connect = pymysql.connect(**DB_CONFIG)
+        db = db_connect.cursor()
+        db.execute(""" 
+                       UPDATE sessions
+                       SET iat = %s
+                       WHERE sessions.session_id = %s """, (now, session["session_id"]))
+        counter = db.rowcount
+        db_connect.commit()
+        if not counter: print("Ups!")
+        print(f"Rows updated: {counter}")
+    except Exception as ex:
+        print(ex)
+        return _SEND(500, ERRORS[f"{language}_server_error"])
+    finally:
+        db.close()
+
+##############################
 def _DB_CONNECT(db_name):
     db = sqlite3.connect(db_name)
     db.row_factory = _CREATE_JSON_FROM_SQLITE_RESULT
