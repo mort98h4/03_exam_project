@@ -23,6 +23,10 @@
         font-weight: 700;
         @apply text-3xl sm:text-4xl;
     }
+
+    p {
+        @apply leading-tight;
+    }
 }
 
 @layer components {
@@ -33,7 +37,7 @@
     }
 
     .btn {
-        @apply rounded-full px-8 py-2 font-semibold transition-colors text-center;
+        @apply rounded-full px-8 py-2 font-semibold transition text-center;
     }
 
     .btn-primary {
@@ -42,6 +46,14 @@
 
     .btn-secondary {
         @apply bg-transparent border-twitter-grey1 border border-solid text-twitter-blue1 hover:bg-twitter-blue1-10;
+    }
+
+    .btn-tertiary {
+        @apply bg-black text-white hover:bg-opacity-80;
+    }
+
+    .btn-quarternary {
+        @apply bg-transparent border-twitter-grey1 border border-solid text-black hover:bg-twitter-grey1-10;
     }
 
     .overlay {
