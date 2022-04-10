@@ -36,6 +36,6 @@ def _(language = "en"):
             print(ex)
             return g._SEND(500, g.ERRORS[f"{language}_server_error"])
 
-        if display_page: return dict(user_id=decoded_jwt["fk_user_id"])
+        if display_page: return
     
     return redirect("/")
