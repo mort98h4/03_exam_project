@@ -23,6 +23,7 @@ import logout_get           # GET
 
 import signup_post          # POST
 import login_post           # POST
+import logout_post          # POST
 
 ##############################
 try:
