@@ -104,7 +104,7 @@ async function logIn() {
             return false;
         }
     } else {
-        window.location.href = "/explore"
+        window.location.href = "/home"
     }
 }
 
