@@ -1,0 +1,16 @@
+% include("header", title="Log out")
+    <main class="h-screen w-full bg-twitter-grey1 flex items-center justify-center">
+        <section class="relative w-full m-4 p-8 bg-white rounded-lg lg:w-1/4">
+            <header class="relative flex justify-center flex-wrap">
+                <i class="fa-brands fa-twitter text-twitter-blue1 text-4xl mb-4"></i>
+                <h3 class="w-full mb-2 text-xl font-semibold">Log out of Twatter?</h3>
+            </header>
+            <form onsubmit="return false" novalidate="true">
+                <p class="text-twitter-grey1 mb-4">You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account. </p>
+                <input name="user_id" type="hidden" value="{{ user_id or '' }}">
+                <button onclick="" class="btn btn-tertiary w-full mb-4">Log out</button>
+                <a href="/home" class="btn btn-quarternary w-full block">Cancel</a>
+            </form>
+        </section>
+    </main>
+% include("footer")
