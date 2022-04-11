@@ -1,0 +1,21 @@
+% if not is_fetch:
+    % include("header")
+<div class="min-h-screen w-full grid grid-cols-12 xl:w-4/5 xl:mx-auto">
+    % include("sidemenu", tabs=tabs)
+    <div class="spa-wrapper col-span-10 lg:col-span-5 min-h-screen border-x border-twitter-grey1-10">
+% end
+    <main
+      data-spa_url="/explore" 
+      data-spa_title="{{title}}"
+    >
+      <h1>explore</h1>
+    </main>
+
+    %if not is_fetch:
+    </div>
+    <aside class="hidden lg:block lg:col-span-4 h-full sticky top-0 right-0">
+        hej
+    </aside>
+</div>
+% include("footer")
+% end
