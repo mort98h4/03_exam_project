@@ -62,6 +62,8 @@ async function createUser() {
             document.querySelector("#error_message").classList.remove("hidden");
             return false;
         }
+    } else {
+        window.location.href = "/login";
     }
 }
 
@@ -78,7 +80,7 @@ async function logIn() {
         return false;
     }
 
-    const connection = await fetch('/da/login', {
+    const connection = await fetch('/login', {
         method: "POST",
         body: new FormData(form)
     });
