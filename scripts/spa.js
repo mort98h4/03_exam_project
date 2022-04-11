@@ -60,7 +60,7 @@ async function spa(spaURL, replace_state = true) {
   if (!mainElement) return console.error("Cannot find <main> element");
 
   spaTitle = mainElement.dataset.spa_title;
-  document.title = spaTitle;
+  document.title = `Twatter | ${spaTitle}`;
 }
 
 // Listener for when user navigates the browser with the forward and back buttons
