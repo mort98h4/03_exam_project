@@ -3,7 +3,17 @@ import re
 import sqlite3
 import pymysql
 
-DB_CONFIG = {
+try:
+    import production
+    DB_CONFIG = {
+        "host": "mort98h4.mysql.eu.pythonanywhere-services.com",
+        "user": "mort98h4",
+        "password": "iBs2O9boZqZy",
+        "database": "mort98h4$twatter",
+        "cursorclass": pymysql.cursors.DictCursor
+    }
+except:
+    DB_CONFIG = {
             "host":"localhost",
             "port":8889,
             "user":"root",
