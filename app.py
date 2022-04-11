@@ -25,6 +25,7 @@ import explore_get          # GET
 import signup_post          # POST
 import login_post           # POST
 import logout_post          # POST
+import tweet_post           # POST
 
 ##############################
 try:
