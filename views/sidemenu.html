@@ -1,0 +1,61 @@
+<aside class="col-span-2 md:col-span-1 lg:col-span-3 h-full sticky top-0 left-0">
+    <nav class="w-full">
+        <div class="lg:pl-2 my-1 lg:my-4">
+            <a class="text-3xl p-2 w-[54px] h-[54px] flex justify-center items-center rounded-full transition hover:bg-twitter-blue1-10 mx-auto lg:mx-0" href="./">
+                <i class="fa-brands fa-twitter fa-fw text-twitter-blue1"></i>
+            </a>
+        </div>
+        % for tab in tabs:
+            <div class="lg:pl-2 mb-1 lg:mb-4">
+                <a 
+                    class="text-2xl transition hover:bg-twitter-grey1-10 p-2 lg:pr-6 rounded-full flex lg:inline items-center justify-center w-[54px] lg:w-[unset] h-[54px] lg:h-[unset] mx-auto lg:mx-0" 
+                    href="/{{tab['id']}}"
+                    onclick="spa(this); return false"
+                >
+                    <i class="{{tab['icon']}}"></i>
+                    <span class="ml-3 lg:align-text-bottom text-xl hidden lg:inline">{{tab['title']}}</span>
+                </a>
+            </div>
+        % end
+        <div class="w-100 lg:pl-2 flex lg:block justify-center lg:pr-8">
+            <button class="btn btn-primary lg:w-full p-0 w-[54px] h-[54px]">
+                <span class="lg:hidden">
+                    <i class="fa-solid fa-plus lg:hidden"></i>
+                </span>
+                <span class="hidden lg:block">Twat</span>
+            </button>
+        </div>
+    </nav>
+    <div class="w-full flex justify-center items-center mt-4 lg:mt-16 lg:block relative">
+        <div onclick="toggleModal('#user-menu')" class="rounded-full transition cursor-pointer hover:bg-twitter-grey1-10 lg:ml-2 lg:mr-4 p-2 lg:flex lg:gap-2 lg:items-center relative">
+            <div class="w-[54px] h-[54px] rounded-full bg-twitter-grey1">
+                <img class="w-100 h-auto rounded-full" src="./images/default_profile.png">
+            </div>
+            <div class="hidden lg:block">
+                <p class="font-semibold">Morten Gross</p>
+                <p class="text-twitter-grey1">@MortenGross</p>
+            </div>
+            <div class="absolute right-0 pr-2 hidden lg:block">
+                <i class="fas fa-ellipsis-h fa-fw"></i>
+            </div>
+        </div>
+        <div id="user-menu" class="hidden w-[288px] rounded-lg border border-twitter-grey1-10 shadow-md shadow-twitter-grey1-50 absolute left-0 top-[-225%] bg-white">
+            <div class="flex p-4 pb-2 gap-2 items-center border-b border-twitter-grey1-10">
+                <div class="w-[54px] h-[54px] rounded-full bg-twitter-grey1">
+                    <img class="w-100 h-auto rounded-full" src="./images/default_profile.png">
+                </div>
+                <div class="">
+                    <p class="font-semibold">Morten Gross</p>
+                    <p class="text-twitter-grey1">@MortenGross</p>
+                </div>
+                <div class="absolute right-0 pr-4">
+                    <i class="fa-solid fa-check text-twitter-blue1"></i>
+                </div>
+            </div>
+            <div class="p-4 mb-2 cursor-pointer transition-colors hover:bg-twitter-grey1-10">
+                <a href="/logout">Log out @MortenGross</a>
+            </div>
+            <i class="fa-solid fa-caret-down text-white text-2xl z-10 absolute top-[93%] left-[13%] lg:left-[45%] drop-shadow-md shadow-twitter-grey1-50"></i>
+        </div>
+    </div>
+</aside>
