@@ -43,7 +43,7 @@ def _(language = "en"):
             user_email,
             user_handle,
             user_password,
-            "",
+            "default_profile.png",
             "",
             str(int(time.time())),
             datetime.now().strftime("%Y-%B-%d-%A %H:%M:%S")
