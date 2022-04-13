@@ -70,16 +70,25 @@ def _(language="en"):
         
         response.status = 201
         tweet_id = db.lastrowid
-        tweet = {
-            "tweet_id":tweet_id,
-            "tweet_text":tweet_text,
-            "tweet_image":tweet_image,
-            "tweet_created_at":tweet_created_at,
-            "tweet_created_at_date":tweet_created_at_date,
-            "tweet_updated_at":tweet_updated_at,
-            "tweet_updated_at_date":tweet_updated_at_date,
-            "user_id":user_id
-        }
+        db.execute("""
+                    SELECT tweets.tweet_id, 
+                    tweets.tweet_text, 
+                    tweets.tweet_image, 
+                    tweets.tweet_created_at, 
+                    tweets.tweet_created_at_date, 
+                    tweets.tweet_updated_at, 
+                    tweets.tweet_updated_at_date, 
+                    tweets.user_id, 
+                    users.user_handle, 
+                    users.user_first_name, 
+                    users.user_last_name, 
+                    users.user_image_src
+                    FROM tweets
+                    JOIN users
+                    WHERE tweets.tweet_id = %s
+                    AND users.user_id = %s
+                    """, (tweet_id, user_id))
+        tweet = db.fetchone()
 
         return json.dumps(tweet)
 
