@@ -1,15 +1,49 @@
 % if not is_fetch:
     % include("header")
-<div class="min-h-screen w-full grid grid-cols-12 xl:w-4/5 xl:mx-auto">
+<div class="min-h-screen w-full grid grid-cols-12 xl:w-5/6 xl:mx-auto">
     % include("sidemenu", tabs=tabs)
-    <div class="spa-wrapper col-span-10 lg:col-span-5 min-h-screen border-x border-twitter-grey1-10">
+    <div class="spa-wrapper col-span-10 lg:col-span-6 min-h-screen border-x border-twitter-grey1-10">
 % end
         <main class="" data-spa_url="/home" data-spa_title="{{ title }}">
-            hej
+            <header class="p-4 sticky z-10 top-0 bg-white bg-opacity-80 backdrop-blur-sm">
+                <h3 class="text-xl font-semibold">{{ title }}</h3>
+            </header>
+            <div class="border-b border-twitter-grey1-10 p-4 flex gap-2">
+                <aside class="flex-grow-0 flex-shrink-0 w-[48px]">
+                    <img src="./images/{{ user['user_image_src'] }}" class="rounded-full h-[48px] w-[48px] object-cover">
+                </aside>
+                <form id="tweet_1" class="flex-1" onsubmit="return false" class="flex-1">
+                    <input name="user_id" type="hidden" value="{{ user['user_id']}}">
+                    <div class="w-100 border-b border-twitter-grey1-10 pb-2 mb-2">
+                        <textarea id="tweet_text_1" name="tweet_text" class="tweet-input" placeholder="What's happening?" minlength="1" maxlength="255" data-form-id="tweet_1"></textarea>
+                        <div class="w-100 preview my-2 hidden relative" data-input-id="tweet_image_1">
+                            <img class="rounded-xl" src="">
+                            <button onclick="removeTweetImage()" data-input-id="tweet_image_1" class="absolute cursor-pointer top-0 left-0 m-2 w-8 h-8 rounded-full transition bg-black bg-opacity-50 hover:bg-opacity-80 flex items-center justify-center">
+                                <i class="fa-solid fa-xmark text-white text-xl pointer-events-none"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-100 flex justify-between items-center">
+                        <label for="tweet_image_1">
+                            <div class="w-8 h-8 rounded-full cursor-pointer flex items-center justify-center transition hover:bg-twitter-blue1-10">
+                                <i class="fa-regular fa-image text-twitter-blue1"></i>
+                            </div>
+                        </label>
+                        <input id="tweet_image_1" name="tweet_image" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg" data-form-id="tweet_1">
+                        <button onclick="tweet()" class="btn btn-primary btn-slim" data-form-id="tweet_1" disabled>Twat</button>
+                    </div>
+                </form>
+            </div>
+            {{ user }}
+            <div id="tweets">
+                % for tweet in tweets:
+                    % include("tweet", id=tweet['tweet_id'], user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'])
+                % end
+            </div>
         </main>
 %if not is_fetch:
     </div>
-    <aside class="hidden lg:block lg:col-span-4 h-full sticky top-0 right-0">
+    <aside class="hidden lg:block lg:col-span-3 h-full sticky top-0 right-0">
         hej
     </aside>
 </div>

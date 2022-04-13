@@ -1,3 +1,33 @@
+let tweetTextInput;
+let tweetImageInput;
+
+window.addEventListener("DOMContentLoaded", () => {
+    tweetTextInput = document.querySelectorAll("textarea.tweet-input");
+    tweetImageInput = document.querySelectorAll("[type='file'].tweet-input");
+
+    tweetTextInput.forEach(input => {
+        input.addEventListener("input", () => {
+            input.style.height = input.scrollHeight+"px";
+            const button = document.querySelector(`button[data-form-id='${input.dataset.formId}']`)
+            if (input.value.length > 0 && button.hasAttribute("disabled")) {
+                button.removeAttribute("disabled");
+            } 
+            if (input.value.length === 0) {
+                button.setAttribute("disabled", true);
+            }
+        });
+    });
+    tweetImageInput.forEach(input => {
+        input.addEventListener("change", () => {
+            const preview = document.querySelector(`[data-input-id='${input.id}']`);
+            const image = input.files[0];
+            preview.querySelector("img").src = URL.createObjectURL(image);
+            preview.classList.remove("hidden");
+        })
+    });
+});
+
+
 function toggleModal(elem) {
     document.querySelector("body").classList.toggle("overflow-hidden");
     document.querySelector(elem).classList.toggle("hidden");
@@ -6,6 +36,13 @@ function toggleModal(elem) {
 function updateCharacterCounter(input) {
     const counter = document.querySelector(`[data-input-name='${input.name}']`);
     counter.textContent = `${input.value.length} / ${input.getAttribute("maxlength")}`;
+}
+
+function removeTweetImage() {
+    const inputId = event.target.dataset.inputId;
+    document.querySelector(`#${inputId}`).value = "";
+    document.querySelector(`.preview[data-input-id='${inputId}'] img`).src = "";
+    document.querySelector(`.preview[data-input-id='${inputId}']`).classList.add("hidden");
 }
 
 async function createUser() {
@@ -108,5 +145,55 @@ async function logIn() {
     } else {
         window.location.href = "/home"
     }
+}
+
+async function tweet(fromModal) {
+    const form = event.target.form;
+    console.log(fromModal);
+    if (form.user_id.value === "") {
+        return false;
+    }
+    if (form.tweet_text.value === "") {
+        return false;
+    } 
+
+    const connection = await fetch("/tweet", {
+        method: "POST",
+        body: new FormData(form)
+    });
+    console.log(connection);
+    if (!connection.ok) {
+        return
+    } else {
+        form.tweet_text.value = "";
+        form.tweet_image.value = "";
+        form.tweet_text.style.height = "30px";
+        document.querySelector(`[data-input-id='${form.tweet_image.id}'] img`).src = "";
+        document.querySelector(`[data-input-id='${form.tweet_image.id}']`).classList.add("hidden");
+        document.querySelector(`button[data-form-id='${form.id}']`).setAttribute("disabled", true);
+        if (fromModal) {
+            toggleModal('#tweet-modal');
+        }
+    }
+    const tweet = await connection.json();
+    console.log(tweet);
+
+    const temp = document.querySelector("#tweet_temp");
+    const clone = temp.cloneNode(true).content;
+    clone.querySelector("#tweet-").setAttribute("id", `tweet-${tweet.tweet_id}`);
+    clone.querySelector(".user_image").src = `./images/${tweet.user_image_src}`;
+    clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
+    clone.querySelector(".user_handle").textContent += tweet.user_handle;
+    clone.querySelector(".tweet_created_at_date").textContent = tweet.tweet_created_at_date;
+    clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
+    if (tweet.tweet_image != "") {
+        clone.querySelector(".tweet_image").src = `./images/${tweet.tweet_image}`;
+    } else {
+        clone.querySelector(".tweet_image").remove();
+    }
+
+    const dest = document.querySelector("#tweets");
+    const firstChild = dest.firstChild;
+    dest.insertBefore(clone, firstChild);
 }
 
