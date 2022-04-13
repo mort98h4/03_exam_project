@@ -41,7 +41,11 @@
     }
 
     .btn-primary {
-        @apply bg-twitter-blue1 text-white hover:bg-twitter-blue2;
+        @apply bg-twitter-blue1 text-white;
+    }
+
+    .btn-primary:not(:disabled):hover {
+        @apply bg-twitter-blue2;
     }
 
     .btn-secondary {
@@ -56,20 +60,79 @@
         @apply bg-transparent border-twitter-grey1 border border-solid text-black hover:bg-twitter-grey1-10;
     }
 
+    .btn-primary:disabled, .btn-secondary:disabled, .btn-tertiary:disabled, .btn-quarternary:disabled {
+        @apply opacity-70;
+    }
+
+    .btn-slim {
+        @apply py-1 px-4;
+    }
+
     .overlay {
         @apply bg-black bg-opacity-20 w-full h-full;
     }
 
-    input {
+    input:not(.tweet-input) {
         @apply text-base border border-solid border-twitter-grey1 w-full rounded-md px-2 pt-6 pb-2 transition-all outline-none focus:border-twitter-blue1 h-[56px];
     }
 
-    input:focus {
+    input:not(.tweet-input):focus {
         box-shadow: 0 0 0 1px var(--twitter-blue1);
     }
 
-    input:not(:placeholder-shown):not(:focus):invalid, input:not(:focus):valid.invalid {
+    input:not(.tweet-input):not(:placeholder-shown):not(:focus):invalid, input:not(:focus):valid.invalid {
         @apply border-red-600;
+    }
+
+    .tweet-input:not([type='file']) {
+        @apply w-full h-[30px] py-1 border-0 outline-none text-xl overflow-hidden;
+        resize: none;
+    }
+
+    .tweet-input:not([type='file'])::placeholder {
+        @apply text-twitter-grey1;
+    }
+
+    .tweet-btn-container {
+        @apply cursor-pointer inline;
+    }
+
+    .tweet-btn {
+        @apply w-8 h-8 rounded-full transition;
+    }
+
+    .tweet-btn-container:hover .blue {
+        @apply bg-twitter-blue1-10 text-twitter-blue1;
+    }
+
+    .tweet-btn-container:hover .blue ~ span {
+        @apply text-twitter-blue1;
+    }
+
+    .tweet-btn-container:hover .green {
+        @apply bg-twitter-green1-10 text-twitter-green1;
+    }
+
+    .tweet-btn-container:hover .green ~ span {
+        @apply text-twitter-green1;
+    }
+
+    .tweet-btn-container:hover .pink {
+        @apply bg-twitter-pink1-10 text-twitter-pink1;
+    }
+
+    .tweet-btn-container:hover .pink ~ span {
+        @apply text-twitter-pink1;
+    }
+
+    .tweet-btn i {
+        color: inherit;
+    }
+
+    [type='file'].tweet-input {
+        visibility: hidden;
+        position: absolute;
+        z-index: -1;
     }
 
     .dynamic-label {
@@ -117,11 +180,12 @@
     input:valid.invalid ~ .hint {
         @apply block;
     }
-    /* input:not(:placeholder-shown):not(:focus):invalid ~ .hint, input:not(:placeholder-shown):valid.invalid ~ .hint {
-        @apply block;
-    }
 
-    input:not(:placeholder-shown):not(:focus):not(.invalid):valid ~ .hint, input:focus:valid ~ .hint{
-        @apply hidden;
-    } */
+    #tweet-modal .h-fit.max-h-screen.overflow-auto {
+        max-height: calc(100vh - 2rem)
+    }
+}
+
+.overflow-hidden {
+    overflow: hidden;
 }
