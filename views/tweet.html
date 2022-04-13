@@ -1,0 +1,53 @@
+<article id="tweet-{{ id or '' }}" class="border-b border-twitter-grey1-10 p-4 flex gap-2">
+    <aside class="max-w-[48px]">
+        <img src="./images/{{ user_image_src or 'default_profile.png' }}" class="user_image rounded-full h-[48px] w-[48px] object-cover">
+    </aside>
+    <div class="flex-1">
+        <header class="mb-1">
+            <a class="leading-tight">
+                <span class="user_name font-semibold">{{ first_name or '' }} {{ last_name or ''}}</span>
+                <span class="user_handle text-twitter-grey1">@{{ handle or '' }}</span>
+                <span class="tweet_created_at_date text-twitter-grey1">{{ created_at_date or '' }}</span>
+            </a>
+        </header>
+        <p class="tweet_text mb-2">{{ tweet_text or '' }}</p>
+        % if tweet_image:
+            <img class="tweet_image mb-2 w-full rounded-xl border border-twitter-grey1-50" src="./images/{{ tweet_image or '' }}">
+        % end
+        <footer class="flex">
+            <div class="w-[25%]">
+                <div class="tweet-btn-container">
+                    <button class="tweet-btn blue">
+                        <i class="fa-regular fa-comment"></i>
+                    </button>
+                    <span class="transition mr-2">0</span>
+                </div>
+            </div>
+            <div class="w-[25%]">
+                <div class="tweet-btn-container">
+                    <button class="tweet-btn green">
+                        <i class="fa-solid fa-retweet"></i>
+                    </button>
+                    <span class="transition mr-2">0</span>
+                </div>
+            </div>
+            <div class="w-[25%]">
+                <div class="tweet-btn-container">
+                    <button class="tweet-btn pink">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <span class="transition mr-2">0</span>
+                </div>
+            </div>
+            <div class="w-[25%]">
+                <div class="tweet-btn-container">
+                    <button class="tweet-btn blue">
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    </button>
+                    <span class="transition mr-2">0</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+</article>
