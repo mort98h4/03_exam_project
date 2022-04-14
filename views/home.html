@@ -1,7 +1,7 @@
 % if not is_fetch:
     % include("header")
 <div class="min-h-screen w-full grid grid-cols-12 xl:w-5/6 xl:mx-auto">
-    % include("sidemenu", tabs=tabs)
+    % include("sidemenu", tabs=tabs, user=user)
     <div class="spa-wrapper col-span-10 lg:col-span-6 min-h-screen border-x border-twitter-grey1-10">
 % end
         <main class="" data-spa_url="/home" data-spa_title="{{ title }}">
@@ -47,5 +47,7 @@
         hej
     </aside>
 </div>
+%include("tweet_modal")
+%include("tweet_temp")
 % include("footer")
 % end
