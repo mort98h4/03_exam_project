@@ -3,7 +3,6 @@ import g
 import jwt
 import time
 import pymysql
-import json
 
 ##############################
 @get("/home")
@@ -55,7 +54,24 @@ def _(language = "en"):
         try:
             db_connect = pymysql.connect(**g.DB_CONFIG)
             db = db_connect.cursor()
-            db.execute("CALL get_all_tweets_and_users")
+            db.execute("""
+                    SELECT tweets.tweet_id, 
+                    tweets.tweet_text, 
+                    tweets.tweet_image, 
+                    tweets.tweet_created_at, 
+                    tweets.tweet_created_at_date, 
+                    tweets.tweet_updated_at, 
+                    tweets.tweet_updated_at_date, 
+                    tweets.user_id as tweet_user_id, 
+                    users.user_first_name, 
+                    users.user_last_name, 
+                    users.user_handle, 
+                    users.user_image_src 
+                    FROM tweets
+                    JOIN users
+                    WHERE tweets.user_id = users.user_id
+                    ORDER BY tweet_created_at DESC
+            """)
             tweets = db.fetchall()
             print(tweets)
         except Exception as ex:
