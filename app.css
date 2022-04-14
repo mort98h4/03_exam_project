@@ -850,6 +850,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   left: -.5rem;
 }
 
+.bottom-0{
+  bottom: 0px;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -1032,6 +1036,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   width: 25%;
 }
 
+.w-\[inherit\]{
+  width: inherit;
+}
+
+.w-2\/12{
+  width: 16.666667%;
+}
+
 .min-w-\[276px\]{
   min-width: 276px;
 }
@@ -1154,6 +1166,11 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 .object-cover{
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.object-fill{
+  -o-object-fit: fill;
+     object-fit: fill;
 }
 
 .p-4{
@@ -1340,6 +1357,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   .md\:col-span-1{
     grid-column: span 1 / span 1;
   }
+
+  .md\:w-1\/5{
+    width: 20%;
+  }
+
+  .md\:w-1\/12{
+    width: 8.333333%;
+  }
 }
 
 @media (min-width: 1024px){
@@ -1437,6 +1462,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
     width: 100%;
   }
 
+  .lg\:w-1\/5{
+    width: 20%;
+  }
+
   .lg\:items-center{
     align-items: center;
   }
@@ -1474,5 +1503,9 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
   .xl\:w-5\/6{
     width: 83.333333%;
+  }
+
+  .xl\:w-1\/5{
+    width: 20%;
   }
 }
