@@ -13,7 +13,11 @@
         </header>
         <div id="tweets">
             % for tweet in tweets:
+                % if user:
                 % include("tweet", id=tweet['tweet_id'], fk_user_id=tweet['tweet_user_id'], user_id=user['user_id'], user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'])
+                % else:
+                % include("tweet", id=tweet['tweet_id'], fk_user_id=tweet['tweet_user_id'], user_id='', user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'])
+                % end
             % end
         </div>
     </main>
