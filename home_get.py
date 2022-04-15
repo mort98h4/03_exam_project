@@ -41,45 +41,13 @@ def _(language = "en"):
 
     if display_page: 
         try: 
-            db_connect = pymysql.connect(**g.DB_CONFIG)
-            db = db_connect.cursor()
-            db.execute("SELECT * FROM users WHERE user_id = %s", (decoded_jwt['fk_user_id'],))
-            user = db.fetchone()
-            print("#"*30)
-            print(user)
-        except Exception as ex:
-            print(ex)
-            return g._SEND(500, g.ERRORS[f"{language}_server_error"])
-
-        try:
-            db_connect = pymysql.connect(**g.DB_CONFIG)
-            db = db_connect.cursor()
-            db.execute("""
-                    SELECT tweets.tweet_id, 
-                    tweets.tweet_text, 
-                    tweets.tweet_image, 
-                    tweets.tweet_created_at, 
-                    tweets.tweet_created_at_date, 
-                    tweets.tweet_updated_at, 
-                    tweets.tweet_updated_at_date, 
-                    tweets.user_id as tweet_user_id, 
-                    users.user_first_name, 
-                    users.user_last_name, 
-                    users.user_handle, 
-                    users.user_image_src 
-                    FROM tweets
-                    JOIN users
-                    WHERE tweets.user_id = users.user_id
-                    ORDER BY tweet_created_at DESC
-            """)
-            tweets = db.fetchall()
-            print(tweets)
-        except Exception as ex:
-            print(ex)
-            return g._SEND(500, g.ERRORS[f"{language}_server_error"])
-
-        finally:
-            db.close()
+            user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'])
+            tweets = g._GET_ALL_TWEETS()
+            for tweet in tweets:
+                tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
             return dict(tabs=g.TABS, title="Home", is_fetch=is_fetch, user=user, tweets=tweets)
+        except Exception as ex:
+            print(ex)
+            return g._SEND(500, g.ERRORS[f"{language}_server_error"])
 
     return redirect("/explore")
