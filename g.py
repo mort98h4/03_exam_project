@@ -5,6 +5,9 @@ import uuid
 import imghdr
 import sqlite3
 import pymysql
+import time
+import datetime
+import math
 
 try:
     import production
@@ -183,6 +186,18 @@ def _IS_IMAGE(image=None, language="en"):
     return image_name, None
 
 ##############################
+def _DATE_STRING(epoch):
+    now = int(time.time())
+    time_passed = now - epoch
+    if time_passed < 60: return f"{time_passed}s"
+    if time_passed < 3600: return f"{math.floor(time_passed/60)}m"
+    if time_passed < 86000: return f"{math.floor(time_passed/3600)}h"
+    if time_passed > 85999: 
+        month = datetime.datetime.fromtimestamp(epoch).strftime('%B')
+        date_year = datetime.datetime.fromtimestamp(epoch).strftime('%d %Y')
+        return f"{month[:3]} {date_year}"
+
+##############################
 def _DELETE_SESSION(session=None, language = "en"):
     try:
         db_connect = pymysql.connect(**DB_CONFIG)
@@ -211,6 +226,53 @@ def _UPDATE_SESSION(session=None, now=None, language = "en"):
         db_connect.commit()
         if not counter: print("Ups!")
         print(f"Rows updated: {counter}")
+    except Exception as ex:
+        print(ex)
+        return _SEND(500, ERRORS[f"{language}_server_error"])
+    finally:
+        db.close()
+
+##############################
+def _GET_USER_BY_ID(id=None):
+    try:
+        db_connect = pymysql.connect(**DB_CONFIG)
+        db = db_connect.cursor()
+        db.execute("SELECT * FROM users WHERE user_id = %s", (id,))
+        user = db.fetchone()
+        print("#"*30)
+        print(user)
+        return user
+    except Exception as ex:
+        print(ex)
+        return _SEND(500, ERRORS[f"{language}_server_error"])
+    finally:
+        db.close()
+
+##############################
+def _GET_ALL_TWEETS():
+    try:
+        db_connect = pymysql.connect(**DB_CONFIG)
+        db = db_connect.cursor()
+        db.execute("""
+                SELECT tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_image, 
+                tweets.tweet_created_at, 
+                tweets.tweet_created_at_date, 
+                tweets.tweet_updated_at, 
+                tweets.tweet_updated_at_date, 
+                tweets.user_id as tweet_user_id, 
+                users.user_first_name, 
+                users.user_last_name, 
+                users.user_handle, 
+                users.user_image_src 
+                FROM tweets
+                JOIN users
+                WHERE tweets.user_id = users.user_id
+                ORDER BY tweet_created_at DESC
+        """)
+        tweets = db.fetchall()
+        return tweets
     except Exception as ex:
         print(ex)
         return _SEND(500, ERRORS[f"{language}_server_error"])
