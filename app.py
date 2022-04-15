@@ -27,6 +27,8 @@ import login_post           # POST
 import logout_post          # POST
 import tweet_post           # POST
 
+import tweet_put            # PUT
+
 import tweet_delete         # DELETE
 
 ##############################
