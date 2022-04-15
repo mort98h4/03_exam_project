@@ -27,10 +27,26 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
 function toggleModal(elem) {
+    const tweetId = event.target.dataset.tweetId;
+    const deleteBtn = document.querySelector(".btn-danger");
+    if (tweetId !== undefined && deleteBtn) {
+        deleteBtn.setAttribute("data-tweet-id", tweetId);
+        closeAllMenus();
+    }
     document.querySelector("body").classList.toggle("overflow-hidden");
     document.querySelector(elem).classList.toggle("hidden");
+}
+
+function toggleMenu() {
+    const targetMenu = event.target.dataset.menu;    
+    document.querySelector(`#${targetMenu}`).classList.toggle("hidden");
+}
+
+function closeAllMenus() {
+    document.querySelectorAll(".menu").forEach(el => {
+        el.classList.add("hidden");
+    });
 }
 
 function updateCharacterCounter(input) {
@@ -184,7 +200,7 @@ async function tweet(fromModal) {
     clone.querySelector(".user_image").src = `./images/${tweet.user_image_src}`;
     clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
     clone.querySelector(".user_handle").textContent += tweet.user_handle;
-    clone.querySelector(".tweet_created_at_date").textContent = tweet.tweet_created_at_date;
+    clone.querySelector(".tweet_created_at_date").textContent = "Now";
     clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
     if (tweet.tweet_image != "") {
         clone.querySelector(".tweet_image").src = `./images/${tweet.tweet_image}`;
@@ -197,3 +213,17 @@ async function tweet(fromModal) {
     dest.insertBefore(clone, firstChild);
 }
 
+async function deleteTweet() {
+    const tweetId = event.target.dataset.tweetId;
+    console.log(tweetId);
+
+    const connection = await fetch(`/tweet/${tweetId}`, {
+        method: "DELETE"
+    })
+    if (!connection.ok) {
+        return
+    }
+    document.querySelector(`#tweet-${tweetId}`).remove();
+    document.querySelector("body").classList.toggle("overflow-hidden");
+    document.querySelector("#tweet-delete-modal").classList.toggle("hidden");
+}
