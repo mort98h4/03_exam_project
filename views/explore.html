@@ -1,7 +1,7 @@
 % if not is_fetch:
     % include("header")
 <div class="min-h-screen w-full grid grid-cols-12 xl:w-5/6 xl:mx-auto">
-    % include("sidemenu", tabs=tabs)
+    % include("sidemenu", tabs=tabs, user=user)
     <div class="spa-wrapper col-span-10 lg:col-span-6 min-h-screen border-x border-twitter-grey1-10">
 % end
     <main
@@ -11,6 +11,11 @@
         <header class="p-4 sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm">
             <h3 class="text-xl font-semibold">{{ title }}</h3>
         </header>
+        <div id="tweets">
+            % for tweet in tweets:
+                % include("tweet", id=tweet['tweet_id'], fk_user_id=tweet['tweet_user_id'], user_id=user['user_id'], user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'])
+            % end
+        </div>
     </main>
 
     %if not is_fetch:
@@ -19,5 +24,10 @@
         hej
     </aside>
 </div>
+% if user:
+%include("tweet_modal")
+%include("tweet_temp")
+%include("tweet_delete_modal")
+% end
 % include("footer")
 % end
