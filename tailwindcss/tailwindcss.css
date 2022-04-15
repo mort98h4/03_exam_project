@@ -60,6 +60,10 @@
         @apply bg-transparent border-twitter-grey1 border border-solid text-black hover:bg-twitter-grey1-10;
     }
 
+    .btn-danger {
+        @apply bg-red-500 text-white hover:bg-red-600;
+    }
+
     .btn-primary:disabled, .btn-secondary:disabled, .btn-tertiary:disabled, .btn-quarternary:disabled {
         @apply opacity-70;
     }
@@ -127,6 +131,14 @@
 
     .tweet-btn i {
         color: inherit;
+    }
+
+    .more-btn {
+        @apply cursor-pointer transition flex items-center justify-center rounded-full w-8 h-8 hover:bg-twitter-blue1-10;
+    }
+
+    .more-btn:hover i {
+        @apply text-twitter-blue1;
     }
 
     [type='file'].tweet-input {
