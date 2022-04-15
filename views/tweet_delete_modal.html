@@ -1,0 +1,13 @@
+<section id="tweet-delete-modal" class="w-full h-screen fixed top-0 flex hidden items-center justify-center z-50">
+    <div class="overlay absolute" onclick="toggleModal('#tweet-delete-modal')"></div>
+    <div class="w-full m-4 p-4 bg-white rounded-lg relative lg:w-1/5 h-fit max-h-screen overflow-auto">
+        <header class="mb-2">
+            <h3 class="text-xl font-semibold">Delete Twat?</h3>
+        </header>
+        <div class="">
+            <p class="text-twitter-grey1 mb-4">This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Twatter search results. </p>
+            <button onclick="deleteTweet()" class="btn btn-danger w-full mb-2" data-tweet-id="">Delete</button>
+            <button onclick="toggleModal('#tweet-delete-modal')" class="btn btn-quarternary w-full">Cancel</button>
+        </div>
+    </div>
+</section>
