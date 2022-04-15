@@ -1,0 +1,41 @@
+<section id="tweet-update-modal" class="w-full h-screen fixed top-0 flex justify-center hidden z-50">
+    <div class="overlay absolute" onclick="toggleModal('#tweet-update-modal')"></div>
+    <div class="w-full m-4 px-4 pb-4 bg-white rounded-lg relative lg:w-2/5 h-fit max-h-screen overflow-auto">
+        <header class="relative">
+            <button onclick="toggleModal('#tweet-update-modal')" class="absolute top-[.5rem] left-[-.5rem] rounded-full w-8 h-8 flex items-center justify-center transition-colors bg-transparent hover:bg-twitter-grey1-10">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </header>
+        <div class="pt-12 flex gap-2">
+            <aside class="w-[48px] flex-grow-0 flex-shrink-0">
+                <img src="./images/{{ user['user_image_src'] }}" class="rounded-full h-[48px] w-[48px] object-cover">
+            </aside>
+            <div id="update-tweet" class="flex-1"></div>
+        </div>
+    </div>
+</section>
+
+<template id="update-tweet-temp">
+    <form id="tweet_update" onsubmit="return false">
+        <input name="tweet_id" type="hidden" value="">
+        <div class="w-100 border-b border-twitter-grey1-10 pb-2 mb-2">
+            <textarea id="tweet_text_update" name="tweet_text" class="tweet-input" minlength="1" maxlength="255" data-form-id="tweet_update"></textarea>
+            <div class="w-100 preview my-2 hidden relative" data-input-id="tweet_image_update">
+                <img class="rounded-xl" src="">
+                <button onclick="removeTweetImage()" data-input-id="tweet_image_update" class="absolute cursor-pointer top-0 left-0 m-2 w-8 h-8 rounded-full transition bg-black bg-opacity-50 hover:bg-opacity-80 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-white text-xl pointer-events-none"></i>
+                </button>
+            </div>
+        </div>
+        <div class="w-100 flex justify-between items-center">
+            <label for="tweet_image_update">
+                <div class="w-8 h-8 rounded-full cursor-pointer flex items-center justify-center transition hover:bg-twitter-blue1-10">
+                    <i class="fa-regular fa-image text-twitter-blue1"></i>
+                </div>
+            </label>
+            <input name="tweet_image_name" type="hidden" value="" data-input-id="tweet_image_update">
+            <input id="tweet_image_update" name="tweet_image" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg" data-form-id="tweet_update">
+            <button onclick="updateTweet()" class="btn btn-primary btn-slim" data-form-id="tweet_update">Twat</button>
+        </div>
+    </form>
+</template>
