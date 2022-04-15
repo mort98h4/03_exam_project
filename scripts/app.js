@@ -38,6 +38,43 @@ function toggleModal(elem) {
     document.querySelector(elem).classList.toggle("hidden");
 }
 
+function toggleUpdateModal() {
+    const tweetId = event.target.dataset.tweetId;
+
+    const tweet = document.querySelector(`#tweet-${tweetId}`);
+    const temp = document.querySelector("#update-tweet-temp");
+    const dest = document.querySelector("#update-tweet");
+    dest.innerHTML = "";
+    const clone = temp.cloneNode(true).content;
+    
+    clone.querySelector("[name='tweet_id']").value = tweetId;
+    clone.querySelector("#tweet_text_update").addEventListener("input", () => {
+        const input = event.target;
+        input.style.height = input.scrollHeight+"px";
+    });
+    clone.querySelector("#tweet_text_update").value = tweet.querySelector(".tweet_text").textContent;
+    const tweetImg = tweet.querySelector('.tweet_image');
+    if (tweetImg) {
+        const src = tweetImg.src;
+        const imageSrc = src.substring(src.lastIndexOf("/") + 1);
+        clone.querySelector("[name='tweet_image_name'][type='hidden']").value = imageSrc;
+        clone.querySelector(".preview img").src = src;
+        clone.querySelector(".preview").classList.toggle('hidden');
+    }
+    clone.querySelector("#tweet_image_update").addEventListener("change", () => {
+        const input = event.target;
+        const preview = document.querySelector(`[data-input-id='${input.id}']`);
+        const image = input.files[0];
+        preview.querySelector("img").src = URL.createObjectURL(image);
+        preview.classList.remove("hidden");
+    });
+
+    dest.appendChild(clone);
+
+    closeAllMenus();
+    toggleModal('#tweet-update-modal');
+}
+
 function toggleMenu() {
     const targetMenu = event.target.dataset.menu;    
     document.querySelector(`#${targetMenu}`).classList.toggle("hidden");
@@ -59,6 +96,10 @@ function removeTweetImage() {
     document.querySelector(`#${inputId}`).value = "";
     document.querySelector(`.preview[data-input-id='${inputId}'] img`).src = "";
     document.querySelector(`.preview[data-input-id='${inputId}']`).classList.add("hidden");
+    const inputHidden = document.querySelector(`[type='hidden'][data-input-id='${inputId}']`)
+    if (inputHidden) {
+        inputHidden.value = "";
+    }
 }
 
 async function createUser() {
@@ -96,8 +137,6 @@ async function createUser() {
         body: new FormData(form)
     });
     const response = await connection.json();
-    console.log(connection);
-    console.log(response);
     if (!connection.ok) {
         const info = response.info.toLowerCase();
         if (info.includes("email")) {
@@ -138,8 +177,6 @@ async function logIn() {
         body: new FormData(form)
     });
     const response = await connection.json();
-    console.log(connection);
-    console.log(response);
 
     if (!connection.ok) {
         const info = response.info.toLowerCase();
@@ -165,7 +202,6 @@ async function logIn() {
 
 async function tweet(fromModal) {
     const form = event.target.form;
-    console.log(fromModal);
     if (form.user_id.value === "") {
         return false;
     }
@@ -177,7 +213,6 @@ async function tweet(fromModal) {
         method: "POST",
         body: new FormData(form)
     });
-    console.log(connection);
     if (!connection.ok) {
         return
     } else {
@@ -192,7 +227,6 @@ async function tweet(fromModal) {
         }
     }
     const tweet = await connection.json();
-    console.log(tweet);
 
     const temp = document.querySelector("#tweet_temp");
     const clone = temp.cloneNode(true).content;
@@ -215,7 +249,6 @@ async function tweet(fromModal) {
 
 async function deleteTweet() {
     const tweetId = event.target.dataset.tweetId;
-    console.log(tweetId);
 
     const connection = await fetch(`/tweet/${tweetId}`, {
         method: "DELETE"
@@ -226,4 +259,38 @@ async function deleteTweet() {
     document.querySelector(`#tweet-${tweetId}`).remove();
     document.querySelector("body").classList.toggle("overflow-hidden");
     document.querySelector("#tweet-delete-modal").classList.toggle("hidden");
+}
+
+async function updateTweet() {
+    const form = event.target.form;
+    const tweetId = form.tweet_id.value;
+    
+    const connection = await fetch(`/tweet/${tweetId}`, {
+        method: "PUT",
+        body: new FormData(form)
+    });
+    const response = await connection.json();
+    if (!connection.ok) {
+        return
+    }
+    
+    const tweet = document.querySelector(`#tweet-${response.tweet_id}`);
+    const tweetText = tweet.querySelector(".tweet_text");
+    tweetText.textContent = response.tweet_text;
+
+    const tweetImage = tweet.querySelector(".tweet_image");
+    if (response.tweet_image === "" && tweetImage) {
+        tweetImage.remove();
+    } 
+    if (response.tweet_image !== "" && !tweetImage) {
+        const img = document.createElement("img");
+        img.classList.add('tweet_image mb-2', 'w-full', 'rounded-xl', 'border', 'border-twitter-grey1-50');
+        img.src = `./images/${response.tweet_image}`;
+        tweetText.after(img);
+    }
+    if (response.tweet_image !== "" && tweetImage) {
+        tweetImage.src = `./images/${response.tweet_image}`;
+    }
+    document.querySelector("body").classList.toggle("overflow-hidden");
+    document.querySelector('#tweet-update-modal').classList.toggle("hidden");
 }

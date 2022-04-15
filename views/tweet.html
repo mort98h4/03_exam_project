@@ -13,13 +13,13 @@
                 <i class="fa-solid fa-ellipsis transition text-twitter-grey1 pointer-events-none"></i>
             </div>
             <div id="tweet-menu-{{ id or '' }}" class="menu hidden absolute top-[0.5rem] right-[0.5rem] w-[200px] bg-white rounded-md shadow-md shadow-twitter-grey1-50 overflow-hidden z-[5]">
-                <a date-tweet-id="{{ id or '' }}" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10">
-                    <i class="fa-solid fa-pen fa-fw text-twitter-grey1"></i>
-                    <span>Edit</span>
+                <a onclick="toggleUpdateModal()" data-tweet-id="{{ id or '' }}" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10">
+                    <i class="fa-solid fa-pen fa-fw text-twitter-grey1 pointer-events-none"></i>
+                    <span class="pointer-events-none">Edit</span>
                 </a>
                 <a onclick="toggleModal('#tweet-delete-modal')" data-tweet-id="{{ id or '' }}" class="p-4 block transition cursor-pointer text-red-500 hover:bg-twitter-grey1-10">
-                    <i class="fa-regular fa-trash-can fa-fw"></i>
-                    <span>Delete</span>
+                    <i class="fa-regular fa-trash-can fa-fw pointer-events-none"></i>
+                    <span class="pointer-events-none">Delete</span>
                 </a>
             </div>
             % end
