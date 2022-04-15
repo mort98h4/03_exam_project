@@ -3,12 +3,26 @@
         <img src="./images/{{ user_image_src or 'default_profile.png' }}" class="user_image rounded-full h-[48px] w-[48px] object-cover">
     </aside>
     <div class="flex-1">
-        <header class="mb-1">
-            <a class="leading-tight">
-                <span class="user_name font-semibold">{{ first_name or '' }} {{ last_name or ''}}</span>
-                <span class="user_handle text-twitter-grey1">@{{ handle or '' }}</span>
-                <span class="tweet_created_at_date text-twitter-grey1">{{ created_at_date or '' }}</span>
-            </a>
+        <header class="mb-1 relative">
+            <a class="user_name leading-tight font-semibold block sm:inline">{{ first_name or '' }} {{ last_name or ''}}</a>
+
+            <p class="user_handle text-twitter-grey1 inline">@{{ handle or '' }}</p>
+            <p class="tweet_created_at_date text-twitter-grey1 inline">{{ created_at_date or '' }}</p>
+            % if fk_user_id == user_id:
+            <div onclick="toggleMenu()" data-menu="tweet-menu-{{ id or '' }}" class="more-btn absolute top-[-0.5rem] right-[-0.5rem]">
+                <i class="fa-solid fa-ellipsis transition text-twitter-grey1 pointer-events-none"></i>
+            </div>
+            <div id="tweet-menu-{{ id or '' }}" class="menu hidden absolute top-[0.5rem] right-[0.5rem] w-[200px] bg-white rounded-md shadow-md shadow-twitter-grey1-50 overflow-hidden z-[5]">
+                <a date-tweet-id="{{ id or '' }}" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10">
+                    <i class="fa-solid fa-pen text-twitter-grey1"></i>
+                    <span>Update</span>
+                </a>
+                <a onclick="toggleModal('#tweet-delete-modal')" data-tweet-id="{{ id or '' }}" class="p-4 block transition cursor-pointer text-red-500 hover:bg-twitter-grey1-10">
+                    <i class="fa-regular fa-trash-can"></i>
+                    <span>Delete</span>
+                </a>
+            </div>
+            % end
         </header>
         <p class="tweet_text mb-2">{{ tweet_text or '' }}</p>
         % if tweet_image:
