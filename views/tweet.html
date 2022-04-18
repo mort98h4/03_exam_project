@@ -1,10 +1,10 @@
 <article id="tweet-{{ id or '' }}" class="border-b border-twitter-grey1-10 p-4 flex gap-2">
     <aside class="max-w-[48px]">
-        <img src="./images/{{ user_image_src or 'default_profile.png' }}" class="user_image rounded-full h-[48px] w-[48px] object-cover">
+        <img src="/images/{{ user_image_src or 'default_profile.png' }}" class="user_image rounded-full h-[48px] w-[48px] object-cover">
     </aside>
     <div class="flex-1">
         <header class="mb-1 relative">
-            <a class="user_name leading-tight font-semibold block sm:inline">{{ first_name or '' }} {{ last_name or ''}}</a>
+            <a href="/profile/{{handle}}" onclick="spa(this); return false;" class="user_name leading-tight font-semibold block sm:inline">{{ first_name or '' }} {{ last_name or ''}}</a>
 
             <p class="user_handle text-twitter-grey1 inline">@{{ handle or '' }}</p>
             <p class="tweet_created_at_date text-twitter-grey1 inline">{{ created_at_date or '' }}</p>
@@ -40,7 +40,7 @@
         </header>
         <p class="tweet_text mb-2">{{ tweet_text or '' }}</p>
         % if tweet_image:
-            <img class="tweet_image mb-2 w-full rounded-xl border border-twitter-grey1-50" src="./images/{{ tweet_image or '' }}">
+            <img class="tweet_image mb-2 w-full rounded-xl border border-twitter-grey1-50" src="/images/{{ tweet_image or '' }}">
         % end
         <footer class="flex">
             <div class="w-[25%]">
