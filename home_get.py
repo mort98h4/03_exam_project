@@ -41,11 +41,14 @@ def _(language = "en"):
 
     if display_page: 
         try: 
-            user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'])
-            tweets = g._GET_ALL_TWEETS()
+            user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'], language)
+            tweets = g._GET_ALL_TWEETS(language)
             for tweet in tweets:
                 tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
-            return dict(tabs=g.TABS, title="Home", is_fetch=is_fetch, user=user, tweets=tweets)
+            follows = g._GET_FOLLOWS_USER_IDS(user['user_id'], language)
+            
+            response.status = 200
+            return dict(tabs=g.TABS, title="Home", is_fetch=is_fetch, user=user, tweets=tweets, follows=follows)
         except Exception as ex:
             print(ex)
             return g._SEND(500, g.ERRORS[f"{language}_server_error"])
