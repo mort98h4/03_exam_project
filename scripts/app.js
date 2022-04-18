@@ -231,6 +231,9 @@ async function tweet(fromModal) {
     const temp = document.querySelector("#tweet_temp");
     const clone = temp.cloneNode(true).content;
     clone.querySelector("#tweet-").setAttribute("id", `tweet-${tweet.tweet_id}`);
+    clone.querySelectorAll("a[data-tweet-id]").forEach(el => {
+        el.setAttribute("data-tweet-id", tweet.tweet_id);
+    });
     clone.querySelector(".user_image").src = `./images/${tweet.user_image_src}`;
     clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
     clone.querySelector(".user_handle").textContent += tweet.user_handle;
