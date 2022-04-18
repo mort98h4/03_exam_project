@@ -8,11 +8,12 @@
 
             <p class="user_handle text-twitter-grey1 inline">@{{ handle or '' }}</p>
             <p class="tweet_created_at_date text-twitter-grey1 inline">{{ created_at_date or '' }}</p>
-            % if fk_user_id == user_id:
+            % if not user_id == '':
             <div onclick="toggleMenu()" data-menu="tweet-menu-{{ id or '' }}" class="more-btn absolute top-[-0.5rem] right-[-0.5rem]">
                 <i class="fa-solid fa-ellipsis transition text-twitter-grey1 pointer-events-none"></i>
             </div>
-            <div id="tweet-menu-{{ id or '' }}" class="menu hidden absolute top-[0.5rem] right-[0.5rem] w-[200px] bg-white rounded-md shadow-md shadow-twitter-grey1-50 overflow-hidden z-[5]">
+            <div id="tweet-menu-{{ id or '' }}" class="menu hidden absolute top-[0.5rem] right-[0.5rem] w-[350px] bg-white rounded-md shadow-md shadow-twitter-grey1-50 overflow-hidden z-[5]">
+                % if fk_user_id == user_id:
                 <a onclick="toggleUpdateModal()" data-tweet-id="{{ id or '' }}" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10">
                     <i class="fa-solid fa-pen fa-fw text-twitter-grey1 pointer-events-none"></i>
                     <span class="pointer-events-none">Edit</span>
@@ -21,6 +22,19 @@
                     <i class="fa-regular fa-trash-can fa-fw pointer-events-none"></i>
                     <span class="pointer-events-none">Delete</span>
                 </a>
+                % end
+                % if fk_user_id != user_id and fk_user_id not in follows:
+                <a onclick="followUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="{{ user_id }}" data-follow-user-id="{{ fk_user_id }}" data-follow-user-handle="{{ handle }}">
+                    <i class="fa-solid fa-user-plus fa-fw text-twitter-grey1 pointer-events-none"></i>
+                    <span class="pointer-events-none">Follow @{{ handle or '' }}</span>
+                </a>
+                % end
+                % if fk_user_id != user_id and fk_user_id in follows:
+                <a onclick="unfollowUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="{{ user_id }}" data-unfollow-user-id="{{ fk_user_id }}" data-unfollow-user-handle="{{ handle }}">
+                    <i class="fa-solid fa-user-xmark fa-fw text-twitter-grey1 pointer-events-none"></i>
+                    <span class="pointer-events-none">Unfollow @{{ handle or '' }}</span>
+                </a>
+                % end
             </div>
             % end
         </header>
@@ -62,6 +76,5 @@
                 </div>
             </div>
         </footer>
-
     </div>
 </article>
