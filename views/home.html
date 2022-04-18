@@ -10,7 +10,7 @@
             </header>
             <div class="border-b border-twitter-grey1-10 p-4 flex gap-2">
                 <aside class="flex-grow-0 flex-shrink-0 w-[48px]">
-                    <img src="./images/{{ user['user_image_src'] }}" class="rounded-full h-[48px] w-[48px] object-cover">
+                    <img src="/images/{{ user['user_image_src'] }}" class="rounded-full h-[48px] w-[48px] object-cover">
                 </aside>
                 <form id="tweet_1" class="flex-1" onsubmit="return false" class="flex-1">
                     <input name="user_id" type="hidden" value="{{ user['user_id']}}">

@@ -33,7 +33,7 @@
         <div class="w-full flex justify-center items-center mt-4 lg:mt-16 lg:block relative">
             <div onclick="toggleModal('#user-menu')" class="rounded-full transition cursor-pointer hover:bg-twitter-grey1-10 lg:ml-2 lg:mr-4 p-2 lg:flex lg:gap-2 lg:items-center relative">
                 <div class="w-[54px] h-[54px] rounded-full bg-twitter-grey1">
-                    <img class="w-[54px] h-[54px] rounded-full object-cover" src="./images/{{ user['user_image_src'] }}">
+                    <img class="w-[54px] h-[54px] rounded-full object-cover" src="/images/{{ user['user_image_src'] }}">
                 </div>
                 <div class="hidden lg:block">
                     <p class="font-semibold">{{ user['user_first_name'] }} {{ user['user_last_name'] }}</p>
@@ -46,7 +46,7 @@
             <div id="user-menu" class="hidden w-[288px] rounded-lg border border-twitter-grey1-10 shadow-md shadow-twitter-grey1-50 absolute left-0 top-[-225%] bg-white">
                 <div class="flex p-4 pb-2 gap-2 items-center border-b border-twitter-grey1-10">
                     <div class="w-[54px] h-[54px] rounded-full bg-twitter-grey1">
-                        <img class="w-[54px] h-[54px] object-cover rounded-full" src="./images/{{ user['user_image_src'] }}">
+                        <img class="w-[54px] h-[54px] object-cover rounded-full" src="/images/{{ user['user_image_src'] }}">
                     </div>
                     <div class="">
                         <p class="font-semibold">{{ user['user_first_name'] }} {{ user['user_last_name'] }}</p>
