@@ -48,6 +48,12 @@ TABS = [
   {"icon": "fas fa-ellipsis-h fa-fw", "title": "More", "id": "more"}
 ]
 
+def _GET_TABS(user_handle=""):
+    tabs = TABS
+    for tab in tabs: 
+        if tab['id'] == "profile": tab['id'] = f"profile{'/' + user_handle}"
+    return tabs
+
 ##############################
 def _SEND(status = 400, error_message = "Unknown error"):
     response.status = status
