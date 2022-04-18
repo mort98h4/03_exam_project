@@ -1090,6 +1090,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   width: 25%;
 }
 
+.w-\[300px\]{
+  width: 300px;
+}
+
+.w-\[350px\]{
+  width: 350px;
+}
+
 .min-w-\[276px\]{
   min-width: 276px;
 }
