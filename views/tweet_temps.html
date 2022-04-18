@@ -1,0 +1,17 @@
+<template id="tweet_temp">
+    % include("tweet", id='', fk_user_id=user_id, user_id=user_id, user_image_src='', first_name='', last_name='', handle='', created_at_date='', tweet_text='', tweet_image=True)
+</template>
+
+<template id="followTemp">
+    <a onclick="followUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="" data-follow-user-id="" data-follow-user-handle="">
+        <i class="fa-solid fa-user-plus fa-fw text-twitter-grey1 pointer-events-none"></i>
+        <span class="pointer-events-none">Follow @</span>
+    </a>
+</template>
+
+<template id="unfollowTemp">
+    <a onclick="unfollowUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="" data-unfollow-user-id="" data-unfollow-user-handle="">
+        <i class="fa-solid fa-user-xmark fa-fw text-twitter-grey1 pointer-events-none"></i>
+        <span class="pointer-events-none">Unfollow @</span>
+    </a>
+</template>
