@@ -26,10 +26,12 @@ import signup_post          # POST
 import login_post           # POST
 import logout_post          # POST
 import tweet_post           # POST
+import follow_post          # POST
 
 import tweet_put            # PUT
 
 import tweet_delete         # DELETE
+import follow_delete        # DELETE
 
 ##############################
 try:
