@@ -39,9 +39,10 @@ def _(language="en"):
                 encoded_jwt = jwt.encode(decoded_jwt, g.JWT_SECRET, algorithm="HS256")
                 response.set_cookie("jwt", encoded_jwt, path="/")
 
-                tabs = g.TABS
                 user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'])
                 follows = g._GET_FOLLOWS_USER_IDS(user['user_id'], language)
+                tabs = g._GET_TABS(user['user_handle'])
+
 
         except Exception as ex:
             print(ex)
