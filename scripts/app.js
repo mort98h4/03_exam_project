@@ -294,3 +294,51 @@ async function updateTweet() {
     document.querySelector("body").classList.toggle("overflow-hidden");
     document.querySelector('#tweet-update-modal').classList.toggle("hidden");
 }
+
+async function followUser() {
+    const [userId, followUserId, followUserHandle] = [event.target.dataset.userId, event.target.dataset.followUserId, event.target.dataset.followUserHandle];
+
+    const connection = await fetch(`/follow/${userId}/${followUserId}`, {
+        method: "POST"
+    });
+    if (!connection.ok) {
+        return
+    }
+    const allFollowBtns = document.querySelectorAll(`a[data-user-id='${userId}'][data-follow-user-id='${followUserId}'][data-follow-user-handle='${followUserHandle}']`);
+    allFollowBtns.forEach(btn => {
+        const parent = btn.parentElement;
+        const temp = document.querySelector("#unfollowTemp");
+        const clone = temp.cloneNode(true).content;
+        clone.querySelector("a").setAttribute("data-user-id", userId);
+        clone.querySelector("a").setAttribute("data-unfollow-user-id", followUserId);
+        clone.querySelector("a").setAttribute("data-unfollow-user-handle", followUserHandle);
+        clone.querySelector("span").textContent += followUserHandle;
+        parent.appendChild(clone);
+        btn.remove();
+    })
+}
+
+async function unfollowUser() {
+    const [userId, unfollowUserId, unfollowUserHandle] = [event.target.dataset.userId, event.target.dataset.unfollowUserId, event.target.dataset.unfollowUserHandle];
+    console.log(userId, unfollowUserId, unfollowUserHandle);
+
+    const connection = await fetch(`/follow/${userId}/${unfollowUserId}`, {
+        method: "DELETE"
+    });
+    console.log(connection);
+    if (!connection.ok) {
+        return
+    }
+    const allUnfollowBtns = document.querySelectorAll(`a[data-user-id='${userId}'][data-unfollow-user-id='${unfollowUserId}'][data-unfollow-user-handle='${unfollowUserHandle}']`);
+    allUnfollowBtns.forEach(btn => {
+        const parent = btn.parentElement;
+        const temp = document.querySelector("#followTemp");
+        const clone = temp.cloneNode(true).content;
+        clone.querySelector("a").setAttribute("data-user-id", userId);
+        clone.querySelector("a").setAttribute("data-follow-user-id", unfollowUserId);
+        clone.querySelector("a").setAttribute("data-follow-user-handle", unfollowUserHandle);
+        clone.querySelector("span").textContent += unfollowUserHandle;
+        parent.appendChild(clone);
+        btn.remove();
+    })
+}
