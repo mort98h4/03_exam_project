@@ -236,6 +236,7 @@ async function tweet(fromModal) {
     });
     clone.querySelector(".user_image").src = `./images/${tweet.user_image_src}`;
     clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
+    clone.querySelector(".user_name").setAttribute("href", `/profile/${tweet.user_handle}`);
     clone.querySelector(".user_handle").textContent += tweet.user_handle;
     clone.querySelector(".tweet_created_at_date").textContent = "Now";
     clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
