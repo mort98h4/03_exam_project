@@ -233,7 +233,7 @@ def _UPDATE_SESSION(session=None, now=None, language = "en"):
         db.close()
 
 ##############################
-def _GET_USER_BY_ID(id=None):
+def _GET_USER_BY_ID(id=None, language="en"):
     try:
         db_connect = pymysql.connect(**DB_CONFIG)
         db = db_connect.cursor()
@@ -249,7 +249,7 @@ def _GET_USER_BY_ID(id=None):
         db.close()
 
 ##############################
-def _GET_ALL_TWEETS():
+def _GET_ALL_TWEETS(language="en"):
     try:
         db_connect = pymysql.connect(**DB_CONFIG)
         db = db_connect.cursor()
@@ -273,6 +273,25 @@ def _GET_ALL_TWEETS():
         """)
         tweets = db.fetchall()
         return tweets
+    except Exception as ex:
+        print(ex)
+        return _SEND(500, ERRORS[f"{language}_server_error"])
+    finally:
+        db.close()
+
+##############################
+def _GET_FOLLOWS_USER_IDS(user_id=None, language="en"):
+    try:
+        db_connect = pymysql.connect(**DB_CONFIG)
+        db = db_connect.cursor()
+        db.execute("SELECT * FROM follows WHERE follow_user_id = %s", (user_id,))
+        follows = db.fetchall()
+        follow_ids = []
+        for follow in follows:
+            follow_ids.append(follow['follows_user_id'])
+        print("#"*30)
+        print(follow_ids)
+        return follow_ids
     except Exception as ex:
         print(ex)
         return _SEND(500, ERRORS[f"{language}_server_error"])
