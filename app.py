@@ -1,4 +1,4 @@
-from bottle import default_app, get, view, run, static_file
+from bottle import default_app, error, get, view, run, static_file
 
 ##############################
 @get("/app.css")
@@ -33,6 +33,12 @@ import tweet_put            # PUT
 
 import tweet_delete         # DELETE
 import follow_delete        # DELETE
+
+##############################
+@error(404)
+@view("404")
+def _(error):
+  return
 
 ##############################
 try:
