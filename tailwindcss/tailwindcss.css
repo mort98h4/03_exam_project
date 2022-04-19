@@ -37,7 +37,7 @@
     }
 
     .btn {
-        @apply rounded-full px-8 py-2 font-semibold transition text-center;
+        @apply rounded-full px-8 py-2 font-semibold transition text-center whitespace-nowrap;
     }
 
     .btn-primary {
@@ -60,6 +60,22 @@
         @apply bg-transparent border-twitter-grey1 border border-solid text-black hover:bg-twitter-grey1-10;
     }
 
+    .btn-quarternary.btn-unfollow {
+        @apply min-w-[110px] md:min-w-[142px] hover:bg-red-500 hover:bg-opacity-10 hover:text-red-500 hover:border-red-500;
+    }
+
+    .btn-quarternary.btn-unfollow .unfollow {
+        @apply hidden;
+    }
+
+    .btn-quarternary.btn-unfollow:hover .unfollow {
+        @apply block;
+    }
+
+    .btn-quarternary.btn-unfollow:hover .following {
+        @apply hidden;
+    }
+
     .btn-danger {
         @apply bg-red-500 text-white hover:bg-red-600;
     }
@@ -70,6 +86,28 @@
 
     .btn-slim {
         @apply py-1 px-4;
+    }
+
+    .btn-profile-menu-item {
+        @apply leading-tight py-4 transition font-semibold text-twitter-grey1 hover:bg-twitter-grey1-10 relative flex justify-center;
+    }
+
+    .btn-profile-menu-item .line {
+        @apply absolute bottom-0 h-[3px] w-[50%] bg-twitter-blue1 rounded-full hidden;
+    }
+
+    .btn-profile-menu-item.active {
+        @apply text-black ;
+    }
+    
+    .btn-profile-menu-item.active .line {
+        @apply block;
+    }
+
+    @media screen and (min-width: 768px) {
+        .btn-md-unslim {
+            @apply px-8 py-2;
+        }
     }
 
     .overlay {
@@ -129,7 +167,7 @@
         @apply text-twitter-pink1;
     }
 
-    .tweet-btn i {
+    .tweet-btn i, .tweet-btn span {
         color: inherit;
     }
 
