@@ -1,3 +1,4 @@
+let firstPage;
 const cachedPages = [];
 const STALE_TIME = 10000;
 
@@ -5,7 +6,8 @@ const STALE_TIME = 10000;
   // Set the initial state in the history when the page loads
   const mainElement = document.querySelector("main");
   if (!mainElement) return console.error("Cannot find <main> element");
-  spaURL = mainElement.dataset.spaURL;
+  spaURL = mainElement.dataset.spa_url;
+  firstPage = spaURL;
   history.replaceState({ spaURL: spaURL }, "", spaURL);
   console.log("Inital state replace", spaURL);
 })();
@@ -68,3 +70,16 @@ window.addEventListener("popstate", (event) => {
   spa(event.state.spaURL, false);
   return false;
 });
+
+function goBack() {
+  if (cachedPages.length < 1) {
+    spa("/home")
+    return false;
+  }
+  if (cachedPages.length < 2) {
+    spa(firstPage);
+    return false;
+  }
+  spa(cachedPages[cachedPages.length - 2].url);
+  return false;
+}
