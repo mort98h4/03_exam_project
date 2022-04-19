@@ -1,0 +1,116 @@
+% if not is_fetch:
+    % include("header")
+<div class="min-h-screen w-full grid grid-cols-12 xl:w-5/6 xl:mx-auto">
+    % include("sidemenu", tabs=tabs, user=user)
+    <div class="spa-wrapper col-span-10 lg:col-span-6 min-h-screen border-x border-twitter-grey1-10">
+% end
+    <main
+      data-spa_url="/profile/{{title}}" 
+      data-spa_title="@{{title}}"
+      class="min-h-screen"
+    >
+        <header class="px-4 h-[60px] sticky top-0 z-10 bg-white bg-opacity-80 backdrop-blur-sm flex items-center ">
+            <button onclick="goBack();" class="h-8 w-8 rounded-full flex items-center justify-center mr-4 transition hover:bg-twitter-grey1-10">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div class="flex items-center w-full flex-wrap">
+                <h3 class="text-xl font-semibold">{{ display_user['user_first_name'] }} {{ display_user['user_last_name'] }}</h3>
+                <p class="text-twitter-grey1 text-sm w-full">
+                    {{ display_user['user_total_tweets'] }}
+                    % if display_user['user_total_tweets'] == 1:
+                        Twat
+                    % else:
+                        Twats
+                    % end
+                </p>
+            </div>
+        </header>
+        <div class="w-full h-[50vh] relative grid grid-cols-1 grid-rows-2">
+            <div class="row-span-1 col-span-1 bg-twitter-grey1-50"></div>
+            <div class="w-full h-full absolute top-0 left-0 grid grid-cols-2 grid-rows-3">
+                <div class="row-span-1 row-start-2 px-4 flex items-center">
+                    <img class="w-full h-full max-w-[115px] max-h-[115px] object-cover rounded-full outline outline-2 outline-white" src="/images/{{ display_user['user_image_src'] }}">
+                </div>
+                <div class="row-span-1 row-start-2 px-4 pb-2 flex items-end justify-end">
+                    % if user:
+                        % if user['user_id'] == display_user['user_id']:
+                            <button class="btn btn-quarternary btn-slim btn-md-unslim">Set up profile</button>
+                        % end
+                        % if user['user_id'] != display_user['user_id'] and display_user['user_id'] not in follows:
+                            <button onclick="followUser()" class="btn btn-tertiary btn-slim btn-md-unslim"  data-user-id="{{ user['user_id'] }}" data-follow-user-id="{{ display_user['user_id'] }}" data-follow-user-handle="{{ display_user['user_handle'] }}">Follow</button>
+                        % end
+                        % if user['user_id'] != display_user['user_id'] and display_user['user_id'] in follows:
+                            <button onclick="unfollowUser()" class="btn btn-quarternary btn-unfollow btn-slim btn-md-unslim" data-user-id="{{ user['user_id'] }}" data-unfollow-user-id="{{ display_user['user_id'] }}" data-unfollow-user-handle="{{ display_user['user_handle'] }}">
+                                <span class="following pointer-events-none">Following</span>
+                                <span class="unfollow pointer-events-none">Unfollow</span>
+                            </button>
+                        % end
+                    % end
+                </div>
+                <div class="row-span-1 row-start-3 col-span-2 p-4">
+                    <h3 class="text-xl font-bold">{{display_user['user_first_name']}} {{ display_user['user_last_name'] }}</h3>
+                    <p class="text-twitter-grey1">@{{ display_user['user_handle'] }}</p>
+                    <p>{{ display_user['user_description'] }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-4 border-b border-twitter-grey1-10">
+            <div class="col-span-4 pb-4 px-4">
+                <p class="text-twitter-grey1">
+                    <i class="fa-regular fa-calendar-days fa-fw"></i>
+                    Joined {{ display_user['user_created_at_date'] }}
+                </p>
+            </div>
+            <div class="col-span-4 pb-4 px-4">
+                <a class="cursor-pointer mr-4 hover:underline">
+                    <span class="font-semibold pointer-events-none">{{ display_user['user_total_follows'] }}</span>
+                    <span class="text-twitter-grey1 pointer-events-none">Following</span>
+                </a>
+                <a class="cursor-pointer hover:underline">
+                    <span id="numFollowers" class="font-semibold pointer-events-none">{{ display_user['user_total_followers'] }}</span>
+                    <span class="text-twitter-grey1 pointer-events-none">Followers</span>
+                </a>
+            </div>
+            <button class="col-span-1 btn-profile-menu-item active">
+                Twats
+                <div class="line"></div>
+            </button>
+            <button class="col-span-1 btn-profile-menu-item">
+                Twats & replies
+                <div class="line"></div>
+            </button>
+            <button class="col-span-1 btn-profile-menu-item">
+                Media
+                <div class="line"></div>
+            </button>
+            <button class="col-span-1 btn-profile-menu-item">
+                Likes
+                <div class="line"></div>
+            </button>
+        </div>
+        <div id="tweets">
+            % for tweet in tweets:
+                % if user:
+                % include("tweet", id=tweet['tweet_id'], fk_user_id=tweet['tweet_user_id'], user_id=user['user_id'], user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'], follows=follows)
+                % else:
+                % include("tweet", id=tweet['tweet_id'], fk_user_id=tweet['tweet_user_id'], user_id='', user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'], follows=follows)
+                % end
+            % end
+        </div>
+    </main>
+
+    %if not is_fetch:
+    </div>
+    <aside class="hidden lg:block lg:col-span-3 h-full sticky top-0 right-0">
+        hej
+    </aside>
+</div>
+% if user:
+%include("tweet_modal")
+%include("tweet_temps", user_id=user['user_id'])
+%include("tweet_update_modal")
+%include("tweet_delete_modal")
+%include("profile_temps")
+% end
+% include("footer")
+% end
