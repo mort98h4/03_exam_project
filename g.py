@@ -245,8 +245,6 @@ def _GET_USER_BY_ID(id=None, language="en"):
         db = db_connect.cursor()
         db.execute("SELECT * FROM users WHERE user_id = %s", (id,))
         user = db.fetchone()
-        print("#"*30)
-        print(user)
         return user
     except Exception as ex:
         print(ex)
@@ -295,8 +293,6 @@ def _GET_FOLLOWS_USER_IDS(user_id=None, language="en"):
         follow_ids = []
         for follow in follows:
             follow_ids.append(follow['follows_user_id'])
-        print("#"*30)
-        print(follow_ids)
         return follow_ids
     except Exception as ex:
         print(ex)
