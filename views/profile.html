@@ -29,12 +29,12 @@
             <div class="row-span-1 col-span-1 bg-twitter-grey1-50"></div>
             <div class="w-full h-full absolute top-0 left-0 grid grid-cols-2 grid-rows-3">
                 <div class="row-span-1 row-start-2 px-4 flex items-center">
-                    <img class="w-full h-full max-w-[115px] max-h-[115px] object-cover rounded-full outline outline-2 outline-white" src="/images/{{ display_user['user_image_src'] }}">
+                    <img class="user_image w-full h-full max-w-[115px] max-h-[115px] object-cover rounded-full outline outline-2 outline-white" src="/images/{{ display_user['user_image_src'] }}">
                 </div>
                 <div class="row-span-1 row-start-2 px-4 pb-2 flex items-end justify-end">
                     % if user:
                         % if user['user_id'] == display_user['user_id']:
-                            <button class="btn btn-quarternary btn-slim btn-md-unslim">Set up profile</button>
+                            <button onclick="toggleModal('#update-user-modal')" class="btn btn-quarternary btn-slim btn-md-unslim">Set up profile</button>
                         % end
                         % if user['user_id'] != display_user['user_id'] and display_user['user_id'] not in follows:
                             <button onclick="followUser()" class="btn btn-tertiary btn-slim btn-md-unslim"  data-user-id="{{ user['user_id'] }}" data-follow-user-id="{{ display_user['user_id'] }}" data-follow-user-handle="{{ display_user['user_handle'] }}">Follow</button>
@@ -49,8 +49,8 @@
                 </div>
                 <div class="row-span-1 row-start-3 col-span-2 p-4">
                     <h3 class="text-xl font-bold">{{display_user['user_first_name']}} {{ display_user['user_last_name'] }}</h3>
-                    <p class="text-twitter-grey1">@{{ display_user['user_handle'] }}</p>
-                    <p>{{ display_user['user_description'] }}</p>
+                    <p class="text-twitter-grey1 mb-4">@{{ display_user['user_handle'] }}</p>
+                    <p class="user_description">{{ display_user['user_description'] }}</p>
                 </div>
             </div>
         </div>
@@ -110,6 +110,7 @@
 %include("tweet_temps", user_id=user['user_id'])
 %include("tweet_update_modal")
 %include("tweet_delete_modal")
+%include("profile_update_user_modal", user=user)
 %include("profile_temps")
 % end
 % include("footer")

@@ -1,0 +1,48 @@
+<section id="update-user-modal" class="w-full h-screen fixed top-0 flex items-center justify-center hidden z-50">
+    <div class="overlay absolute" onclick="toggleModal('#update-user-modal')"></div>
+    <form onsubmit="return false;" novalidate="true" class="relative w-full m-4 px-12 pb-8 pt-2 bg-white rounded-lg lg:w-1/2">
+        <header class="relative flex justify-center flex-wrap mb-6">
+            <button onclick="toggleModal('#update-user-modal')" class="absolute top-[.5rem] left-[-2rem] rounded-full w-8 h-8 flex items-center justify-center transition-colors bg-transparent hover:bg-twitter-grey1-10">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <i class="fa-brands fa-twitter text-4xl mb-6 text-twitter-blue1"></i>
+            <h3 class="w-full font-bold text-2xl">Pick a profile picture</h3>
+            <p class="w-full text-twitter-grey1">Have a favorite selfie? Upload it now.</p>
+        </header>
+        <div class="relative w-full mb-6 flex justify-center">
+            <img class="w-[184px] h-[184px] object-cover rounded-full" src="/images/{{ user['user_image_src'] or 'default_profile.png' }}" data-input-id="user_image_update">
+            <div class="w-[184px] h-[184px] rounded-full flex items-center justify-center bg-twitter-grey1-50 absolute">
+                <label for="user_image_update">
+                    <div class="w-8 h-8 cursor-pointer transition rounded-full flex items-center justify-center bg-twitter-grey1-80 hover:bg-twitter-grey1-50">
+                        <i class="fa-solid fa-camera text-white pointer-events-none"></i>
+                    </div>
+                </label>
+            </div>
+            <input onchange="updateUserImage()" id="user_image_update" name="user_image_src" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg">
+            <input name="user_image_name" type="hidden" value="{{ user['user_image_src'] or 'default_profile.png' }}" data-input-id="user_image_update">
+        </div>
+        <header class="mb-6">
+            <h3 class="w-full font-bold text-2xl">Describe yourself</h3>
+            <p class="w-full text-twitter-grey1">What makes you special? Don't think too hard, just have fun with it.</p>
+        </header>
+        <div class="relative w-full mb-12">
+            <input 
+                    oninput="updateCharacterCounter(this)" 
+                    id="user_description" 
+                    name="user_description" 
+                    type="text" 
+                    placeholder=" " 
+                    minlength="2"
+                    maxlength="160"
+                    required
+                >
+                <label for="user_description" class="dynamic-label">Your bio</label>
+                <span class="character-counter" data-input-name="user_description">0 / 160</span>
+                <span class="hint" data-input-name="user_description">Your bio should be between 1 and 160 characters.</span>
+        </div>
+        <span id="update_user_error_message" class="hidden text-red-600 absolute bottom-[5.5rem]"></span>
+        <input id="user_id" name="user_id" type="hidden" value="{{ user['user_id'] }}">
+        
+        <button onclick="updateUser()" class="btn btn-quarternary w-full">Update profile</button>
+    </form>
+</section>
