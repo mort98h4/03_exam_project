@@ -191,6 +191,29 @@ def _IS_IMAGE(image=None, language="en"):
         return None, errors_suspicious_file[language]
     return image_name, None
 
+def _IS_USER_DESCRIPTION(text=None, language="en"):
+    min, max = 1, 160
+    errors_text_missing = {
+        "en": "user_description is missing.",
+        "da": "user_description mangler."
+    }
+    errors_min = {
+        "en": f"user_description must be at least {min} character.",
+        "da": f"user_description skal minimum indeholde {min} tegn."
+    }
+    errors_max = {
+        "en": f"user_description must be less than {max} characters.",
+        "da": f"Tuser_description må maksimum indeholde {max} tegn."
+    }
+
+    if not text: return None, errors_text_missing[language]
+    text = re.sub("[\n\t]*", "", text)
+    text = re.sub(" +", " ", text)
+    text = text.strip()
+    if len(text) < min: return None, errors_min[language]
+    if len(text) > max: return None, errors_max[language]
+    return text, None
+
 ##############################
 def _DATE_STRING(epoch):
     now = int(time.time())
