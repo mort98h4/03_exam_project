@@ -13,7 +13,7 @@ module.exports = {
         "twitter-grey1-50": "rgba(83, 100, 113, .5)",
         "twitter-grey1-10": "rgba(83, 100, 113, .1)",
         "twitter-green1": "rgba(0, 186, 124, 1)",
-        "twitter-green1-10": "rgba(83, 100, 113, .1)",
+        "twitter-green1-10": "rgba(0, 186, 124, .1)",
         "twitter-pink1": "rgba(249, 24, 128, 1)",
         "twitter-pink1-10": "rgba(249, 24, 128, .1)"
       }
