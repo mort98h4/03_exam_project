@@ -15,7 +15,7 @@
                 <form id="tweet_1" class="flex-1" onsubmit="return false" class="flex-1">
                     <input name="user_id" type="hidden" value="{{ user['user_id']}}">
                     <div class="w-100 border-b border-twitter-grey1-10 pb-2 mb-2">
-                        <textarea id="tweet_text_1" name="tweet_text" class="tweet-input" placeholder="What's happening?" minlength="1" maxlength="255" data-form-id="tweet_1"></textarea>
+                        <textarea oninput="updateInputHeight()" id="tweet_text_1" name="tweet_text" class="tweet-input" placeholder="What's happening?" minlength="1" maxlength="255" data-form-id="tweet_1"></textarea>
                         <div class="w-100 preview my-2 hidden relative" data-input-id="tweet_image_1">
                             <img class="rounded-xl" src="">
                             <button onclick="removeTweetImage()" data-input-id="tweet_image_1" class="absolute cursor-pointer top-0 left-0 m-2 w-8 h-8 rounded-full transition bg-black bg-opacity-50 hover:bg-opacity-80 flex items-center justify-center">
@@ -29,7 +29,7 @@
                                 <i class="fa-regular fa-image text-twitter-blue1"></i>
                             </div>
                         </label>
-                        <input id="tweet_image_1" name="tweet_image" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg" data-form-id="tweet_1">
+                        <input onchange="updatePreviewImage()" id="tweet_image_1" name="tweet_image" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg" data-form-id="tweet_1">
                         <button onclick="tweet()" class="btn btn-primary btn-slim" data-form-id="tweet_1" disabled>Twat</button>
                     </div>
                 </form>

@@ -19,7 +19,7 @@
     <form id="tweet_update" onsubmit="return false">
         <input name="tweet_id" type="hidden" value="">
         <div class="w-100 border-b border-twitter-grey1-10 pb-2 mb-2">
-            <textarea id="tweet_text_update" name="tweet_text" class="tweet-input" minlength="1" maxlength="255" data-form-id="tweet_update"></textarea>
+            <textarea oninput="updateInputHeight()" id="tweet_text_update" name="tweet_text" class="tweet-input" minlength="1" maxlength="255" data-form-id="tweet_update"></textarea>
             <div class="w-100 preview my-2 hidden relative" data-input-id="tweet_image_update">
                 <img class="rounded-xl" src="">
                 <button onclick="removeTweetImage()" data-input-id="tweet_image_update" class="absolute cursor-pointer top-0 left-0 m-2 w-8 h-8 rounded-full transition bg-black bg-opacity-50 hover:bg-opacity-80 flex items-center justify-center">
@@ -34,7 +34,7 @@
                 </div>
             </label>
             <input name="tweet_image_name" type="hidden" value="" data-input-id="tweet_image_update">
-            <input id="tweet_image_update" name="tweet_image" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg" data-form-id="tweet_update">
+            <input onchange="updatePreviewImage()" id="tweet_image_update" name="tweet_image" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg" data-form-id="tweet_update">
             <button onclick="updateTweet()" class="btn btn-primary btn-slim" data-form-id="tweet_update">Twat</button>
         </div>
     </form>

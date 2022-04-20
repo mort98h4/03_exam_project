@@ -1,32 +1,3 @@
-let tweetTextInput;
-let tweetImageInput;
-
-window.addEventListener("DOMContentLoaded", () => {
-    tweetTextInput = document.querySelectorAll("textarea.tweet-input");
-    tweetImageInput = document.querySelectorAll("[type='file'].tweet-input");
-
-    tweetTextInput.forEach(input => {
-        input.addEventListener("input", () => {
-            input.style.height = input.scrollHeight+"px";
-            const button = document.querySelector(`button[data-form-id='${input.dataset.formId}']`)
-            if (input.value.length > 0 && button.hasAttribute("disabled")) {
-                button.removeAttribute("disabled");
-            } 
-            if (input.value.length === 0) {
-                button.setAttribute("disabled", true);
-            }
-        });
-    });
-    tweetImageInput.forEach(input => {
-        input.addEventListener("change", () => {
-            const preview = document.querySelector(`[data-input-id='${input.id}']`);
-            const image = input.files[0];
-            preview.querySelector("img").src = URL.createObjectURL(image);
-            preview.classList.remove("hidden");
-        })
-    });
-});
-
 function toggleModal(elem) {
     const tweetId = event.target.dataset.tweetId;
     const deleteBtn = document.querySelector(".btn-danger");
@@ -91,11 +62,31 @@ function updateCharacterCounter(input) {
     counter.textContent = `${input.value.length} / ${input.getAttribute("maxlength")}`;
 }
 
+function updateInputHeight() {
+    const input = event.target;
+    input.style.height = input.scrollHeight+"px";
+    const button = document.querySelector(`button[data-form-id='${input.dataset.formId}']`)
+    if (input.value.length > 0 && button.hasAttribute("disabled")) {
+        button.removeAttribute("disabled");
+    } 
+    if (input.value.length === 0) {
+        button.setAttribute("disabled", true);
+    }
+}
+
 function updateUserImage() {
     const input = event.target;
     const imgEl = document.querySelector(`[data-input-id='${input.id}']`);
     const image = input.files[0];
     imgEl.src = URL.createObjectURL(image);
+}
+
+function updatePreviewImage() {
+    const input = event.target;
+    const preview = document.querySelector(`[data-input-id='${input.id}']`);
+    const image = input.files[0];
+    preview.querySelector("img").src = URL.createObjectURL(image);
+    preview.classList.remove("hidden");
 }
 
 function removeTweetImage() {
