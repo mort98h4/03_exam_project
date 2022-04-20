@@ -984,16 +984,24 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   left: -.5rem;
 }
 
+.top-\[-1rem\]{
+  top: -1rem;
+}
+
+.left-\[-2rem\]{
+  left: -2rem;
+}
+
 .z-10{
   z-index: 10;
 }
 
-.z-\[5\]{
-  z-index: 5;
-}
-
 .z-50{
   z-index: 50;
+}
+
+.z-\[5\]{
+  z-index: 5;
 }
 
 .order-2{
@@ -1151,6 +1159,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   height: 50vh;
 }
 
+.h-\[184px\]{
+  height: 184px;
+}
+
 .h-\[54px\]{
   height: 54px;
 }
@@ -1159,6 +1171,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
+}
+
+.h-\[100px\]{
+  height: 100px;
 }
 
 .max-h-\[115px\]{
@@ -1187,6 +1203,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .w-1\/2{
   width: 50%;
+}
+
+.w-\[184px\]{
+  width: 184px;
 }
 
 .w-2\/12{
@@ -1360,6 +1380,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   background-color: rgba(83, 100, 113, .5);
 }
 
+.bg-twitter-grey1-80{
+  background-color: rgba(83, 100, 113, .8);
+}
+
 .bg-opacity-80{
   --tw-bg-opacity: 0.8;
 }
@@ -1403,6 +1427,15 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   padding-right: 1rem;
 }
 
+.px-12{
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.pb-4{
+  padding-bottom: 1rem;
+}
+
 .pb-2{
   padding-bottom: 0.5rem;
 }
@@ -1413,10 +1446,6 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .pt-2{
   padding-top: 0.5rem;
-}
-
-.pb-4{
-  padding-bottom: 1rem;
 }
 
 .pr-2{
@@ -1486,13 +1515,13 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   line-height: 1.25;
 }
 
+.text-twitter-blue1{
+  color: rgba(29, 155, 240, 1);
+}
+
 .text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-twitter-blue1{
-  color: rgba(29, 155, 240, 1);
 }
 
 .text-twitter-grey1{
@@ -1564,6 +1593,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .hover\:bg-twitter-grey1-10:hover{
   background-color: rgba(83, 100, 113, .1);
+}
+
+.hover\:bg-twitter-grey1-50:hover{
+  background-color: rgba(83, 100, 113, .5);
 }
 
 .hover\:bg-opacity-80:hover{
