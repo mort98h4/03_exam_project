@@ -781,7 +781,7 @@ input:not(.tweet-input):not(:placeholder-shown):not(:focus):invalid, input:not(:
 }
 
 .tweet-btn-container:hover .green{
-  background-color: rgba(83, 100, 113, .1);
+  background-color: rgba(0, 186, 124, .1);
   color: rgba(0, 186, 124, 1);
 }
 
@@ -907,7 +907,7 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   display: block;
 }
 
-#tweet-modal .h-fit.max-h-screen.overflow-auto {
+#tweet-modal .h-fit.max-h-screen.overflow-auto, #update-user-modal .h-fit.max-h-screen.overflow-auto {
   max-height: calc(100vh - 2rem)
 }
 
@@ -952,6 +952,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   left: -1rem;
 }
 
+.left-\[-2rem\]{
+  left: -2rem;
+}
+
+.bottom-\[5\.5rem\]{
+  bottom: 5.5rem;
+}
+
 .top-\[-225\%\]{
   top: -225%;
 }
@@ -982,26 +990,6 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .left-\[-\.5rem\]{
   left: -.5rem;
-}
-
-.top-\[-1rem\]{
-  top: -1rem;
-}
-
-.left-\[-2rem\]{
-  left: -2rem;
-}
-
-.bottom-0{
-  bottom: 0px;
-}
-
-.bottom-60{
-  bottom: 15rem;
-}
-
-.bottom-\[5\.5rem\]{
-  bottom: 5.5rem;
 }
 
 .z-10{
@@ -1171,22 +1159,22 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   height: 50vh;
 }
 
-.h-\[184px\]{
-  height: 184px;
-}
-
-.h-\[54px\]{
-  height: 54px;
-}
-
 .h-fit{
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
 
-.h-\[100px\]{
-  height: 100px;
+.h-\[184px\]{
+  height: 184px;
+}
+
+.h-\[178px\]{
+  height: 178px;
+}
+
+.h-\[54px\]{
+  height: 54px;
 }
 
 .max-h-\[115px\]{
@@ -1291,6 +1279,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .grid-rows-3{
   grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.grid-rows-1{
+  grid-template-rows: repeat(1, minmax(0, 1fr));
 }
 
 .flex-wrap{
@@ -1402,6 +1394,18 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .bg-opacity-50{
   --tw-bg-opacity: 0.5;
+}
+
+.bg-cover{
+  background-size: cover;
+}
+
+.bg-center{
+  background-position: center;
+}
+
+.bg-no-repeat{
+  background-repeat: no-repeat;
 }
 
 .fill-white{
@@ -1540,14 +1544,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   color: rgba(83, 100, 113, 1);
 }
 
-.text-red-500{
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
-}
-
 .text-red-600{
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
+}
+
+.text-red-500{
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 .shadow-md{
