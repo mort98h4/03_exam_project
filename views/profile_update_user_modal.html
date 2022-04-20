@@ -1,6 +1,6 @@
-<section id="update-user-modal" class="w-full h-screen fixed top-0 flex items-center justify-center hidden z-50">
+<section id="update-user-modal" class="w-full h-screen fixed top-0 flex justify-center hidden z-50">
     <div class="overlay absolute" onclick="toggleModal('#update-user-modal')"></div>
-    <form onsubmit="return false;" novalidate="true" class="relative w-full m-4 px-12 pb-8 pt-2 bg-white rounded-lg lg:w-1/2">
+    <form onsubmit="return false;" novalidate="true" class="relative w-full m-4 px-12 pb-8 pt-2 bg-white rounded-lg lg:w-1/2 h-fit max-h-screen overflow-auto">
         <header class="relative flex justify-center flex-wrap mb-6">
             <button onclick="toggleModal('#update-user-modal')" class="absolute top-[.5rem] left-[-2rem] rounded-full w-8 h-8 flex items-center justify-center transition-colors bg-transparent hover:bg-twitter-grey1-10">
                 <i class="fa-solid fa-xmark text-2xl"></i>
@@ -20,6 +20,22 @@
             </div>
             <input onchange="updateUserImage()" id="user_image_update" name="user_image_src" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg">
             <input name="user_image_name" type="hidden" value="{{ user['user_image_src'] or 'default_profile.png' }}" data-input-id="user_image_update">
+        </div>
+        <header class="mb-6">
+            <h3 class="w-full font-bold text-2xl">Pick a header</h3>
+            <p class="w-full text-twitter-grey1">People who visit your profile will see it. Show your style.</p>
+        </header>
+        <div class="w-full h-[178px] grid grid-cols-1 grid-rows-1 mb-6 relative">
+            <div class="row-span-1 col-span-1 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/{{ user['user_cover_image'] }}')" data-input-id="user_cover_image"></div>
+            <div class="absolute w-full h-full bg-twitter-grey1-50 flex items-center justify-center">
+                <label for="user_cover_image">
+                    <div class="w-8 h-8 cursor-pointer transition rounded-full flex items-center justify-center bg-twitter-grey1-80 hover:bg-twitter-grey1-50">
+                        <i class="fa-solid fa-camera text-white pointer-events-none"></i>
+                    </div>
+                </label>
+            </div>
+            <input onchange="updateUserCoverImage()" id="user_cover_image" name="user_cover_image" class="tweet-input" type="file" accept="image/png, image/jpg, image/jpeg">
+            <input name="user_cover_image_name" type="hidden" value="{{ user['user_cover_image'] or '' }}" data-input-id="user_cover_image">
         </div>
         <header class="mb-6">
             <h3 class="w-full font-bold text-2xl">Describe yourself</h3>

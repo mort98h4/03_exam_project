@@ -231,7 +231,7 @@
         @apply block;
     }
 
-    #tweet-modal .h-fit.max-h-screen.overflow-auto {
+    #tweet-modal .h-fit.max-h-screen.overflow-auto, #update-user-modal .h-fit.max-h-screen.overflow-auto {
         max-height: calc(100vh - 2rem)
     }
 }

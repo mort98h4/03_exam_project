@@ -81,6 +81,13 @@ function updateUserImage() {
     imgEl.src = URL.createObjectURL(image);
 }
 
+function updateUserCoverImage() {
+    const input = event.target;
+    const elem = document.querySelector(`[data-input-id='${input.id}']`);
+    const image = input.files[0];
+    elem.style.backgroundImage = `url('${URL.createObjectURL(image)}')`;
+}
+
 function updatePreviewImage() {
     const input = event.target;
     const preview = document.querySelector(`[data-input-id='${input.id}']`);
@@ -302,6 +309,8 @@ async function updateUser() {
     const userId = form.user_id;
     const userImageSrc = form.user_image_src;
     const userImageName = form.user_image_name;
+    const userCoverImage = form.user_cover_image;
+    const userCoverImageName = form.user_cover_image_name;
     const userDescription = form.user_description;
     console.log(userId, userImageSrc, userImageName, userDescription);
 
@@ -331,16 +340,20 @@ async function updateUser() {
     hint.classList.add("hidden");
     const responseImagePath = `/images/${response.user_image_src}`
     form.querySelector("img").src = responseImagePath;
-    document.querySelector(".user_description").textContent = response.user_description;
     document.querySelectorAll(".user_image").forEach(img => {
         img.src = responseImagePath;
     });
     document.querySelector("#tweet-modal img").src = responseImagePath;
     document.querySelector(`[onclick="toggleModal('#user-menu')"] img`).src = responseImagePath;
     document.querySelector("#user-menu img").src = responseImagePath;
+    form.querySelector("[data-input-id='user_cover_image'").style.backgroundImage = `url('/images/${response.user_cover_image}')`;
+    document.querySelector(".bg-twitter-grey1-50.bg-cover.bg-center.bg-no-repeat").style.backgroundImage = `url('/images/${response.user_cover_image}')`;
+    document.querySelector(".user_description").textContent = response.user_description;
 
     userImageSrc.value = "";
     userImageName.value = response.user_image_src;
+    userCoverImage.value = "";
+    userCoverImageName.value = response.user_cover_image;
     userDescription.value = "";
 
     document.querySelector("body").classList.toggle("overflow-hidden");

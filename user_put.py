@@ -19,7 +19,7 @@ def _(language="en", user_id=""):
             }
             return g._SEND(400, errors[f"{langauge}_error"])
         
-        allowed_keys = ["user_id", "user_image_src", "user_description", "user_image_name"]
+        allowed_keys = ["user_id", "user_image_src", "user_description", "user_image_name", "user_cover_image", "user_cover_image_name"]
         for key in request.forms.keys():
             if not key in allowed_keys:
                 print(key)
@@ -35,7 +35,8 @@ def _(language="en", user_id=""):
         db.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
         user = db.fetchone()
         if not user: return g._SEND(204, "")
-        image_file_name = user['user_image_src']
+        user_image_src_file = user['user_image_src']
+        user_cover_image_file = user['user_cover_image']
 
         user_description, error = g._IS_USER_DESCRIPTION(request.forms.get('user_description'), language)
         if error: return g._SEND(400, error)
@@ -44,22 +45,30 @@ def _(language="en", user_id=""):
             if error: return g._SEND(400, error)
         else:
             user_image_src = request.forms.get("user_image_name")
+        if request.files.get('user_cover_image'):
+            user_cover_image, error = g._IS_IMAGE(request.files.get('user_cover_image'), language)
+            if error: return g._SEND(400, error)
+        else:
+            user_cover_image = request.forms.get("user_cover_image_name")
 
         user['user_image_src'] = user_image_src
+        user['user_cover_image'] = user_cover_image
         user['user_description'] = user_description
 
         db.execute("""
                     UPDATE users
                     SET user_image_src = %s,
+                    user_cover_image = %s,
                     user_description = %s
                     WHERE user_id = %s
-                    """, (user['user_image_src'], user['user_description'], user_id))
+                    """, (user['user_image_src'], user['user_cover_image'], user['user_description'], user_id))
         counter = db.rowcount
         db_connect.commit()
         if not counter: return g._SEND(204, "")
         print("#"*30)
         print(f"Rows updated: {counter}")
-        if image_file_name != "default_profile.png" and image_file_name != user_image_src: os.remove(f"./images/{image_file_name}")
+        if user_image_src_file != "default_profile.png" and user_image_src_file != user_image_src: os.remove(f"./images/{user_image_src_file}")
+        if user_cover_image_file != "" and user_cover_image_file != user_cover_image: os.remove(f"./images/{user_cover_image_file}")
         response.status = 200
         return json.dumps(user)
     except Exception as ex:

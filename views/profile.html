@@ -26,7 +26,7 @@
             </div>
         </header>
         <div class="w-full h-[50vh] relative grid grid-cols-1 grid-rows-2">
-            <div class="row-span-1 col-span-1 bg-twitter-grey1-50"></div>
+            <div class="row-span-1 col-span-1 bg-twitter-grey1-50 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/{{ user['user_cover_image'] }}')"></div>
             <div class="w-full h-full absolute top-0 left-0 grid grid-cols-2 grid-rows-3">
                 <div class="row-span-1 row-start-2 px-4 flex items-center">
                     <img class="user_image w-full h-full max-w-[115px] max-h-[115px] object-cover rounded-full outline outline-2 outline-white" src="/images/{{ display_user['user_image_src'] }}">
