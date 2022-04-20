@@ -91,6 +91,13 @@ function updateCharacterCounter(input) {
     counter.textContent = `${input.value.length} / ${input.getAttribute("maxlength")}`;
 }
 
+function updateUserImage() {
+    const input = event.target;
+    const imgEl = document.querySelector(`[data-input-id='${input.id}']`);
+    const image = input.files[0];
+    imgEl.src = URL.createObjectURL(image);
+}
+
 function removeTweetImage() {
     const inputId = event.target.dataset.inputId;
     document.querySelector(`#${inputId}`).value = "";
@@ -299,6 +306,56 @@ async function updateTweet() {
     document.querySelector('#tweet-update-modal').classList.toggle("hidden");
 }
 
+async function updateUser() {
+    const form = event.target.form;
+    const userId = form.user_id;
+    const userImageSrc = form.user_image_src;
+    const userImageName = form.user_image_name;
+    const userDescription = form.user_description;
+    console.log(userId, userImageSrc, userImageName, userDescription);
+
+    if (userId.value === "") {
+        return false;
+    }
+    if (userImageName.value === "") {
+        return false;
+    }
+    const userDescriptionValid = validDescription(userDescription);
+    if (!userDescriptionValid) {
+        return false;
+    }
+    const connection = await fetch(`/user/${userId.value}`, {
+        method: "PUT",
+        body: new FormData(form)
+    });
+    const response = await connection.json();
+    console.log(connection);
+    console.log(response);
+    const hint = document.querySelector("#update_user_error_message");
+    if (!connection.ok) {
+        hint.textContent = response.info;
+        hint.classList.remove("hidden");
+        return false;
+    }
+    hint.classList.add("hidden");
+    const responseImagePath = `/images/${response.user_image_src}`
+    form.querySelector("img").src = responseImagePath;
+    document.querySelector(".user_description").textContent = response.user_description;
+    document.querySelectorAll(".user_image").forEach(img => {
+        img.src = responseImagePath;
+    });
+    document.querySelector("#tweet-modal img").src = responseImagePath;
+    document.querySelector(`[onclick="toggleModal('#user-menu')"] img`).src = responseImagePath;
+    document.querySelector("#user-menu img").src = responseImagePath;
+
+    userImageSrc.value = "";
+    userImageName.value = response.user_image_src;
+    userDescription.value = "";
+
+    document.querySelector("body").classList.toggle("overflow-hidden");
+    document.querySelector("#update-user-modal").classList.toggle("hidden");
+}
+
 async function followUser() {
     const [userId, followUserId, followUserHandle] = [event.target.dataset.userId, event.target.dataset.followUserId, event.target.dataset.followUserHandle];
     const connection = await fetch(`/follow/${userId}/${followUserId}`, {
@@ -307,7 +364,7 @@ async function followUser() {
     if (!connection.ok) {
         return
     }
-    
+
     const allFollowMenuItems = document.querySelectorAll(`a[data-user-id='${userId}'][data-follow-user-id='${followUserId}'][data-follow-user-handle='${followUserHandle}']`);
     if (allFollowMenuItems) {
         allFollowMenuItems.forEach(item => {
