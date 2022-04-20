@@ -9,6 +9,7 @@ module.exports = {
         "twitter-blue1-10": "rgba(29, 155, 240, .1)",
         "twitter-blue2": "rgba(26, 140, 216, 1)",
         "twitter-grey1": "rgba(83, 100, 113, 1)",
+        "twitter-grey1-80": "rgba(83, 100, 113, .8)",
         "twitter-grey1-50": "rgba(83, 100, 113, .5)",
         "twitter-grey1-10": "rgba(83, 100, 113, .1)",
         "twitter-green1": "rgba(0, 186, 124, 1)",
