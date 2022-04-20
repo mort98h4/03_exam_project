@@ -992,6 +992,18 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   left: -2rem;
 }
 
+.bottom-0{
+  bottom: 0px;
+}
+
+.bottom-60{
+  bottom: 15rem;
+}
+
+.bottom-\[5\.5rem\]{
+  bottom: 5.5rem;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -1531,6 +1543,11 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 .text-red-500{
   --tw-text-opacity: 1;
   color: rgb(239 68 68 / var(--tw-text-opacity));
+}
+
+.text-red-600{
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity));
 }
 
 .shadow-md{
