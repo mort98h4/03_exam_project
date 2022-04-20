@@ -98,3 +98,28 @@ function validPassword(input) {
     }
     return true;
 }
+
+function validDescription(input) {
+    const validity = input.validity;
+    const hint = document.querySelector(`.hint[data-input-name='${input.name}']`);
+    const min = parseInt(input.getAttribute("minlength"));
+    const max = parseInt(input.getAttribute("maxlength"));
+
+    if (validity.valueMissing) {
+        input.classList.add("invalid");
+        hint.textContent = `Please create your bio.`;
+        return false;
+    } else if (validity.tooShort || input.value.length < min) {
+        input.classList.add("invalid");
+        hint.textContent = `Your bio should be more than ${min} characters.`;
+        return false;
+    } else if (validity.tooLong || input.value.length > max) {
+        input.classList.add("invalid");
+        hint.textContent = `Your bio should be less than ${max} characters.`;
+        return false;
+    } else {
+        input.classList.remove("invalid");
+        hint.textContent = "";
+    }
+    return true;
+}
