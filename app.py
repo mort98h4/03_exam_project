@@ -23,6 +23,7 @@ import logout_get               # GET
 import explore_get              # GET
 import profile_get              # GET
 import tweet_get                # GET
+import tweets_get               # GET
 import tweets_by_user_id_get    # GET
 
 import signup_post              # POST
