@@ -245,6 +245,7 @@ async function tweet(fromModal) {
     clone.querySelector(".user_handle").textContent += tweet.user_handle;
     clone.querySelector(".tweet_created_at_date").textContent = "Now";
     clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
+    clone.querySelector(".total_likes").textContent = tweet.tweet_total_likes;
     if (tweet.tweet_image != "") {
         clone.querySelector(".tweet_image").src = `./images/${tweet.tweet_image}`;
     } else {
