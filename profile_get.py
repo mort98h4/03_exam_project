@@ -68,7 +68,7 @@ def _(language="en", user_handle=""):
                 tweets.tweet_updated_at, 
                 tweets.tweet_updated_at_date, 
                 tweets.tweet_user_id, 
-                tweets.total_likes,
+                tweets.tweet_total_likes,
                 users.user_first_name, 
                 users.user_last_name, 
                 users.user_handle, 
