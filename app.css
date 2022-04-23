@@ -1587,6 +1587,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
+.text-twitter-pink1{
+  color: rgba(249, 24, 128, 1);
+}
+
 .shadow-md{
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
