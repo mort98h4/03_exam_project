@@ -32,7 +32,8 @@ def _(language="en"):
         tweet_created_at_date = datetime.now().strftime("%Y-%B-%d-%A %H:%M:%S")
         tweet_updated_at = ""
         tweet_updated_at_date = ""
-        user_id = request.forms.get("user_id")
+        tweet_user_id = request.forms.get("user_id")
+        tweet_total_likes = 0
 
         tweet = (
             tweet_text,
@@ -41,7 +42,8 @@ def _(language="en"):
             tweet_created_at_date,
             tweet_updated_at,
             tweet_updated_at_date,
-            user_id
+            tweet_user_id,
+            tweet_total_likes
         )
 
     except Exception as ex:
@@ -61,9 +63,10 @@ def _(language="en"):
                     tweet_created_at_date,
                     tweet_updated_at,
                     tweet_updated_at_date,
-                    user_id
+                    tweet_user_id,
+                    tweet_total_likes
                 )
-                VALUES(%s, %s, %s, %s, %s, %s, %s) 
+                VALUES(%s, %s, %s, %s, %s, %s, %s, %s) 
         """
         db.execute(query, tweet)
         db_connect.commit()
@@ -78,7 +81,8 @@ def _(language="en"):
                     tweets.tweet_created_at_date, 
                     tweets.tweet_updated_at, 
                     tweets.tweet_updated_at_date, 
-                    tweets.user_id, 
+                    tweets.tweet_user_id,
+                    tweets.tweet_total_likes, 
                     users.user_handle, 
                     users.user_first_name, 
                     users.user_last_name, 
@@ -87,7 +91,7 @@ def _(language="en"):
                     JOIN users
                     WHERE tweets.tweet_id = %s
                     AND users.user_id = %s
-                    """, (tweet_id, user_id))
+                    """, (tweet_id, tweet_user_id))
         tweet = db.fetchone()
 
         return json.dumps(tweet)

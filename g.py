@@ -288,14 +288,15 @@ def _GET_ALL_TWEETS(language="en"):
                 tweets.tweet_created_at_date, 
                 tweets.tweet_updated_at, 
                 tweets.tweet_updated_at_date, 
-                tweets.tweet_user_id, 
+                tweets.tweet_user_id,
+                tweets.tweet_total_likes, 
                 users.user_first_name, 
                 users.user_last_name, 
                 users.user_handle, 
                 users.user_image_src 
                 FROM tweets
                 JOIN users
-                WHERE tweets.user_id = users.user_id
+                WHERE tweets.tweet_user_id = users.user_id
                 ORDER BY tweet_created_at DESC
         """)
         tweets = db.fetchall()

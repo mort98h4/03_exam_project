@@ -66,13 +66,14 @@ def _(language="en", user_handle=""):
                 tweets.tweet_updated_at, 
                 tweets.tweet_updated_at_date, 
                 tweets.tweet_user_id, 
+                tweets.total_likes,
                 users.user_first_name, 
                 users.user_last_name, 
                 users.user_handle, 
                 users.user_image_src 
                 FROM tweets
                 JOIN users
-                WHERE tweets.user_id = %s AND users.user_id = %s
+                WHERE tweets.tweet_user_id = %s AND users.user_id = %s
                 ORDER BY tweet_created_at DESC
         """, (display_user['user_id'], display_user['user_id']))
         tweets = db.fetchall()

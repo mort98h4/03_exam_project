@@ -58,6 +58,7 @@ def _(language="en", tweet_id=""):
             tweets.tweet_updated_at, 
             tweets.tweet_updated_at_date, 
             tweets.tweet_user_id, 
+            tweets.tweet_total_likes,
             users.user_first_name, 
             users.user_last_name, 
             users.user_handle, 
@@ -65,7 +66,7 @@ def _(language="en", tweet_id=""):
             FROM tweets 
             JOIN users 
             WHERE tweets.tweet_id = %s 
-            AND tweets.user_id = users.user_id
+            AND tweets.tweet_user_id = users.user_id
         """, (tweet_id,))
         tweet = db.fetchone()
         time_of_day = datetime.datetime.fromtimestamp(int(tweet['tweet_created_at'])).strftime('%H:%M')
