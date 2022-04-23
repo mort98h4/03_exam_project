@@ -18,6 +18,7 @@ def _(language="en"):
     ]
     user = {}
     follows = []
+    likes = []
 
     if request.get_cookie("jwt"):
         cookie = request.get_cookie("jwt")
@@ -41,6 +42,7 @@ def _(language="en"):
 
                 user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'])
                 follows = g._GET_FOLLOWS_USER_IDS(user['user_id'], language)
+                likes = g._GET_LIKES_BY_USER_ID(user['user_id'], language)
                 tabs = g._GET_TABS(user['user_handle'])
 
 
@@ -53,7 +55,7 @@ def _(language="en"):
         for tweet in tweets:
             tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
 
-        return dict(tabs=tabs, title="Explore", is_fetch=is_fetch, user=user, tweets=tweets, follows=follows)
+        return dict(tabs=tabs, title="Explore", is_fetch=is_fetch, user=user, tweets=tweets, follows=follows, likes=likes)
     except Exception as ex:
         print(ex)
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])

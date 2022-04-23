@@ -47,9 +47,10 @@ def _(language = "en"):
             for tweet in tweets:
                 tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
             follows = g._GET_FOLLOWS_USER_IDS(user['user_id'], language)
+            likes = g._GET_LIKES_BY_USER_ID(user['user_id'], language)
             
             response.status = 200
-            return dict(tabs=tabs, title="Home", is_fetch=is_fetch, user=user, tweets=tweets, follows=follows)
+            return dict(tabs=tabs, title="Home", is_fetch=is_fetch, user=user, tweets=tweets, follows=follows, likes=likes)
         except Exception as ex:
             print(ex)
             return g._SEND(500, g.ERRORS[f"{language}_server_error"])
