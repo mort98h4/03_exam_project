@@ -276,38 +276,6 @@ def _GET_USER_BY_ID(id=None, language="en"):
         db.close()
 
 ##############################
-def _GET_ALL_TWEETS(language="en"):
-    try:
-        db_connect = pymysql.connect(**DB_CONFIG)
-        db = db_connect.cursor()
-        db.execute("""
-                SELECT tweets.tweet_id, 
-                tweets.tweet_text, 
-                tweets.tweet_image, 
-                tweets.tweet_created_at, 
-                tweets.tweet_created_at_date, 
-                tweets.tweet_updated_at, 
-                tweets.tweet_updated_at_date, 
-                tweets.tweet_user_id,
-                tweets.tweet_total_likes, 
-                users.user_first_name, 
-                users.user_last_name, 
-                users.user_handle, 
-                users.user_image_src 
-                FROM tweets
-                JOIN users
-                WHERE tweets.tweet_user_id = users.user_id
-                ORDER BY tweet_created_at DESC
-        """)
-        tweets = db.fetchall()
-        return tweets
-    except Exception as ex:
-        print(ex)
-        return _SEND(500, ERRORS[f"{language}_server_error"])
-    finally:
-        db.close()
-
-##############################
 def _GET_FOLLOWS_USER_IDS(user_id=None, language="en"):
     try:
         db_connect = pymysql.connect(**DB_CONFIG)
