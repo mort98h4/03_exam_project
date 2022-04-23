@@ -43,7 +43,30 @@ def _(language = "en"):
         try: 
             user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'], language)
             tabs = g._GET_TABS(user['user_handle'])
-            tweets = g._GET_ALL_TWEETS(language)
+            
+            db_connect = pymysql.connect(**g.DB_CONFIG)
+            db = db_connect.cursor()
+            db.execute("""
+                SELECT tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_image, 
+                tweets.tweet_created_at, 
+                tweets.tweet_created_at_date, 
+                tweets.tweet_updated_at, 
+                tweets.tweet_updated_at_date, 
+                tweets.tweet_user_id,
+                tweets.tweet_total_likes, 
+                users.user_first_name, 
+                users.user_last_name, 
+                users.user_handle, 
+                users.user_image_src 
+                FROM tweets
+                JOIN users ON tweets.tweet_user_id = users.user_id
+                JOIN follows ON tweets.tweet_user_id = follows.follows_user_id
+                WHERE follows.follow_user_id = %s
+            """, (user['user_id'],))
+            
+            tweets = db.fetchall()
             for tweet in tweets:
                 tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
             follows = g._GET_FOLLOWS_USER_IDS(user['user_id'], language)
@@ -54,5 +77,7 @@ def _(language = "en"):
         except Exception as ex:
             print(ex)
             return g._SEND(500, g.ERRORS[f"{language}_server_error"])
+        finally:
+            db.close()
 
     return redirect("/explore")
