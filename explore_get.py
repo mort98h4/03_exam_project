@@ -3,6 +3,7 @@ import g
 import jwt
 import time
 import datetime
+import pymysql
 
 ##############################
 @get("/explore")
@@ -51,7 +52,29 @@ def _(language="en"):
             return g._SEND(500, g.ERRORS[f"{language}_server_error"])
     
     try: 
-        tweets = g._GET_ALL_TWEETS()
+        db_connect = pymysql.connect(**g.DB_CONFIG)
+        db = db_connect.cursor()
+        db.execute("""
+                SELECT tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_image, 
+                tweets.tweet_created_at, 
+                tweets.tweet_created_at_date, 
+                tweets.tweet_updated_at, 
+                tweets.tweet_updated_at_date, 
+                tweets.tweet_user_id,
+                tweets.tweet_total_likes, 
+                users.user_first_name, 
+                users.user_last_name, 
+                users.user_handle, 
+                users.user_image_src 
+                FROM tweets
+                JOIN users
+                WHERE tweets.tweet_user_id = users.user_id
+                ORDER BY tweet_created_at DESC
+                LIMIT %s,%s 
+        """, (int(0), int(10)))
+        tweets = db.fetchall()
         for tweet in tweets:
             tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
 
@@ -59,5 +82,5 @@ def _(language="en"):
     except Exception as ex:
         print(ex)
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])
-
-
+    finally: 
+        db.close()
