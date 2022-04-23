@@ -65,7 +65,7 @@ def _(language="en", user_handle=""):
                 tweets.tweet_created_at_date, 
                 tweets.tweet_updated_at, 
                 tweets.tweet_updated_at_date, 
-                tweets.user_id as tweet_user_id, 
+                tweets.tweet_user_id, 
                 users.user_first_name, 
                 users.user_last_name, 
                 users.user_handle, 
