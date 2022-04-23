@@ -514,6 +514,10 @@ async function loadTweets() {
         connection = await fetch(`/tweets/${userId}/${min}/${max}`, {
             method: "GET"
         });
+    } else {
+        connection = await fetch(`/tweets/${min}/${max}`, {
+            method: "GET"
+        })
     }
 
     if (!connection.ok) {
