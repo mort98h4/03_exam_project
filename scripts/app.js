@@ -387,7 +387,6 @@ async function followUser() {
     }
     
     const allFollowBtns = document.querySelectorAll(`button[data-user-id='${userId}'][data-follow-user-id='${followUserId}'][data-follow-user-handle='${followUserHandle}']`);
-    console.log(allFollowBtns);
     if (allFollowBtns) {
         allFollowBtns.forEach(btn => {
             const parent = btn.parentElement;
@@ -408,12 +407,10 @@ async function followUser() {
 
 async function unfollowUser() {
     const [userId, unfollowUserId, unfollowUserHandle] = [event.target.dataset.userId, event.target.dataset.unfollowUserId, event.target.dataset.unfollowUserHandle];
-    console.log(userId, unfollowUserId, unfollowUserHandle);
 
     const connection = await fetch(`/follow/${userId}/${unfollowUserId}`, {
         method: "DELETE"
     });
-    console.log(connection);
     if (!connection.ok) {
         return
     }
@@ -451,4 +448,60 @@ async function unfollowUser() {
             followersEl.textContent = numFollowers - 1;
         })
     }
+}
+
+async function likeTweet() {
+    const [tweetId, userId] = [event.target.dataset.tweetId, event.target.dataset.userId];
+
+    if (userId === "") {
+        return
+    }
+
+    const connection = await fetch(`like/${tweetId}/${userId}`, {
+        method: "POST"
+    });
+    console.log(connection);
+    if (!connection.ok) {
+        return
+    }
+
+    const likeBtn = document.querySelector(`.tweet-btn[data-tweet-id='${tweetId}'][data-user-id='${userId}']`);
+    likeBtn.removeAttribute("onclick");
+    likeBtn.setAttribute("onclick", "dislikeTweet()");
+    likeBtn.classList.remove("text-twitter-grey1");
+    likeBtn.classList.add("text-twitter-pink1");
+    likeBtn.querySelector("i").classList.remove("fa-regular");
+    likeBtn.querySelector("i").classList.add("fa-solid");
+    const likeBtnSpan = document.querySelector(`.tweet-btn[data-tweet-id='${tweetId}'][data-user-id='${userId}'] ~ .total_likes`);
+    likeBtnSpan.classList.remove("text-twitter-grey1");
+    likeBtnSpan.classList.add("text-twitter-pink1");
+    likeBtnSpan.textContent = parseInt(likeBtnSpan.textContent)+1;
+}
+
+async function unlikeTweet() {
+    const [tweetId, userId] = [event.target.dataset.tweetId, event.target.dataset.userId];
+
+    if (userId === "") {
+        return
+    }
+
+    const connection = await fetch(`like/${tweetId}/${userId}`, {
+        method: "DELETE"
+    });
+
+    if (!connection.ok) {
+        return
+    }
+
+    const unlikeBtn = document.querySelector(`.tweet-btn[data-tweet-id='${tweetId}'][data-user-id='${userId}']`);
+    unlikeBtn.removeAttribute("onclick");
+    unlikeBtn.setAttribute("onclick", "likeTweet()");
+    unlikeBtn.classList.remove("text-twitter-pink1");
+    unlikeBtn.classList.add("text-twitter-grey1");
+    unlikeBtn.querySelector("i").classList.remove("fa-solid");
+    unlikeBtn.querySelector("i").classList.add("fa-regular");
+    const unlikeBtnSpan = document.querySelector(`.tweet-btn[data-tweet-id='${tweetId}'][data-user-id='${userId}'] ~ .total_likes`);
+    unlikeBtnSpan.classList.remove("text-twitter-pink1");
+    unlikeBtnSpan.classList.add("text-twitter-grey1");
+    unlikeBtnSpan.textContent = parseInt(unlikeBtnSpan.textContent)-1;
 }
