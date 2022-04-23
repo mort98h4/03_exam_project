@@ -325,6 +325,23 @@ def _GET_FOLLOWS_USER_IDS(user_id=None, language="en"):
         db.close()
 
 ##############################
+def _GET_LIKES_BY_USER_ID(user_id=None, language="en"):
+    try:
+        db_connect = pymysql.connect(**DB_CONFIG)
+        db = db_connect.cursor()
+        db.execute("SELECT * FROM likes WHERE like_user_id = %s", (user_id,))
+        likes = db.fetchall()
+        tweet_ids = []
+        for like in likes:
+            tweet_ids.append(like['like_tweet_id'])
+        return tweet_ids
+    except Exception as ex:
+        print(ex)
+        return _SEND(500, ERRORS[f"{language}_server_error"])
+    finally:
+        db.close()
+
+##############################
 def _DB_CONNECT(db_name):
     db = sqlite3.connect(db_name)
     db.row_factory = _CREATE_JSON_FROM_SQLITE_RESULT
