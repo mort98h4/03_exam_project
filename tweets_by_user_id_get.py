@@ -6,7 +6,7 @@ import json
 ##############################
 @get("/tweets/<user_id>/<min>/<max>")
 @get("<language>/tweets/<user_id>/<min>/<max>")
-def _GET_TWEETS_FROM_USERS_FOLLOWED_BY_USER(user_id="", min=None, max=None, language="en"):
+def _(user_id="", min=None, max=None, language="en"):
     try:
         db_connect = pymysql.connect(**g.DB_CONFIG)
         db = db_connect.cursor()
