@@ -71,7 +71,7 @@
                     <span class="text-twitter-grey1 pointer-events-none">Followers</span>
                 </a>
             </div>
-            <button class="col-span-1 btn-profile-menu-item active">
+            <button onclick="displayTweets()" data-display-id="#tweets" data-hide-id="#liked_tweets" class="col-span-1 btn-profile-menu-item active">
                 Twats
                 <div class="line"></div>
             </button>
@@ -83,7 +83,7 @@
                 Media
                 <div class="line"></div>
             </button>
-            <button class="col-span-1 btn-profile-menu-item">
+            <button onclick="displayTweets()" data-display-id="#liked_tweets" data-hide-id="#tweets" class="col-span-1 btn-profile-menu-item">
                 Likes
                 <div class="line"></div>
             </button>
@@ -97,6 +97,21 @@
                 % end
             % end
         </div>
+        <div class="flex justify-center py-4" data-tweets-container-id="#tweets">
+            <button onclick="loadProfileTweets(false, '#tweets')" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="{{ display_user['user_id'] }}" data-min="10" data-max="20">Load more</button>
+        </div>
+        <div id="liked_tweets" class="hidden">
+            % for tweet in liked_tweets:
+                % if user:
+                % include("tweet", id=tweet['tweet_id'], fk_user_id=tweet['tweet_user_id'], user_id=user['user_id'], user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'], tweet_total_likes=tweet['tweet_total_likes'], follows=follows, likes=likes)
+                % else:
+                % include("tweet", id=tweet['tweet_id'], fk_user_id=tweet['tweet_user_id'], user_id='', user_image_src=tweet['user_image_src'], first_name=tweet['user_first_name'], last_name=tweet['user_last_name'], handle=tweet['user_handle'], created_at_date=tweet['tweet_created_at_date'], tweet_text=tweet['tweet_text'], tweet_image=tweet['tweet_image'], tweet_total_likes=tweet['tweet_total_likes'], follows=follows, likes=likes)
+                % end
+            % end
+        </div>
+        <div class="flex justify-center py-4 hidden" data-tweets-container-id="#liked_tweets">
+            <button onclick="loadProfileTweets(true, '#liked_tweets')" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="{{ display_user['user_id'] }}" data-min="10" data-max="20">Load more</button>
+        </div>
     </main>
 
     %if not is_fetch:
@@ -107,11 +122,11 @@
 </div>
 % if user:
 %include("tweet_modal")
-%include("tweet_temps", user_id=user['user_id'])
 %include("tweet_update_modal")
 %include("tweet_delete_modal")
 %include("profile_update_user_modal", user=user)
 %include("profile_temps")
 % end
+%include("tweet_temps", user_id=display_user['user_id'])
 % include("footer")
 % end

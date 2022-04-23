@@ -239,7 +239,7 @@ async function tweet(fromModal) {
     clone.querySelectorAll("a[data-tweet-id]").forEach(el => {
         el.setAttribute("data-tweet-id", tweet.tweet_id);
     });
-    clone.querySelector(".user_image").src = `./images/${tweet.user_image_src}`;
+    clone.querySelector(".user_image").src = `/images/${tweet.user_image_src}`;
     clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
     clone.querySelector(".user_name").setAttribute("href", `/profile/${tweet.user_handle}`);
     clone.querySelector(".user_handle").textContent += tweet.user_handle;
@@ -247,7 +247,7 @@ async function tweet(fromModal) {
     clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
     clone.querySelector(".total_likes").textContent = tweet.tweet_total_likes;
     if (tweet.tweet_image != "") {
-        clone.querySelector(".tweet_image").src = `./images/${tweet.tweet_image}`;
+        clone.querySelector(".tweet_image").src = `/images/${tweet.tweet_image}`;
     } else {
         clone.querySelector(".tweet_image").remove();
     }
@@ -295,11 +295,11 @@ async function updateTweet() {
     if (response.tweet_image !== "" && !tweetImage) {
         const img = document.createElement("img");
         img.classList.add('tweet_image mb-2', 'w-full', 'rounded-xl', 'border', 'border-twitter-grey1-50');
-        img.src = `./images/${response.tweet_image}`;
+        img.src = `/images/${response.tweet_image}`;
         tweetText.after(img);
     }
     if (response.tweet_image !== "" && tweetImage) {
-        tweetImage.src = `./images/${response.tweet_image}`;
+        tweetImage.src = `/images/${response.tweet_image}`;
     }
     document.querySelector("body").classList.toggle("overflow-hidden");
     document.querySelector('#tweet-update-modal').classList.toggle("hidden");
@@ -313,7 +313,6 @@ async function updateUser() {
     const userCoverImage = form.user_cover_image;
     const userCoverImageName = form.user_cover_image_name;
     const userDescription = form.user_description;
-    console.log(userId, userImageSrc, userImageName, userDescription);
 
     if (userId.value === "") {
         return false;
@@ -330,8 +329,6 @@ async function updateUser() {
         body: new FormData(form)
     });
     const response = await connection.json();
-    console.log(connection);
-    console.log(response);
     const hint = document.querySelector("#update_user_error_message");
     if (!connection.ok) {
         hint.textContent = response.info;
@@ -457,10 +454,9 @@ async function likeTweet() {
         return
     }
 
-    const connection = await fetch(`like/${tweetId}/${userId}`, {
+    const connection = await fetch(`/like/${tweetId}/${userId}`, {
         method: "POST"
     });
-    console.log(connection);
     if (!connection.ok) {
         return
     }
@@ -485,7 +481,7 @@ async function unlikeTweet() {
         return
     }
 
-    const connection = await fetch(`like/${tweetId}/${userId}`, {
+    const connection = await fetch(`/like/${tweetId}/${userId}`, {
         method: "DELETE"
     });
 
@@ -508,10 +504,9 @@ async function unlikeTweet() {
 
 async function loadTweets() {
     const [userId, min, max, btn] = [event.target.dataset.userId, event.target.dataset.min, event.target.dataset.max, event.target];
-    console.log(userId, min, max);
     let connection;
     if (userId !== "") {
-        connection = await fetch(`/tweets/${userId}/${min}/${max}`, {
+        connection = await fetch(`/tweets/${userId}/following/${min}/${max}`, {
             method: "GET"
         });
     } else {
@@ -543,7 +538,7 @@ async function loadTweets() {
         clone.querySelectorAll("a[data-tweet-id]").forEach(el => {
             el.setAttribute("data-tweet-id", tweet.tweet_id);
         });
-        clone.querySelector(".user_image").src = `./images/${tweet.user_image_src}`;
+        clone.querySelector(".user_image").src = `/images/${tweet.user_image_src}`;
         clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
         clone.querySelector(".user_name").setAttribute("href", `/profile/${tweet.user_handle}`);
         clone.querySelector(".user_handle").textContent += tweet.user_handle;
@@ -551,12 +546,78 @@ async function loadTweets() {
         clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
         clone.querySelector(".total_likes").textContent = tweet.tweet_total_likes;
         if (tweet.tweet_image != "") {
-            clone.querySelector(".tweet_image").src = `./images/${tweet.tweet_image}`;
+            clone.querySelector(".tweet_image").src = `/images/${tweet.tweet_image}`;
         } else {
             clone.querySelector(".tweet_image").remove();
         }
 
         const dest = document.querySelector("#tweets");
+        dest.appendChild(clone);
+    })
+}
+
+function displayTweets() {
+    const [btn, displayId, hideId] = [event.target, event.target.dataset.displayId, event.target.dataset.hideId];
+    document.querySelectorAll(".btn-profile-menu-item").forEach(elem => {
+        elem.classList.remove("active");
+    });
+    btn.classList.add("active");
+    document.querySelector(hideId).classList.add("hidden");
+    document.querySelector(`[data-tweets-container-id='${hideId}']`).classList.add("hidden");
+    document.querySelector(displayId).classList.remove("hidden");
+    document.querySelector(`[data-tweets-container-id='${displayId}']`).classList.remove("hidden");    
+}
+
+async function loadProfileTweets(isLikedTweets, destId) {
+    const [userId, min, max, btn] = [event.target.dataset.userId, event.target.dataset.min, event.target.dataset.max, event.target];
+    let connection;
+    if (!isLikedTweets) {
+        connection = await fetch(`/tweets/${userId}/${min}/${max}`, {
+            method: "GET"
+        });
+    } else {
+        connection = await fetch(`/liked/tweets/${userId}/${min}/${max}`, {
+            method: "GET"
+        })
+    }
+
+    if (!connection.ok) {
+        return
+    }
+    if (connection.status === 204) {
+        btn.remove();
+        return
+    }
+    const tweets = await connection.json();
+
+    if (tweets.length < 10) {
+        btn.remove();
+    } else {
+        btn.setAttribute("data-min", parseInt(max));
+        btn.setAttribute("data-max", parseInt(max) + 10);
+    }
+
+    tweets.forEach(tweet => {
+        const temp = document.querySelector("#tweet_temp");
+        const clone = temp.cloneNode(true).content;
+        clone.querySelector("#tweet-").setAttribute("id", `tweet-${tweet.tweet_id}`);
+        clone.querySelectorAll("a[data-tweet-id]").forEach(el => {
+            el.setAttribute("data-tweet-id", tweet.tweet_id);
+        });
+        clone.querySelector(".user_image").src = `/images/${tweet.user_image_src}`;
+        clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
+        clone.querySelector(".user_name").setAttribute("href", `/profile/${tweet.user_handle}`);
+        clone.querySelector(".user_handle").textContent += tweet.user_handle;
+        clone.querySelector(".tweet_created_at_date").textContent = tweet.tweet_created_at_date;
+        clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
+        clone.querySelector(".total_likes").textContent = tweet.tweet_total_likes;
+        if (tweet.tweet_image != "") {
+            clone.querySelector(".tweet_image").src = `/images/${tweet.tweet_image}`;
+        } else {
+            clone.querySelector(".tweet_image").remove();
+        }
+
+        const dest = document.querySelector(destId);
         dest.appendChild(clone);
     })
 }
