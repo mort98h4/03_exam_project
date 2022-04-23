@@ -16,29 +16,31 @@ def _(image):
     return static_file(image, root="./images", mimetype="image/*")
 
 ##############################
-import index_get                # GET
-import login_get                # GET
-import home_get                 # GET
-import logout_get               # GET
-import explore_get              # GET
-import profile_get              # GET
-import tweet_get                # GET
-import tweets_get               # GET
-import tweets_by_user_id_get    # GET
+import index_get                            # GET
+import login_get                            # GET
+import home_get                             # GET
+import logout_get                           # GET
+import explore_get                          # GET
+import profile_get                          # GET
+import tweet_get                            # GET
+import tweets_get                           # GET
+import tweets_by_user_id_get                # GET
+import tweets_by_user_id_following_get      # GET
+import tweets_liked_by_user_id_get          # GET
 
-import signup_post              # POST
-import login_post               # POST
-import logout_post              # POST
-import tweet_post               # POST
-import follow_post              # POST
-import like_post                # POST
+import signup_post                          # POST
+import login_post                           # POST
+import logout_post                          # POST
+import tweet_post                           # POST
+import follow_post                          # POST
+import like_post                            # POST
 
-import tweet_put                # PUT
-import user_put                 # PUT
+import tweet_put                            # PUT
+import user_put                             # PUT
 
-import tweet_delete             # DELETE
-import follow_delete            # DELETE
-import like_delete              # DELETE
+import tweet_delete                         # DELETE
+import follow_delete                        # DELETE
+import like_delete                          # DELETE
 
 ##############################
 @error(404)
