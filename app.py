@@ -36,6 +36,7 @@ import user_put             # PUT
 
 import tweet_delete         # DELETE
 import follow_delete        # DELETE
+import like_delete          # DELETE
 
 ##############################
 @error(404)
