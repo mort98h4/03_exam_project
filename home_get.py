@@ -43,7 +43,6 @@ def _(language = "en"):
         try: 
             user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'], language)
             tabs = g._GET_TABS(user['user_handle'])
-            
             db_connect = pymysql.connect(**g.DB_CONFIG)
             db = db_connect.cursor()
             db.execute("""
@@ -63,9 +62,10 @@ def _(language = "en"):
                 FROM tweets
                 JOIN users ON tweets.tweet_user_id = users.user_id
                 JOIN follows ON tweets.tweet_user_id = follows.follows_user_id
-                WHERE follows.follow_user_id = %s
-            """, (user['user_id'],))
-            
+                WHERE follows.follow_user_id OR users.user_id = %s
+                ORDER BY tweet_created_at DESC
+                LIMIT %s,%s
+            """, (user['user_id'], int(0), int(10)))
             tweets = db.fetchall()
             for tweet in tweets:
                 tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
