@@ -57,8 +57,6 @@ def _(language="en", user_handle=""):
         db.execute("SELECT * FROM users WHERE user_handle = %s", (user_handle,))
         display_user = db.fetchone()
         display_user['user_created_at_date'] = datetime.datetime.fromtimestamp(int(display_user['user_created_at'])).strftime('%B %Y')
-        print("#"*30)
-        print(display_user)
         db.execute("""
                 SELECT tweets.tweet_id, 
                 tweets.tweet_text, 
@@ -77,12 +75,37 @@ def _(language="en", user_handle=""):
                 JOIN users
                 WHERE tweets.tweet_user_id = %s AND users.user_id = %s
                 ORDER BY tweet_created_at DESC
+                LIMIT 0,10
         """, (display_user['user_id'], display_user['user_id']))
         tweets = db.fetchall()
         for tweet in tweets:
             tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
+        db.execute("""
+            SELECT tweets.tweet_id, 
+            tweets.tweet_text, 
+            tweets.tweet_image, 
+            tweets.tweet_created_at, 
+            tweets.tweet_created_at_date, 
+            tweets.tweet_updated_at, 
+            tweets.tweet_updated_at_date, 
+            tweets.tweet_user_id,
+            tweets.tweet_total_likes, 
+            users.user_first_name, 
+            users.user_last_name, 
+            users.user_handle, 
+            users.user_image_src
+            FROM tweets
+            JOIN users ON tweets.tweet_user_id = users.user_id
+            JOIN likes ON tweets.tweet_id = likes.like_tweet_id
+            WHERE likes.like_user_id = %s 
+            ORDER BY tweet_created_at DESC
+            LIMIT 0,10;
+        """, (display_user['user_id']))
+        liked_tweets = db.fetchall()
+        for liked_tweet in liked_tweets:
+            liked_tweet['tweet_created_at_date'] = g._DATE_STRING(int(liked_tweet['tweet_created_at']))
 
-        return dict(tabs=tabs, title=user_handle, is_fetch=is_fetch, user=user, follows=follows, likes=likes, display_user=display_user, tweets=tweets)
+        return dict(tabs=tabs, title=user_handle, is_fetch=is_fetch, user=user, follows=follows, likes=likes, display_user=display_user, tweets=tweets, liked_tweets=liked_tweets)
     except Exception as ex:
         print(ex)
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])
