@@ -992,6 +992,30 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   left: -.5rem;
 }
 
+.top-4{
+  top: 1rem;
+}
+
+.top-2{
+  top: 0.5rem;
+}
+
+.right-2{
+  right: 0.5rem;
+}
+
+.right-4{
+  right: 1rem;
+}
+
+.top-6{
+  top: 1.5rem;
+}
+
+.right-6{
+  right: 1.5rem;
+}
+
 .z-10{
   z-index: 10;
 }
@@ -1065,6 +1089,11 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
+}
+
+.mx-2{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .mb-2{
@@ -1307,6 +1336,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .justify-between{
   justify-content: space-between;
+}
+
+.justify-items-center{
+  justify-items: center;
 }
 
 .gap-2{
