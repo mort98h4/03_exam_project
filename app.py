@@ -29,6 +29,7 @@ import login_post           # POST
 import logout_post          # POST
 import tweet_post           # POST
 import follow_post          # POST
+import like_post            # POST
 
 import tweet_put            # PUT
 import user_put             # PUT
