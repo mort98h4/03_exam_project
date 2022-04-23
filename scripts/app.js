@@ -505,3 +505,54 @@ async function unlikeTweet() {
     unlikeBtnSpan.classList.add("text-twitter-grey1");
     unlikeBtnSpan.textContent = parseInt(unlikeBtnSpan.textContent)-1;
 }
+
+async function loadTweets() {
+    const [userId, min, max, btn] = [event.target.dataset.userId, event.target.dataset.min, event.target.dataset.max, event.target];
+    console.log(userId, min, max);
+    let connection;
+    if (userId !== "") {
+        connection = await fetch(`/tweets/${userId}/${min}/${max}`, {
+            method: "GET"
+        });
+    }
+
+    if (!connection.ok) {
+        return
+    }
+    if (connection.status === 204) {
+        btn.remove();
+        return
+    }
+    const tweets = await connection.json();
+
+    if (tweets.length < 10) {
+        btn.remove();
+    } else {
+        btn.setAttribute("data-min", parseInt(max));
+        btn.setAttribute("data-max", parseInt(max) + 10);
+    }
+
+    tweets.forEach(tweet => {
+        const temp = document.querySelector("#tweet_temp");
+        const clone = temp.cloneNode(true).content;
+        clone.querySelector("#tweet-").setAttribute("id", `tweet-${tweet.tweet_id}`);
+        clone.querySelectorAll("a[data-tweet-id]").forEach(el => {
+            el.setAttribute("data-tweet-id", tweet.tweet_id);
+        });
+        clone.querySelector(".user_image").src = `./images/${tweet.user_image_src}`;
+        clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
+        clone.querySelector(".user_name").setAttribute("href", `/profile/${tweet.user_handle}`);
+        clone.querySelector(".user_handle").textContent += tweet.user_handle;
+        clone.querySelector(".tweet_created_at_date").textContent = tweet.tweet_created_at_date;
+        clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
+        clone.querySelector(".total_likes").textContent = tweet.tweet_total_likes;
+        if (tweet.tweet_image != "") {
+            clone.querySelector(".tweet_image").src = `./images/${tweet.tweet_image}`;
+        } else {
+            clone.querySelector(".tweet_image").remove();
+        }
+
+        const dest = document.querySelector("#tweets");
+        dest.appendChild(clone);
+    })
+}
