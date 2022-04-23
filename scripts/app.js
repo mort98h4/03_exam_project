@@ -381,6 +381,7 @@ async function followUser() {
             clone.querySelector("span").textContent += followUserHandle;
             parent.appendChild(clone);
             item.remove();
+            closeAllMenus();
         });
     }
     
@@ -428,6 +429,7 @@ async function unfollowUser() {
             clone.querySelector("span").textContent += unfollowUserHandle;
             parent.appendChild(clone);
             item.remove();
+            closeAllMenus();
         })
     }
 
