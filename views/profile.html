@@ -7,7 +7,7 @@
     <main
       data-spa_url="/profile/{{title}}" 
       data-spa_title="@{{title}}"
-      class="min-h-screen"
+      class="min-h-screen relative"
     >
         <header class="px-4 h-[60px] sticky top-0 z-10 bg-white bg-opacity-80 backdrop-blur-sm flex items-center ">
             <button onclick="goBack();" class="h-8 w-8 rounded-full flex items-center justify-center mr-4 transition hover:bg-twitter-grey1-10">
@@ -62,11 +62,11 @@
                 </p>
             </div>
             <div class="col-span-4 pb-4 px-4">
-                <a class="cursor-pointer mr-4 hover:underline">
+                <a onclick="getFollowing(false)" class="cursor-pointer mr-4 hover:underline" data-user-id="{{ display_user['user_id'] }}">
                     <span class="font-semibold pointer-events-none">{{ display_user['user_total_follows'] }}</span>
                     <span class="text-twitter-grey1 pointer-events-none">Following</span>
                 </a>
-                <a class="cursor-pointer hover:underline">
+                <a onclick="getFollowers(false)" class="cursor-pointer hover:underline" data-user-id="{{ display_user['user_id'] }}">
                     <span id="numFollowers" class="font-semibold pointer-events-none">{{ display_user['user_total_followers'] }}</span>
                     <span class="text-twitter-grey1 pointer-events-none">Followers</span>
                 </a>
@@ -112,6 +112,42 @@
         <div class="flex justify-center py-4 hidden" data-tweets-container-id="#liked_tweets">
             <button onclick="loadProfileTweets(true, '#liked_tweets')" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="{{ display_user['user_id'] }}" data-min="10" data-max="20">Load more</button>
         </div>
+
+        <div id="follows" class="min-h-screen w-full bg-white absolute top-0 z-[11] hidden">
+            <header class="px-4 h-[60px] sticky top-0 bg-white bg-opacity-80 backdrop-blur-sm flex items-center ">
+                <button onclick="hideFollows()" class="h-8 w-8 rounded-full flex items-center justify-center mr-4 transition hover:bg-twitter-grey1-10">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="flex items-center w-full flex-wrap">
+                    <h3 class="text-xl font-semibold">{{ display_user['user_first_name'] }} {{ display_user['user_last_name'] }}</h3>
+                    <p class="text-twitter-grey1 text-sm w-full">
+                        @{{ display_user['user_handle'] }}
+                    </p>
+                </div>
+            </header>
+            <div class="grid grid-rows-1 grid-cols-2">
+                <button onclick="getFollowing(true)" class="col-span-1 btn-profile-menu-item" data-list="following" data-user-id="{{ display_user['user_id'] }}">
+                    Following
+                    <div class="line"></div>
+                </button>
+                <button onclick="getFollowers(true)" class="col-span-1 btn-profile-menu-item" data-list="followers" data-user-id="{{ display_user['user_id'] }}">
+                    Followers
+                    <div class="line"></div>
+                </button>
+            </div>
+            <div id="no-follows" class="grid grid-cols-5 hidden">
+                <div class="col-span-3 col-start-2">
+                    <img src="/images/follow_birds.png" class="w-full">
+                </div>
+                <div class="col-span-3 col-start-2">
+                    <h3 class="text-3xl font-bold mb-2"></h3>
+                    <p class="text-twitter-grey1"></p>
+                </div>
+            </div>
+            <div id="follows-list">
+                
+            </div>
+        </div>
     </main>
 
     %if not is_fetch:
@@ -128,5 +164,6 @@
 %include("profile_temps")
 % end
 %include("tweet_temps", user_id=display_user['user_id'])
+%include("follows_temp")
 % include("footer")
 % end

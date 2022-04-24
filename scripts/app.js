@@ -463,7 +463,7 @@ async function likeTweet() {
 
     const likeBtn = document.querySelector(`.tweet-btn[data-tweet-id='${tweetId}'][data-user-id='${userId}']`);
     likeBtn.removeAttribute("onclick");
-    likeBtn.setAttribute("onclick", "dislikeTweet()");
+    likeBtn.setAttribute("onclick", "unlikeTweet()");
     likeBtn.classList.remove("text-twitter-grey1");
     likeBtn.classList.add("text-twitter-pink1");
     likeBtn.querySelector("i").classList.remove("fa-regular");
@@ -620,4 +620,117 @@ async function loadProfileTweets(isLikedTweets, destId) {
         const dest = document.querySelector(destId);
         dest.appendChild(clone);
     })
+}
+
+async function getFollowing(followsListVisible) {
+    const userId = event.target.dataset.userId;
+
+    const idValid = validId(userId);
+    if (!idValid) {
+        return
+    }
+
+    if (!followsListVisible) {
+        window.scrollTo(0, 0);
+        document.querySelector("body").classList.add("overflow-hidden");
+        document.querySelector("#follows").classList.remove("hidden");
+        document.querySelector("[data-list='following']").classList.add("active");
+    } else {
+        document.querySelector("#no-follows").classList.add("hidden");
+        document.querySelector("#follows-list").innerHTML = "";
+        document.querySelectorAll("#follows .btn-profile-menu-item").forEach(btn => {
+            btn.classList.remove("active");
+        });
+        document.querySelector("[data-list='following']").classList.add("active");
+    }
+    
+    const connection = await fetch(`/${userId}/following`, {
+        method: "GET"
+    });
+    if (!connection.ok) {
+        return
+    }
+    if (connection.status === 204) {
+        const noFollows = document.querySelector("#no-follows");
+        noFollows.querySelector("h3").textContent = "Looking for followings?";
+        noFollows.querySelector("p").textContent = "When this account follows someone, they’ll show up here. Tweeting and interacting with others helps boost followings.";
+        noFollows.classList.remove("hidden");
+        return
+    }
+    const users = await connection.json();
+    users.forEach(user => {
+        const temp = document.querySelector("#follows-temp");
+        const clone = temp.cloneNode(true).content;
+
+        clone.querySelector("#user-").setAttribute("id", `user-${user.user_id}`);
+        clone.querySelector("div[href='']").setAttribute("href", `/profile/${user.user_handle}`);
+        clone.querySelector(".user_image").src = `/images/${user.user_image_src}`;
+        clone.querySelector(".user_name").textContent = `${user.user_first_name} ${user.user_last_name}`;
+        clone.querySelector(".user_handle").textContent = `@${user.user_handle}`;
+        clone.querySelector(".user_description").textContent = user.user_description;
+
+        const dest = document.querySelector("#follows-list");
+        dest.appendChild(clone);
+    });
+}
+
+async function getFollowers(followsListVisible) {
+    const userId = event.target.dataset.userId;
+
+    const idValid = validId(userId);
+    if (!idValid) {
+        return
+    }
+
+    if (!followsListVisible) {
+        window.scrollTo(0, 0);
+        document.querySelector("body").classList.add("overflow-hidden");
+        document.querySelector("#follows").classList.remove("hidden");
+        document.querySelector("[data-list='followers']").classList.add("active");
+    } else {
+        document.querySelector("#no-follows").classList.add("hidden");
+        document.querySelector("#follows-list").innerHTML = "";
+        document.querySelectorAll("#follows .btn-profile-menu-item").forEach(btn => {
+            btn.classList.remove("active");
+        });
+        document.querySelector("[data-list='followers']").classList.add("active");
+    }
+
+    const connection = await fetch(`/${userId}/followers`, {
+        method: "GET"
+    });
+    if (!connection.ok) {
+        return
+    }
+    if (connection.status === 204) {
+        const noFollows = document.querySelector("#no-follows");
+        noFollows.querySelector("h3").textContent = "Looking for followers?";
+        noFollows.querySelector("p").textContent = "When someone follows this account, they’ll show up here. Tweeting and interacting with others helps boost followers.";
+        noFollows.classList.remove("hidden");
+        return
+    }
+    const users = await connection.json();
+    users.forEach(user => {
+        const temp = document.querySelector("#follows-temp");
+        const clone = temp.cloneNode(true).content;
+
+        clone.querySelector("#user-").setAttribute("id", `user-${user.user_id}`);
+        clone.querySelector("div[href='']").setAttribute("href", `/profile/${user.user_handle}`);
+        clone.querySelector(".user_image").src = `/images/${user.user_image_src}`;
+        clone.querySelector(".user_name").textContent = `${user.user_first_name} ${user.user_last_name}`;
+        clone.querySelector(".user_handle").textContent = `@${user.user_handle}`;
+        clone.querySelector(".user_description").textContent = user.user_description;
+
+        const dest = document.querySelector("#follows-list");
+        dest.appendChild(clone);
+    });
+}
+
+function hideFollows() {
+    document.querySelector("body").classList.remove("overflow-hidden");
+    document.querySelector("#follows").classList.add("hidden");
+    document.querySelector("#follows-list").innerHTML = "";
+    document.querySelectorAll("#follows .btn-profile-menu-item").forEach(btn => {
+        btn.classList.remove("active");
+    });
 }
