@@ -45,9 +45,7 @@
         </main>
 %if not is_fetch:
     </div>
-    <aside class="hidden lg:block lg:col-span-3 h-full sticky top-0 right-0">
-        hej
-    </aside>
+    %include("sidemenu_right")
 </div>
 %include("tweet_modal")
 %include("tweet_temps", user_id=user['user_id'])
