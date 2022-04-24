@@ -33,9 +33,15 @@ def _(language="en", tweet_id="", user_id=""):
                 VALUES(%s, %s)
         """
         db.execute(query, like)
+        counter = db.rowcount
+        if not counter: return g._SEND(204, "")
+
+        db.execute("UPDATE tweets SET tweet_total_likes = tweet_total_likes + 1 WHERE tweet_id = %s", (tweet_id,))
+        counter = db.rowcount
+        if not counter: return g._SEND(204, "")
+
         db_connect.commit()
         response.status = 201
-
         return {"like_tweet_id": tweet_id, "like_user_id": user_id}
     except Exception as ex: 
         print(ex)

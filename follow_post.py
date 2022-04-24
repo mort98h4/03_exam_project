@@ -33,9 +33,19 @@ def _(language="en", follow_user_id=None, follows_user_id=None):
                 VALUES(%s, %s)
         """
         db.execute(query, follow)
+        counter = db.rowcount
+        if not counter: return g._SEND(204, "")
+
+        db.execute("UPDATE users SET user_total_follows = user_total_follows + 1 WHERE user_id = %s", (follow_user_id,))
+        counter = db.rowcount
+        if not counter: return g._SEND(204, "")
+
+        db.execute("UPDATE users SET user_total_followers = user_total_followers + 1 WHERE user_id = %s", (follows_user_id,))
+        counter = db.rowcount
+        if not counter: return g._SEND(204, "")
+        
         db_connect.commit()
         response.status = 201
-
         return {"follow_user_id": follow_user_id, "follows_user_id": follows_user_id}
     except Exception as ex: 
         print(ex)

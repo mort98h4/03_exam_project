@@ -12,7 +12,7 @@ def _(language="en"):
     try:
         if f"{language}_server_error" not in g.ERRORS : language = "en"
         # Validation
-        tweet_user_id, errors = g._IS_DIGIT(request.forms.get("user_id"), language)
+        tweet_user_id, error = g._IS_DIGIT(request.forms.get("user_id"), language)
         if error: return g._SEND(400, error)
 
         tweet_text, error = g._IS_TWEET_TEXT(request.forms.get("tweet_text"), language)
@@ -63,10 +63,17 @@ def _(language="en"):
                 VALUES(%s, %s, %s, %s, %s, %s, %s, %s) 
         """
         db.execute(query, tweet)
+        tweet_id = db.lastrowid
+        counter = db.rowcount
+        if not counter: g._SEND(204, "")
+        
+        db.execute("UPDATE users SET user_total_tweets = user_total_tweets + 1 WHERE user_id = %s", (tweet_user_id,))
+        counter = db.rowcount
+        if not counter: g._SEND(204, "")
+
+        response.status = 201
         db_connect.commit()
         
-        response.status = 201
-        tweet_id = db.lastrowid
         db.execute("""
                     SELECT tweets.tweet_id, 
                     tweets.tweet_text, 
@@ -87,7 +94,6 @@ def _(language="en"):
                     AND users.user_id = %s
                     """, (tweet_id, tweet_user_id))
         tweet = db.fetchone()
-
         return json.dumps(tweet)
 
     except Exception as ex:

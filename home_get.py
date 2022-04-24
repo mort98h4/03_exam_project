@@ -60,12 +60,29 @@ def _(language = "en"):
                 users.user_handle, 
                 users.user_image_src 
                 FROM tweets
-                JOIN users ON tweets.tweet_user_id = users.user_id
+                JOIN users ON tweets.tweet_user_id = users.user_id 
                 JOIN follows ON tweets.tweet_user_id = follows.follows_user_id
-                WHERE follows.follow_user_id OR users.user_id = %s
+                WHERE follows.follow_user_id = %s
+                UNION 
+                SELECT tweets.tweet_id, 
+                tweets.tweet_text, 
+                tweets.tweet_image, 
+                tweets.tweet_created_at, 
+                tweets.tweet_created_at_date, 
+                tweets.tweet_updated_at, 
+                tweets.tweet_updated_at_date, 
+                tweets.tweet_user_id,
+                tweets.tweet_total_likes, 
+                users.user_first_name, 
+                users.user_last_name, 
+                users.user_handle, 
+                users.user_image_src 
+                FROM tweets
+                JOIN users 
+                WHERE user_id = %s AND tweet_user_id = %s
                 ORDER BY tweet_created_at DESC
                 LIMIT %s,%s
-            """, (user['user_id'], int(0), int(10)))
+            """, (user['user_id'], user['user_id'], user['user_id'], int(0), int(10)))
             tweets = db.fetchall()
             for tweet in tweets:
                 tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
