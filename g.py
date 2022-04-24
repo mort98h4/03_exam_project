@@ -117,7 +117,7 @@ def _IS_EMAIL(email=None, language="en"):
     return email, None
 
 ##############################
-def _IS_HANDLE(handle=None, language="en"):
+def _IS_HANDLE(handle="", language="en"):
     min, max = 2, 30
     errors_missing = {
         "en":"Username is missing",
