@@ -92,7 +92,33 @@
             </article>
             % end
         </div>
+        <div class="flex justify-center py-4">
+            <button onclick="loadTweets()" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="" data-min="10" data-max="20">Load more</button>
+        </div>
     </main>
 </div>
+<template id="tweet_temp">
+    <article id="tweet-" class="border-b border-twitter-grey1-10 relative">
+        <div class="flex gap-2 p-4">
+            <aside class="max-w-[48px]">
+                <img src="" class="user_image rounded-full h-[48px] w-[48px] object-cover">
+            </aside>
+            <div class="flex-1">
+                <header class="mb-1">
+                    <p class="user_name leading-tight font-semibold block sm:inline hover:underline"></p>
+                    <p class="user_handle text-twitter-grey1 inline">@</p>
+                    <p class="tweet_created_at_date text-twitter-grey1 inline"></p>
+                </header>
+                <div>
+                    <p class="tweet_text mb-2"></p>
+                    <img class="tweet_image mb-2 w-full rounded-xl border border-twitter-grey1-50" src="">
+                </div>
+            </div>
+        </div>
+        <a onclick="toggleModal('#tweet-delete-modal')" data-tweet-id="" class="cursor-pointer transition flex items-center justify-center rounded-full w-8 h-8 hover:bg-red-500 hover:bg-opacity-10 text-twitter-grey1 hover:text-red-500 absolute top-2 right-2">
+            <i class="fa-regular fa-trash-can text-inherit pointer-events-none"></i>
+        </a>
+    </article>
+</template>
 %include("tweet_delete_modal")
 % include("footer")
