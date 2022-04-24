@@ -1550,6 +1550,11 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   padding-bottom: 0.5rem;
 }
 
+.py-3{
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
 .pb-4{
   padding-bottom: 1rem;
 }
@@ -1592,6 +1597,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .pl-12{
   padding-left: 3rem;
+}
+
+.text-center{
+  text-align: center;
 }
 
 .text-3xl{

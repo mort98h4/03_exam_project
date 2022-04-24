@@ -101,7 +101,14 @@
             % end
         </div>
         <div class="flex justify-center py-4" data-tweets-container-id="#tweets">
+            % if tweets:
             <button onclick="loadProfileTweets(false, '#tweets')" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="{{ display_user['user_id'] }}" data-min="10" data-max="20">Load more</button>
+            % else:
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-2">Twat something!</h3>
+                <p class="text-twitter-grey1">Your Twats will appear here.</p>
+            </div>
+            % end
         </div>
         <div id="liked_tweets" class="hidden">
             % for tweet in liked_tweets:
@@ -113,7 +120,14 @@
             % end
         </div>
         <div class="flex justify-center py-4 hidden" data-tweets-container-id="#liked_tweets">
+            % if liked_tweets:
             <button onclick="loadProfileTweets(true, '#liked_tweets')" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="{{ display_user['user_id'] }}" data-min="10" data-max="20">Load more</button>
+            % else:
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-2">Like some Twats!</h3>
+                <p class="text-twitter-grey1">The Twats that you like will appear here.</p>
+            </div>
+            % end
         </div>
 
         <div id="follows" class="min-h-screen w-full bg-white absolute top-0 z-[11] hidden">
