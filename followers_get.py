@@ -9,7 +9,7 @@ import json
 def _(user_id="", language="en"):
     try:
         if f"{language}_server_error" not in g.ERRORS: language = "en"
-        user_id, error = g._IS_ID(user_id, language)
+        user_id, error = g._IS_DIGIT(user_id, language)
         if error: return g._SEND(400, error)
     except Exception as ex:
         print(ex)
