@@ -18,7 +18,6 @@ def _(min=None, max=None, language="en"):
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])
 
     try:
-        if f"{language}_server_error" not in g.ERRORS: language = "en"
         db_connect = pymysql.connect(**g.DB_CONFIG)
         db = db_connect.cursor()
         db.execute("""
