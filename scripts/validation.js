@@ -1,5 +1,5 @@
-function validId(id) {
-    const NaN = isNaN(id);
+function validDigit(digit) {
+    const NaN = isNaN(digit);
     if (NaN) {
         return false;
     }
@@ -103,6 +103,23 @@ function validPassword(input) {
     } else {
         input.classList.remove("invalid");
         hint.textContent = "";
+    }
+    return true;
+}
+
+function validText(input) {
+    const validity = input.validity;
+    const min = parseInt(input.getAttribute("minlength"));
+    const max = parseInt(input.getAttribute("maxlength"));
+
+    if (validity.valueMissing) {
+        return false;
+    }
+    if (validity.tooShort || input.value.length < min) {
+        return false;
+    }
+    if (validity.tooLong || input.value.length > max) {
+        return false;
     }
     return true;
 }
