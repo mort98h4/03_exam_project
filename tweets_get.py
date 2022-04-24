@@ -8,6 +8,7 @@ import json
 @get("<language>/tweets/<min>/<max>")
 def _(min=None, max=None, language="en"):
     try:
+        if f"{language}_server_error" not in g.ERRORS: language = "en"
         db_connect = pymysql.connect(**g.DB_CONFIG)
         db = db_connect.cursor()
         db.execute("""
