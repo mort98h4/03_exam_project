@@ -207,12 +207,12 @@ async function logIn() {
 
 async function tweet(fromModal) {
     const form = event.target.form;
-    if (form.user_id.value === "") {
-        return false;
+    const [userId, tweetText] = [form.user_id, form.tweet_text];
+    const [validUserId, validTweetText] = [validDigit(userId.value), validText(tweetText)];
+
+    if (!validUserId || !validTweetText) {
+        return 
     }
-    if (form.tweet_text.value === "") {
-        return false;
-    } 
 
     const connection = await fetch("/tweet", {
         method: "POST",
@@ -260,6 +260,11 @@ async function tweet(fromModal) {
 async function deleteTweet() {
     const tweetId = event.target.dataset.tweetId;
 
+    const validTweetId = validDigit(tweetId);
+    if (!validTweetId) {
+        return
+    }
+
     const connection = await fetch(`/tweet/${tweetId}`, {
         method: "DELETE"
     })
@@ -274,6 +279,13 @@ async function deleteTweet() {
 async function updateTweet() {
     const form = event.target.form;
     const tweetId = form.tweet_id.value;
+    const tweetText = form.tweet_text;
+
+    const [validTweetId, validTweetText] = [validDigit(tweetId), validText(tweetText)];
+
+    if (!validTweetId || !validTweetText) {
+        return
+    }
     
     const connection = await fetch(`/tweet/${tweetId}`, {
         method: "PUT",
@@ -285,8 +297,8 @@ async function updateTweet() {
     }
     
     const tweet = document.querySelector(`#tweet-${response.tweet_id}`);
-    const tweetText = tweet.querySelector(".tweet_text");
-    tweetText.textContent = response.tweet_text;
+    const tweetTextEl = tweet.querySelector(".tweet_text");
+    tweetTextEl.textContent = response.tweet_text;
 
     const tweetImage = tweet.querySelector(".tweet_image");
     if (response.tweet_image === "" && tweetImage) {
@@ -296,7 +308,7 @@ async function updateTweet() {
         const img = document.createElement("img");
         img.classList.add('tweet_image mb-2', 'w-full', 'rounded-xl', 'border', 'border-twitter-grey1-50');
         img.src = `/images/${response.tweet_image}`;
-        tweetText.after(img);
+        tweetTextEl.after(img);
     }
     if (response.tweet_image !== "" && tweetImage) {
         tweetImage.src = `/images/${response.tweet_image}`;
@@ -314,7 +326,8 @@ async function updateUser() {
     const userCoverImageName = form.user_cover_image_name;
     const userDescription = form.user_description;
 
-    if (userId.value === "") {
+    const validId = validDigit(userId.value);
+    if (!validId) {
         return false;
     }
     if (userImageName.value === "") {
@@ -360,6 +373,11 @@ async function updateUser() {
 
 async function followUser() {
     const [userId, followUserId, followUserHandle] = [event.target.dataset.userId, event.target.dataset.followUserId, event.target.dataset.followUserHandle];
+    const [validUserId, validFollowUserId] = [validDigit(userId), validDigit(followUserId)]
+    if (!validUserId || !validFollowUserId) {
+        return
+    }
+    
     const connection = await fetch(`/follow/${userId}/${followUserId}`, {
         method: "POST"
     });
@@ -404,6 +422,11 @@ async function followUser() {
 
 async function unfollowUser() {
     const [userId, unfollowUserId, unfollowUserHandle] = [event.target.dataset.userId, event.target.dataset.unfollowUserId, event.target.dataset.unfollowUserHandle];
+
+    const [validUserId, validUnfollowUserId] = [validDigit(userId), validDigit(unfollowUserId)]
+    if (!validUserId || !validUnfollowUserId) {
+        return
+    }
 
     const connection = await fetch(`/follow/${userId}/${unfollowUserId}`, {
         method: "DELETE"
@@ -450,9 +473,10 @@ async function unfollowUser() {
 async function likeTweet() {
     const [tweetId, userId] = [event.target.dataset.tweetId, event.target.dataset.userId];
 
-    if (userId === "") {
+    const [validTweetId, validUserId] = [validDigit(tweetId), validDigit(userId)];
+    if (!validTweetId || !validUserId) {
         return
-    }
+    } 
 
     const connection = await fetch(`/like/${tweetId}/${userId}`, {
         method: "POST"
@@ -477,9 +501,10 @@ async function likeTweet() {
 async function unlikeTweet() {
     const [tweetId, userId] = [event.target.dataset.tweetId, event.target.dataset.userId];
 
-    if (userId === "") {
+    const [validTweetId, validUserId] = [validDigit(tweetId), validDigit(userId)];
+    if (!validTweetId || !validUserId) {
         return
-    }
+    } 
 
     const connection = await fetch(`/like/${tweetId}/${userId}`, {
         method: "DELETE"
@@ -504,8 +529,18 @@ async function unlikeTweet() {
 
 async function loadTweets() {
     const [userId, min, max, btn] = [event.target.dataset.userId, event.target.dataset.min, event.target.dataset.max, event.target];
+    
+    const [idValid, minValid, maxValid] = [validDigit(userId), validDigit(min), validDigit(max)];
+    
+    if (!minValid || !maxValid) {
+        return
+    }
+
     let connection;
     if (userId !== "") {
+        if (!idValid) {
+            return 
+        }
         connection = await fetch(`/tweets/${userId}/following/${min}/${max}`, {
             method: "GET"
         });
@@ -570,6 +605,11 @@ function displayTweets() {
 
 async function loadProfileTweets(isLikedTweets, destId) {
     const [userId, min, max, btn] = [event.target.dataset.userId, event.target.dataset.min, event.target.dataset.max, event.target];
+    const [idValid, minValid, maxValid] = [validDigit(userId), validDigit(min), validDigit(max)];
+    if (!idValid || !minValid || !maxValid) {
+        return
+    }
+    
     let connection;
     if (!isLikedTweets) {
         connection = await fetch(`/tweets/${userId}/${min}/${max}`, {
@@ -625,7 +665,7 @@ async function loadProfileTweets(isLikedTweets, destId) {
 async function getFollowing(followsListVisible) {
     const userId = event.target.dataset.userId;
 
-    const idValid = validId(userId);
+    const idValid = validDigit(userId);
     if (!idValid) {
         return
     }
@@ -677,7 +717,7 @@ async function getFollowing(followsListVisible) {
 async function getFollowers(followsListVisible) {
     const userId = event.target.dataset.userId;
 
-    const idValid = validId(userId);
+    const idValid = validDigit(userId);
     if (!idValid) {
         return
     }
