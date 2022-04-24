@@ -228,7 +228,8 @@ async function tweet(fromModal) {
         document.querySelector(`[data-input-id='${form.tweet_image.id}']`).classList.add("hidden");
         document.querySelector(`button[data-form-id='${form.id}']`).setAttribute("disabled", true);
         if (fromModal) {
-            toggleModal('#tweet-modal');
+            document.querySelector("body").classList.toggle("overflow-hidden");
+            document.querySelector("#tweet-modal").classList.toggle("hidden");
         }
     }
     const tweet = await connection.json();
