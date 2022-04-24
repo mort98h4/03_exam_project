@@ -4,17 +4,13 @@ import os
 import pymysql
 
 ##############################
-@delete("/tweet/<id>")
-@delete("/<language>/tweet/<id>")
-def _(language="en", id=""):
-    if f"{language}_server_error" not in g.ERRORS : language = "en"
+@delete("/tweet/<tweet_id>")
+@delete("/<language>/tweet/<tweet_id>")
+def _(language="en", tweet_id=""):
     try:
-        if not id:
-            errors = {
-                "en_error": "tweet_id is missing",
-                "da_error": "tweet_id mangler."
-            }
-            return g._SEND(400, errors[f"{langauge}_error"])
+        if f"{language}_server_error" not in g.ERRORS : language = "en"
+        tweet_id, error = g._IS_DIGIT(tweet_id, language)
+        if error: return g._SEND(400, error)
     except Exception as ex:
         print(ex)
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])
@@ -22,11 +18,11 @@ def _(language="en", id=""):
     try:
         db_connect = pymysql.connect(**g.DB_CONFIG)
         db = db_connect.cursor()
-        db.execute("SELECT tweets.tweet_image FROM tweets WHERE tweet_id = %s", (id,))
+        db.execute("SELECT tweets.tweet_image FROM tweets WHERE tweet_id = %s", (tweet_id,))
         tweet_image = db.fetchone()
-        print("#"*30)
-        print(tweet_image)
-        db.execute("DELETE FROM tweets WHERE tweet_id = %s", (id,))
+        counter = db.rowcount
+        if not counter: return g._SEND(204, "")
+        db.execute("DELETE FROM tweets WHERE tweet_id = %s", (tweet_id,))
         counter = db.rowcount
         db_connect.commit()
         if not counter: return g._SEND(204, "")

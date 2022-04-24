@@ -21,8 +21,10 @@ def _(language="en", user_handle=""):
         {"icon": "fa-solid fa-gear fa-fw", "title": "Settings", "id": "settings"}
     ]
     user = {}
+    tweets = []
     follows = []
     likes = []
+    liked_tweets = []
 
     if request.get_cookie("jwt"):
         cookie = request.get_cookie("jwt")
@@ -51,11 +53,22 @@ def _(language="en", user_handle=""):
             print(ex)
             return g._SEND(500, g.ERRORS[f"{language}_server_error"])
 
+    try:
+        user_handle, error = g._IS_HANDLE(user_handle, language)
+        if error: return g._SEND(400, error)
+    except Exception as ex:
+        print(ex)
+        return g._SEND(500, g.ERRORS[f"{language}_server_error"])
+
     try: 
         db_connect = pymysql.connect(**g.DB_CONFIG)
         db = db_connect.cursor()
         db.execute("SELECT * FROM users WHERE user_handle = %s", (user_handle,))
         display_user = db.fetchone()
+        if display_user == None:
+            response.status = 404 
+            return dict(tabs=tabs, title=user_handle, is_fetch=is_fetch, user=user, follows=follows, likes=likes, display_user=display_user, tweets=tweets, liked_tweets=liked_tweets)
+
         display_user['user_created_at_date'] = datetime.datetime.fromtimestamp(int(display_user['user_created_at'])).strftime('%B %Y')
         db.execute("""
                 SELECT tweets.tweet_id, 

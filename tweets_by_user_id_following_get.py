@@ -8,6 +8,18 @@ import json
 @get("<language>/tweets/<user_id>/following/<min>/<max>")
 def _(user_id="", min=None, max=None, language="en"):
     try:
+        if f"{language}_server_error" not in g.ERRORS : language = "en"
+        user_id, error = g._IS_DIGIT(user_id, language)
+        if error: return g._SEND(400, error)
+        min, error = g._IS_DIGIT(min, language)
+        if error: return g._SEND(400, error)
+        max, error = g._IS_DIGIT(max, language)
+        if error: return g._SEND(400, error)
+    except Exception as ex:
+        print(ex)
+        return g._SEND(500, g.ERRORS[f"{language}_server_error"])
+
+    try:
         db_connect = pymysql.connect(**g.DB_CONFIG)
         db = db_connect.cursor()
         db.execute("""

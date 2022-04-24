@@ -9,16 +9,11 @@ import json
 @post("/tweet")
 @post("/<language>/tweet")
 def _(language="en"):
-    if f"{language}_server_error" not in g.ERRORS : language = "en"
-
     try:
+        if f"{language}_server_error" not in g.ERRORS : language = "en"
         # Validation
-        if not request.forms.get("user_id"):
-            errors = {
-                "en_error":"user_id is missing.",
-                "da_error":"user_id mangler."
-            }
-            return g._SEND(400, errors[f"{language}_error"])
+        tweet_user_id, errors = g._IS_DIGIT(request.forms.get("user_id"), language)
+        if error: return g._SEND(400, error)
 
         tweet_text, error = g._IS_TWEET_TEXT(request.forms.get("tweet_text"), language)
         if error: return g._SEND(400, error)
@@ -32,7 +27,6 @@ def _(language="en"):
         tweet_created_at_date = datetime.now().strftime("%Y-%B-%d-%A %H:%M:%S")
         tweet_updated_at = ""
         tweet_updated_at_date = ""
-        tweet_user_id = request.forms.get("user_id")
         tweet_total_likes = 0
 
         tweet = (

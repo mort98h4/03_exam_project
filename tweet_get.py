@@ -18,6 +18,7 @@ def _(language="en", tweet_id=""):
     ]
     user = {}
     follows = []
+    likes = []
     tweet = {"tweet_id": tweet_id}
 
     if request.get_cookie("jwt"):
@@ -41,10 +42,17 @@ def _(language="en", tweet_id=""):
                 user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'])
                 follows = g._GET_FOLLOWS_USER_IDS(user['user_id'], language)
                 tabs = g._GET_TABS(user['user_handle'])
+                likes = g._GET_LIKES_BY_USER_ID(user['user_id'], language)
 
         except Exception as ex:
             print(ex)
             return g._SEND(500, g.ERRORS[f"{language}_server_error"])
+    try:
+        tweet_id, error = g._IS_DIGIT(tweet_id, language)
+        if error: return g._SEND(400, error)
+    except Exception as ex:
+        print(ex)
+        return g._SEND(500, g.ERRORS[f"{language}_server_error"])
 
     try:
         db_connect = pymysql.connect(**g.DB_CONFIG)
@@ -69,13 +77,18 @@ def _(language="en", tweet_id=""):
             AND tweets.tweet_user_id = users.user_id
         """, (tweet_id,))
         tweet = db.fetchone()
+        counter = db.rowcount
+        if not counter: 
+            tweet = {"tweet_id": ""}
+            response.status = 404
+            return dict(tweet=tweet, tabs=tabs, title="Tweet", is_fetch=is_fetch, user=user, follows=follows, likes=likes)
         time_of_day = datetime.datetime.fromtimestamp(int(tweet['tweet_created_at'])).strftime('%H:%M')
         month = datetime.datetime.fromtimestamp(int(tweet['tweet_created_at'])).strftime('%B')
         date_year = datetime.datetime.fromtimestamp(int(tweet['tweet_created_at'])).strftime('%d, %Y')
         tweet['tweet_created_at_date'] = f"{time_of_day} {month[:3]} {date_year}"
         print("#"*30)
         print(tweet)
-        return dict(tweet=tweet, tabs=tabs, title="Tweet", is_fetch=is_fetch, user=user, follows=follows)
+        return dict(tweet=tweet, tabs=tabs, title="Tweet", is_fetch=is_fetch, user=user, follows=follows, likes=likes)
     except Exception as ex:
         print(ex)
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])

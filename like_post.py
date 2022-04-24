@@ -6,7 +6,15 @@ import pymysql
 @post("/like/<tweet_id>/<user_id>")
 @post("<language>/like/<tweet_id>/<user_id>")
 def _(language="en", tweet_id="", user_id=""):
-    if f"{language}_server_error" not in g.ERRORS : language = "en"
+    try:
+        if f"{language}_server_error" not in g.ERRORS : language = "en"
+        tweet_id, error = g._IS_DIGIT(tweet_id, language)
+        if error: return g._SEND(400, error)
+        user_id, error = g._IS_DIGIT(user_id, language)
+        if error: return g._SEND(400, error)
+    except Exception as ex:
+        print(ex)
+        return g._SEND(500, g.ERRORS[f"{language}_server_error"])
 
     try:
         like = (

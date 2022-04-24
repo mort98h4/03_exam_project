@@ -13,12 +13,8 @@ def _(language="en", tweet_id=""):
     try:
         if f"{language}_server_error" not in g.ERRORS : language = "en"
 
-        if not tweet_id:
-            errors = {
-                "en_error": "tweet_id is missing",
-                "da_error": "tweet_id mangler."
-            }
-            return g._SEND(400, errors[f"{langauge}_error"])
+        tweet_id, error = g._IS_DIGIT(tweet_id, language)
+        if error: return g._SEND(400, error)
         
         allowed_keys = ["tweet_id", "tweet_text", "tweet_image", "tweet_image_name"]
         for key in request.forms.keys():

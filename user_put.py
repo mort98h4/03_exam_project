@@ -12,12 +12,8 @@ import pymysql
 def _(language="en", user_id=""):
     try:
         if f"{language}_server_error" not in g.ERRORS : language = "en"
-        if not user_id:
-            errors = {
-                "en_error": "user_id is missing",
-                "da_error": "user_id mangler."
-            }
-            return g._SEND(400, errors[f"{langauge}_error"])
+        user_id, error = g._IS_DIGIT(user_id, language)
+        if error: return g._SEND(400, error)
         
         allowed_keys = ["user_id", "user_image_src", "user_description", "user_image_name", "user_cover_image", "user_cover_image_name"]
         for key in request.forms.keys():
