@@ -6,3 +6,4 @@ pyvenv.cfg
 node_modules
 images/*
 __pycache__
+database
