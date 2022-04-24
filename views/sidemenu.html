@@ -1,4 +1,4 @@
-<aside class="col-span-2 md:col-span-1 lg:col-span-3 h-full relative">
+<aside class="col-span-2 md:col-span-1 lg:col-span-3 h-full relative z-[2]">
     <div class="fixed w-2/12 md:w-1/12 lg:w-1/4 xl:w-1/5">
         <nav class="w-full">
             <div class="lg:pl-2 my-1 lg:my-4">
@@ -43,7 +43,7 @@
                     <i class="fas fa-ellipsis-h fa-fw"></i>
                 </div>
             </div>
-            <div id="user-menu" class="hidden w-[288px] rounded-lg border border-twitter-grey1-10 shadow-md shadow-twitter-grey1-50 absolute left-0 top-[-225%] bg-white">
+            <div id="user-menu" class="hidden w-[288px] rounded-lg border border-twitter-grey1-10 shadow-md shadow-twitter-grey1-50 absolute left-0 bottom-[100%] bg-white">
                 <div class="flex p-4 pb-2 gap-2 items-center border-b border-twitter-grey1-10">
                     <div class="w-[54px] h-[54px] rounded-full bg-twitter-grey1">
                         <img class="w-[54px] h-[54px] object-cover rounded-full" src="/images/{{ user['user_image_src'] }}">
@@ -56,6 +56,11 @@
                         <i class="fa-solid fa-check text-twitter-blue1"></i>
                     </div>
                 </div>
+                % if user['user_is_admin'] != 0:
+                <div class="p-4 mb-2 cursor-pointer transition-colors hover:bg-twitter-grey1-10">
+                    <a href="/admin">Go to admin page</a>
+                </div>
+                % end
                 <div class="p-4 mb-2 cursor-pointer transition-colors hover:bg-twitter-grey1-10">
                     <a href="/logout">Log out @{{ user['user_handle'] }}</a>
                 </div>
