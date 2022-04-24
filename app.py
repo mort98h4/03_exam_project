@@ -27,6 +27,8 @@ import tweets_get                           # GET
 import tweets_by_user_id_get                # GET
 import tweets_by_user_id_following_get      # GET
 import tweets_liked_by_user_id_get          # GET
+import following_get                        # GET
+import followers_get                        # GET
 
 import signup_post                          # POST
 import login_post                           # POST
