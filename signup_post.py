@@ -47,7 +47,11 @@ def _(language = "en"):
             "",
             "",
             str(int(time.time())),
-            datetime.now().strftime("%Y-%B-%d-%A %H:%M:%S")
+            datetime.now().strftime("%Y-%B-%d-%A %H:%M:%S"),
+            int(0),
+            int(0),
+            int(0),
+            int(0)
         )
 
     except Exception as ex:
@@ -57,7 +61,6 @@ def _(language = "en"):
     try: 
         db_connect = pymysql.connect(**g.DB_CONFIG)
         db = db_connect.cursor()
-
         query = """
                 INSERT INTO users
                 (user_first_name,
@@ -66,10 +69,15 @@ def _(language = "en"):
                 user_handle,
                 user_password,
                 user_image_src,
+                user_cover_image,
                 user_description,
                 user_created_at,
-                user_created_at_date)
-                VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                user_created_at_date,
+                user_total_follows,
+                user_total_followers,
+                user_total_tweets,
+                user_is_admin)
+                VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
          """
         db.execute(query, user)
         db_connect.commit()
