@@ -67,8 +67,6 @@ def _(language="en"):
                     LIMIT 0,10 
                 """)
             tweets = db.fetchall()
-            counter = db.rowcount
-            if not counter: return g._SEND(204, "")
             for tweet in tweets:
                 tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
             response.status = 200
