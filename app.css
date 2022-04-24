@@ -1028,6 +1028,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   z-index: 5;
 }
 
+.z-\[11\]{
+  z-index: 11;
+}
+
 .order-2{
   order: 2;
 }
@@ -1054,6 +1058,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .col-span-4{
   grid-column: span 4 / span 4;
+}
+
+.col-span-3{
+  grid-column: span 3 / span 3;
+}
+
+.col-start-2{
+  grid-column-start: 2;
 }
 
 .row-span-1{
@@ -1305,6 +1317,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .grid-cols-4{
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-5{
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .grid-rows-2{
