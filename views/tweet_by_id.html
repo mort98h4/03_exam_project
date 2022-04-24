@@ -11,90 +11,91 @@
         </button>
         <h3 class="text-xl font-semibold">{{ title }}</h3>
     </header>
-    <article id="tweet-{{ tweet['tweet_id'] }}" class="border-b border-twitter-grey1-10 p-4 ">
-        
-            <header class="flex gap-2 pb-4">
-                <aside class="max-w[48px]">
-                    <img src="/images/{{ tweet['user_image_src'] or 'default_profile.png' }}" class="user_image rounded-full h-[48px] w-[48px] object-cover">
-                </aside>
-                <div class="flex-1 mb-1 relative">
-                    <a href="/profile/{{ tweet['user_handle'] }}" onclick="spa(this); return false;" class="user_name leading-tight font-semibold hover:underline">{{ tweet['user_first_name'] or '' }} {{ tweet['user_last_name'] or ''}}</a>
-                    <p class="user_handle text-twitter-grey1">@{{ tweet['user_handle'] or '' }}</p>
-                    % if user:
-                    <div onclick="toggleMenu()" data-menu="tweet-menu-{{ tweet['tweet_id'] or '' }}" class="more-btn absolute top-[-0.5rem] right-[-0.5rem]">
-                        <i class="fa-solid fa-ellipsis transition text-twitter-grey1 pointer-events-none"></i>
-                    </div>
-                    <div id="tweet-menu-{{ tweet['tweet_id'] or '' }}" class="menu hidden absolute top-[0.5rem] right-[0.5rem] w-[350px] bg-white rounded-md shadow-md shadow-twitter-grey1-50 overflow-hidden z-[5]">
-                        % if tweet['tweet_user_id'] == user['user_id']:
-                        <a onclick="toggleUpdateModal()" data-tweet-id="{{ tweet['tweet_id'] or '' }}" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10">
-                            <i class="fa-solid fa-pen fa-fw text-twitter-grey1 pointer-events-none"></i>
-                            <span class="pointer-events-none">Edit</span>
-                        </a>
-                        <a onclick="toggleModal('#tweet-delete-modal')" data-tweet-id="{{ tweet['tweet_id'] or '' }}" class="p-4 block transition cursor-pointer text-red-500 hover:bg-twitter-grey1-10">
-                            <i class="fa-regular fa-trash-can fa-fw pointer-events-none"></i>
-                            <span class="pointer-events-none">Delete</span>
-                        </a>
-                        % end
-                        % if tweet['tweet_user_id'] != user['user_id'] and tweet['tweet_user_id'] not in follows:
-                        <a onclick="followUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="{{ user['user_id'] }}" data-follow-user-id="{{ tweet['tweet_user_id'] }}" data-follow-user-handle="{{ tweet['user_handle'] }}">
-                            <i class="fa-solid fa-user-plus fa-fw text-twitter-grey1 pointer-events-none"></i>
-                            <span class="pointer-events-none">Follow @{{ tweet['user_handle'] or '' }}</span>
-                        </a>
-                        % end
-                        % if tweet['tweet_user_id'] != user['user_id'] and tweet['tweet_user_id'] in follows:
-                        <a onclick="unfollowUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="{{ user['user_id'] }}" data-unfollow-user-id="{{ tweet['tweet_user_id'] }}" data-unfollow-user-handle="{{ tweet['user_handle'] }}">
-                            <i class="fa-solid fa-user-xmark fa-fw text-twitter-grey1 pointer-events-none"></i>
-                            <span class="pointer-events-none">Unfollow @{{ tweet['user_handle'] or '' }}</span>
-                        </a>
-                        % end
-                    </div>
-                    % end
-
+    % if not tweet['tweet_id'] == "":
+    <article id="tweet-{{ tweet['tweet_id'] }}" class="border-b border-twitter-grey1-10 p-4 ">  
+        <header class="flex gap-2 pb-4">
+            <aside class="max-w[48px]">
+                <img src="/images/{{ tweet['user_image_src'] or 'default_profile.png' }}" class="user_image rounded-full h-[48px] w-[48px] object-cover">
+            </aside>
+            <div class="flex-1 mb-1 relative">
+                <a href="/profile/{{ tweet['user_handle'] }}" onclick="spa(this); return false;" class="user_name leading-tight font-semibold hover:underline">{{ tweet['user_first_name'] or '' }} {{ tweet['user_last_name'] or ''}}</a>
+                <p class="user_handle text-twitter-grey1">@{{ tweet['user_handle'] or '' }}</p>
+                % if user:
+                <div onclick="toggleMenu()" data-menu="tweet-menu-{{ tweet['tweet_id'] or '' }}" class="more-btn absolute top-[-0.5rem] right-[-0.5rem]">
+                    <i class="fa-solid fa-ellipsis transition text-twitter-grey1 pointer-events-none"></i>
                 </div>
-            </header>
-            <div class="border-b border-twitter-grey1-10 pb-4 mb-4">
-                <p class="tweet_text text-xl mb-2">{{ tweet['tweet_text'] or '' }}</p>
-                % if tweet['tweet_image']:
-                    <img class="tweet_image mb-2 w-full rounded-xl border border-twitter-grey1-50" src="/images/{{ tweet['tweet_image'] or '' }}">
+                <div id="tweet-menu-{{ tweet['tweet_id'] or '' }}" class="menu hidden absolute top-[0.5rem] right-[0.5rem] w-[350px] bg-white rounded-md shadow-md shadow-twitter-grey1-50 overflow-hidden z-[5]">
+                    % if tweet['tweet_user_id'] == user['user_id']:
+                    <a onclick="toggleUpdateModal()" data-tweet-id="{{ tweet['tweet_id'] or '' }}" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10">
+                        <i class="fa-solid fa-pen fa-fw text-twitter-grey1 pointer-events-none"></i>
+                        <span class="pointer-events-none">Edit</span>
+                    </a>
+                    <a onclick="toggleModal('#tweet-delete-modal')" data-tweet-id="{{ tweet['tweet_id'] or '' }}" class="p-4 block transition cursor-pointer text-red-500 hover:bg-twitter-grey1-10">
+                        <i class="fa-regular fa-trash-can fa-fw pointer-events-none"></i>
+                        <span class="pointer-events-none">Delete</span>
+                    </a>
+                    % end
+                    % if tweet['tweet_user_id'] != user['user_id'] and tweet['tweet_user_id'] not in follows:
+                    <a onclick="followUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="{{ user['user_id'] }}" data-follow-user-id="{{ tweet['tweet_user_id'] }}" data-follow-user-handle="{{ tweet['user_handle'] }}">
+                        <i class="fa-solid fa-user-plus fa-fw text-twitter-grey1 pointer-events-none"></i>
+                        <span class="pointer-events-none">Follow @{{ tweet['user_handle'] or '' }}</span>
+                    </a>
+                    % end
+                    % if tweet['tweet_user_id'] != user['user_id'] and tweet['tweet_user_id'] in follows:
+                    <a onclick="unfollowUser()" class="p-4 block transition cursor-pointer hover:bg-twitter-grey1-10" data-user-id="{{ user['user_id'] }}" data-unfollow-user-id="{{ tweet['tweet_user_id'] }}" data-unfollow-user-handle="{{ tweet['user_handle'] }}">
+                        <i class="fa-solid fa-user-xmark fa-fw text-twitter-grey1 pointer-events-none"></i>
+                        <span class="pointer-events-none">Unfollow @{{ tweet['user_handle'] or '' }}</span>
+                    </a>
+                    % end
+                </div>
                 % end
-                <p class="text-twitter-grey1">{{ tweet['tweet_created_at_date'] }}</p>
 
             </div>
-            <footer class="flex">
-                <div class="w-[25%]">
-                    <div class="tweet-btn-container flex items-center justify-center gap-2">
-                        <button class="tweet-btn blue text-twitter-grey1">
-                            <i class="fa-regular fa-comment"></i>
-                        </button>
-                        <span class="transition">0</span>
-                    </div>
+        </header>
+        <div class="border-b border-twitter-grey1-10 pb-4 mb-4">
+            <p class="tweet_text text-xl mb-2">{{ tweet['tweet_text'] or '' }}</p>
+            % if tweet['tweet_image']:
+                <img class="tweet_image mb-2 w-full rounded-xl border border-twitter-grey1-50" src="/images/{{ tweet['tweet_image'] or '' }}">
+            % end
+            <p class="text-twitter-grey1">{{ tweet['tweet_created_at_date'] }}</p>
+
+        </div>
+        <footer class="flex">
+            <div class="w-[25%]">
+                <div class="tweet-btn-container flex items-center justify-center gap-2">
+                    <button class="tweet-btn blue text-twitter-grey1">
+                        <i class="fa-regular fa-comment"></i>
+                    </button>
+                    <span class="transition">0</span>
                 </div>
-                <div class="w-[25%]">
-                    <div class="tweet-btn-container flex items-center justify-center gap-2">
-                        <button class="tweet-btn green text-twitter-grey1">
-                            <i class="fa-solid fa-retweet"></i>
-                        </button>
-                        <span class="transition">0</span>
-                    </div>
+            </div>
+            <div class="w-[25%]">
+                <div class="tweet-btn-container flex items-center justify-center gap-2">
+                    <button class="tweet-btn green text-twitter-grey1">
+                        <i class="fa-solid fa-retweet"></i>
+                    </button>
+                    <span class="transition">0</span>
                 </div>
-                <div class="w-[25%]">
-                    <div class="tweet-btn-container flex items-center justify-center gap-2">
-                        <button class="tweet-btn pink text-twitter-grey1">
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
-                        <span class="transition">0</span>
-                    </div>
+            </div>
+            <div class="w-[25%]">
+                <div class="tweet-btn-container flex items-center justify-center gap-2">
+                    <button class="tweet-btn pink text-twitter-grey1">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <span class="transition">0</span>
                 </div>
-                <div class="w-[25%]">
-                    <div class="tweet-btn-container flex items-center justify-center gap-2">
-                        <button class="tweet-btn blue text-twitter-grey1">
-                            <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                        </button>
-                        <span class="transition">0</span>
-                    </div>
+            </div>
+            <div class="w-[25%]">
+                <div class="tweet-btn-container flex items-center justify-center gap-2">
+                    <button class="tweet-btn blue text-twitter-grey1">
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    </button>
+                    <span class="transition">0</span>
                 </div>
-            </footer>
+            </div>
+        </footer>
     </article>
+    % end
 </main>
 %if not is_fetch:
 </div>
