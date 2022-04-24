@@ -1,3 +1,11 @@
+function validId(id) {
+    const NaN = isNaN(id);
+    if (NaN) {
+        return false;
+    }
+    return true;
+}
+
 function validName(input) {
     const validity = input.validity;
     const hint = document.querySelector(`.hint[data-input-name='${input.name}']`);
