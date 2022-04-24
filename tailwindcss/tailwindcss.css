@@ -114,11 +114,11 @@
         @apply bg-black bg-opacity-20 w-full h-full;
     }
 
-    input:not(.tweet-input) {
+    input:not(.tweet-input):not([type='search']), input:not([type='search']) {
         @apply text-base border border-solid border-twitter-grey1 w-full rounded-md px-2 pt-6 pb-2 transition-all outline-none focus:border-twitter-blue1 h-[56px];
     }
 
-    input:not(.tweet-input):focus {
+    input:not(.tweet-input):not([type='search']):focus, input:not([type='search']):focus {
         box-shadow: 0 0 0 1px var(--twitter-blue1);
     }
 
