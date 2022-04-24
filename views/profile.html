@@ -13,6 +13,7 @@
             <button onclick="goBack();" class="h-8 w-8 rounded-full flex items-center justify-center mr-4 transition hover:bg-twitter-grey1-10">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
+            % if display_user:
             <div class="flex items-center w-full flex-wrap">
                 <h3 class="text-xl font-semibold">{{ display_user['user_first_name'] }} {{ display_user['user_last_name'] }}</h3>
                 <p class="text-twitter-grey1 text-sm w-full">
@@ -24,7 +25,9 @@
                     % end
                 </p>
             </div>
+            % end
         </header>
+        % if display_user:
         <div class="w-full h-[50vh] relative grid grid-cols-1 grid-rows-2">
             <div class="row-span-1 col-span-1 bg-twitter-grey1-50 bg-cover bg-center bg-no-repeat" style="background-image: url('/images/{{ display_user['user_cover_image'] or '' }}')"></div>
             <div class="w-full h-full absolute top-0 left-0 grid grid-cols-2 grid-rows-3">
@@ -148,6 +151,7 @@
                 
             </div>
         </div>
+        % end
     </main>
 
     %if not is_fetch:
@@ -163,7 +167,9 @@
 %include("profile_update_user_modal", user=user)
 %include("profile_temps")
 % end
+% if display_user:
 %include("tweet_temps", user_id=display_user['user_id'])
 %include("follows_temp")
+% end
 % include("footer")
 % end
