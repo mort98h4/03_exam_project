@@ -60,6 +60,22 @@ def _SEND(status = 400, error_message = "Unknown error"):
     return {"info": error_message}
 
 ##############################
+def _IS_ID(id="", language="en"):
+    errors_id_missing = {
+        "en": f"Id is missing.",
+        "da": f"Id mangler."
+    }
+    errors_id_invalid = {
+        "en": f"Id is invalid.",
+        "da": f"Id er ikke valid."
+    }
+
+    if not id: return None, errors_id_missing[language]
+    is_digit = id.isdigit()
+    if not is_digit: return None, errors_id_invalid[language]
+    return id, None
+
+##############################
 def _IS_NAME(name=None, language="en"):
     min, max = 2, 25
     errors_name_missing = {
