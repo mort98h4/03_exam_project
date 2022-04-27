@@ -7,6 +7,18 @@
                 </a>
             </div>
             % for tab in tabs:
+                % if tab['id'] == 'profile':
+                <div class="lg:pl-2 mb-1 lg:mb-4">
+                    <a 
+                        class="text-2xl transition hover:bg-twitter-grey1-10 p-2 lg:pr-6 rounded-full flex lg:inline items-center justify-center w-[54px] lg:w-[unset] h-[54px] lg:h-[unset] mx-auto lg:mx-0" 
+                        href="/{{tab['id']}}/{{user['user_handle']}}"
+                        onclick="spa(this); return false"
+                    >
+                        <i class="{{tab['icon']}}"></i>
+                        <span class="ml-3 lg:align-text-bottom text-xl hidden lg:inline">{{tab['title']}}</span>
+                    </a>
+                </div>
+                % else:
                 <div class="lg:pl-2 mb-1 lg:mb-4">
                     <a 
                         class="text-2xl transition hover:bg-twitter-grey1-10 p-2 lg:pr-6 rounded-full flex lg:inline items-center justify-center w-[54px] lg:w-[unset] h-[54px] lg:h-[unset] mx-auto lg:mx-0" 
@@ -17,6 +29,7 @@
                         <span class="ml-3 lg:align-text-bottom text-xl hidden lg:inline">{{tab['title']}}</span>
                     </a>
                 </div>
+                %end
             % end
             % if user:
             <div class="w-100 lg:pl-2 flex lg:block justify-center lg:pr-8">

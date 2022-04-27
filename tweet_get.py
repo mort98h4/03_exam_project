@@ -41,7 +41,8 @@ def _(language="en", tweet_id=""):
 
                 user = g._GET_USER_BY_ID(decoded_jwt['fk_user_id'])
                 follows = g._GET_FOLLOWS_USER_IDS(user['user_id'], language)
-                tabs = g._GET_TABS(user['user_handle'])
+                # tabs = g._GET_TABS(user['user_handle'])
+                tabs = g.TABS
                 likes = g._GET_LIKES_BY_USER_ID(user['user_id'], language)
 
         except Exception as ex:

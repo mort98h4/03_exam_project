@@ -43,7 +43,8 @@ def _(language="en"):
 
     if display_page:
         try:
-            tabs = g._GET_TABS(user['user_handle'])
+            # tabs = g._GET_TABS(user['user_handle'])
+            tabs = g.TABS
             db_connect = pymysql.connect(**g.DB_CONFIG)
             db = db_connect.cursor()
             db.execute("""
