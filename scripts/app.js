@@ -588,6 +588,8 @@ async function loadTweets() {
         } else {
             clone.querySelector(".tweet_image").remove();
         }
+        clone.querySelector(".tweet-btn.pink").setAttribute("data-tweet-id", tweet.tweet_id);
+        clone.querySelector(".tweet-btn.pink").setAttribute("data-user-id", tweet.tweet_user_id);
 
         const dest = document.querySelector("#tweets");
         dest.appendChild(clone);
