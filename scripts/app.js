@@ -858,7 +858,6 @@ async function getFollowing(followsListVisible) {
 
     if (!followsListVisible) {
         window.scrollTo(0, 0);
-        document.querySelector("body").classList.add("overflow-hidden");
         document.querySelector("#follows").classList.remove("hidden");
         document.querySelector("[data-list='following']").classList.add("active");
     } else {
@@ -910,7 +909,6 @@ async function getFollowers(followsListVisible) {
 
     if (!followsListVisible) {
         window.scrollTo(0, 0);
-        document.querySelector("body").classList.add("overflow-hidden");
         document.querySelector("#follows").classList.remove("hidden");
         document.querySelector("[data-list='followers']").classList.add("active");
     } else {
