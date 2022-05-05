@@ -4,14 +4,12 @@ import pymysql
 import json
 
 ##############################
-@get("/tweets/<min>/<max>")
-@get("<language>/tweets/<min>/<max>")
-def _(min=None, max=None, language="en"):
+@get("/tweets/<offset>")
+@get("<language>/tweets/<offset>")
+def _(offset=None, language="en"):
     try:
         if f"{language}_server_error" not in g.ERRORS : language = "en"
-        min, error = g._IS_DIGIT(min, language)
-        if error: return g._SEND(400, error)
-        max, error = g._IS_DIGIT(max, language)
+        offset, error = g._IS_DIGIT(offset, language)
         if error: return g._SEND(400, error)
     except Exception as ex:
         print(ex)
@@ -38,8 +36,8 @@ def _(min=None, max=None, language="en"):
                 JOIN users
                 WHERE tweets.tweet_user_id = users.user_id
                 ORDER BY tweet_created_at DESC
-                LIMIT %s,%s 
-            """, (int(min), int(max)))
+                LIMIT %s,10 
+            """, (int(offset),))
         tweets = db.fetchall()
         counter = db.rowcount
         if not counter: return g._SEND(204, "")

@@ -82,8 +82,8 @@ def _(language = "en"):
                 JOIN users 
                 WHERE user_id = %s AND tweet_user_id = %s
                 ORDER BY tweet_created_at DESC
-                LIMIT %s,%s
-            """, (user['user_id'], user['user_id'], user['user_id'], int(0), int(10)))
+                LIMIT 0,10
+            """, (user['user_id'], user['user_id'], user['user_id'],))
             tweets = db.fetchall()
             for tweet in tweets:
                 tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
