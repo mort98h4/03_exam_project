@@ -558,7 +558,11 @@ async function loadTweets() {
         btn.remove();
         return
     }
-    const tweets = await connection.json();
+    const response = await connection.json();
+    const tweets = response.tweets;
+    const liked_tweets = response.liked_tweets;
+    const follows = response.follows;
+    const user_id = response.user_id;
 
     if (tweets.length < 10) {
         btn.remove();
@@ -587,8 +591,70 @@ async function loadTweets() {
         } else {
             clone.querySelector(".tweet_image").remove();
         }
+        let tweet_index = -1;
+        if (liked_tweets.length > 0) {
+            tweet_index = liked_tweets.findIndex(item => item === tweet.tweet_id);
+        }
+        if (tweet_index !== -1) {
+            clone.querySelector(".tweet-btn.pink").setAttribute("onclick", "unlikeTweet()");
+            clone.querySelector(".tweet-btn.pink").classList.remove("text-twitter-grey1");
+            clone.querySelector(".tweet-btn.pink").classList.add("text-twitter-pink1");
+            clone.querySelector(".tweet-btn.pink i").classList.remove("fa-regular");
+            clone.querySelector(".tweet-btn.pink i").classList.add("fa-solid");
+            clone.querySelector(".total_likes").classList.add("text-twitter-pink1");
+        } 
         clone.querySelector(".tweet-btn.pink").setAttribute("data-tweet-id", tweet.tweet_id);
-        clone.querySelector(".tweet-btn.pink").setAttribute("data-user-id", tweet.tweet_user_id);
+        clone.querySelector(".tweet-btn.pink").setAttribute("data-user-id", user_id);
+
+        if (user_id === "") {
+            clone.querySelector("[onclick='toggleMenu()']").remove();
+            clone.querySelector(".menu.hidden").remove();
+        } else {
+            clone.querySelector("[onclick='toggleMenu()']").setAttribute("data-menu", `tweet-menu-${tweet.tweet_id}`);
+            clone.querySelector(".menu.hidden").setAttribute("id", `tweet-menu-${tweet.tweet_id}`);
+
+            let follow_index = -1;
+            if (follows.length > 0) {
+                follow_index = follows.findIndex(item => item === tweet.tweet_user_id);
+            }
+
+            if (tweet.tweet_user_id !== user_id && follow_index === -1 && user_id !== userId) {
+                clone.querySelector("[onclick='toggleUpdateModal()']").remove();
+                clone.querySelector(`[onclick="toggleModal('#tweet-delete-modal')"]`).remove();
+                const followBtn = document.createElement("a");
+                followBtn.setAttribute("onclick", "followUser()");
+                followBtn.setAttribute("data-user-id", user_id);
+                followBtn.setAttribute("data-follow-user-id", tweet.tweet_user_id);
+                followBtn.setAttribute("data-follow-user-handle", tweet.user_handle);
+                followBtn.classList.add("p-4", "block", "transition", "cursor-pointer", "hover:bg-twitter-grey1-10");
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-user-plus", "fa-fw", "text-twitter-grey1", "pointer-events-none");
+                const span = document.createElement("span");
+                span.classList.add("pointer-events-none");
+                span.textContent = `Follow @${tweet.user_handle}`
+                followBtn.appendChild(icon);
+                followBtn.appendChild(span);
+                clone.querySelector(".menu.hidden").appendChild(followBtn);
+            }
+            if (tweet.tweet_user_id !== user_id && follow_index !== -1) {
+                clone.querySelector("[onclick='toggleUpdateModal()']").remove();
+                clone.querySelector(`[onclick="toggleModal('#tweet-delete-modal')"]`).remove();
+                const unfollowBtn = document.createElement("a");
+                unfollowBtn.setAttribute("onclick", "unfollowUser()");
+                unfollowBtn.setAttribute("data-user-id", user_id);
+                unfollowBtn.setAttribute("data-unfollow-user-id", tweet.tweet_user_id);
+                unfollowBtn.setAttribute("data-unfollow-user-handle", tweet.user_handle);
+                unfollowBtn.classList.add("p-4", "block", "transition", "cursor-pointer", "hover:bg-twitter-grey1-10");
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-user-xmark", "fa-fw", "text-twitter-grey1", "pointer-events-none");
+                const span = document.createElement("span");
+                span.classList.add("pointer-events-none");
+                span.textContent = `Unfollow @${tweet.user_handle}`;
+                unfollowBtn.appendChild(icon);
+                unfollowBtn.appendChild(span);
+                clone.querySelector(".menu.hidden").appendChild(unfollowBtn);
+            }
+        }
 
         const dest = document.querySelector("#tweets");
         dest.appendChild(clone);
@@ -632,7 +698,11 @@ async function loadProfileTweets(isLikedTweets, destId) {
         btn.remove();
         return
     }
-    const tweets = await connection.json();
+    const response = await connection.json();
+    const tweets = response.tweets;
+    const liked_tweets = response.liked_tweets;
+    const follows = response.follows;
+    const user_id = response.user_id;
 
     if (tweets.length < 10) {
         btn.remove();
@@ -658,6 +728,70 @@ async function loadProfileTweets(isLikedTweets, destId) {
             clone.querySelector(".tweet_image").src = `/images/${tweet.tweet_image}`;
         } else {
             clone.querySelector(".tweet_image").remove();
+        }
+        let tweet_index = -1;
+        if (liked_tweets.length > 0) {
+            tweet_index = liked_tweets.findIndex(item => item === tweet.tweet_id);
+        }
+        if (tweet_index !== -1) {
+            clone.querySelector(".tweet-btn.pink").setAttribute("onclick", "unlikeTweet()");
+            clone.querySelector(".tweet-btn.pink").classList.remove("text-twitter-grey1");
+            clone.querySelector(".tweet-btn.pink").classList.add("text-twitter-pink1");
+            clone.querySelector(".tweet-btn.pink i").classList.remove("fa-regular");
+            clone.querySelector(".tweet-btn.pink i").classList.add("fa-solid");
+            clone.querySelector(".total_likes").classList.add("text-twitter-pink1");
+        } 
+        clone.querySelector(".tweet-btn.pink").setAttribute("data-tweet-id", tweet.tweet_id);
+        clone.querySelector(".tweet-btn.pink").setAttribute("data-user-id", user_id);
+
+        if (user_id === "") {
+            clone.querySelector("[onclick='toggleMenu()']").remove();
+            clone.querySelector(".menu.hidden").remove();
+        } else {
+            clone.querySelector("[onclick='toggleMenu()']").setAttribute("data-menu", `tweet-menu-${tweet.tweet_id}`);
+            clone.querySelector(".menu.hidden").setAttribute("id", `tweet-menu-${tweet.tweet_id}`);
+
+            let follow_index = -1;
+            if (follows.length > 0) {
+                follow_index = follows.findIndex(item => item === tweet.tweet_user_id);
+            }
+
+            if (tweet.tweet_user_id !== user_id && follow_index === -1 && user_id !== userId) {
+                clone.querySelector("[onclick='toggleUpdateModal()']").remove();
+                clone.querySelector(`[onclick="toggleModal('#tweet-delete-modal')"]`).remove();
+                const followBtn = document.createElement("a");
+                followBtn.setAttribute("onclick", "followUser()");
+                followBtn.setAttribute("data-user-id", user_id);
+                followBtn.setAttribute("data-follow-user-id", tweet.tweet_user_id);
+                followBtn.setAttribute("data-follow-user-handle", tweet.user_handle);
+                followBtn.classList.add("p-4", "block", "transition", "cursor-pointer", "hover:bg-twitter-grey1-10");
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-user-plus", "fa-fw", "text-twitter-grey1", "pointer-events-none");
+                const span = document.createElement("span");
+                span.classList.add("pointer-events-none");
+                span.textContent = `Follow @${tweet.user_handle}`
+                followBtn.appendChild(icon);
+                followBtn.appendChild(span);
+                clone.querySelector(".menu.hidden").appendChild(followBtn);
+            }
+            if (tweet.tweet_user_id !== user_id && follow_index !== -1) {
+                clone.querySelector("[onclick='toggleUpdateModal()']").remove();
+                clone.querySelector(`[onclick="toggleModal('#tweet-delete-modal')"]`).remove();
+                const unfollowBtn = document.createElement("a");
+                unfollowBtn.setAttribute("onclick", "unfollowUser()");
+                unfollowBtn.setAttribute("data-user-id", user_id);
+                unfollowBtn.setAttribute("data-unfollow-user-id", tweet.tweet_user_id);
+                unfollowBtn.setAttribute("data-unfollow-user-handle", tweet.user_handle);
+                unfollowBtn.classList.add("p-4", "block", "transition", "cursor-pointer", "hover:bg-twitter-grey1-10");
+                const icon = document.createElement("i");
+                icon.classList.add("fa-solid", "fa-user-xmark", "fa-fw", "text-twitter-grey1", "pointer-events-none");
+                const span = document.createElement("span");
+                span.classList.add("pointer-events-none");
+                span.textContent = `Unfollow @${tweet.user_handle}`;
+                unfollowBtn.appendChild(icon);
+                unfollowBtn.appendChild(span);
+                clone.querySelector(".menu.hidden").appendChild(unfollowBtn);
+            }
         }
 
         const dest = document.querySelector(destId);
@@ -685,7 +819,8 @@ async function loadAdminTweets() {
         btn.remove();
         return
     }
-    const tweets = await connection.json();
+    const response = await connection.json();
+    const tweets = response.tweets;
 
     if (tweets.length < 10) {
         btn.remove();
