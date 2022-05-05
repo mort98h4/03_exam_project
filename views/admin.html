@@ -105,7 +105,7 @@
             % end
         </div>
         <div class="flex justify-center py-4">
-            <button onclick="loadTweets()" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="" data-min="10" data-max="20">Load more</button>
+            <button onclick="loadAdminTweets()" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="" data-offset="10">Load more</button>
         </div>
     </main>
 </div>
@@ -131,6 +131,7 @@
             <i class="fa-regular fa-trash-can text-inherit pointer-events-none"></i>
         </a>
     </article>
+    
 </template>
 %include("tweet_delete_modal")
 % include("footer")

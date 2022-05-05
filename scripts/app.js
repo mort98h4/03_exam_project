@@ -529,11 +529,11 @@ async function unlikeTweet() {
 }
 
 async function loadTweets() {
-    const [userId, min, max, btn] = [event.target.dataset.userId, event.target.dataset.min, event.target.dataset.max, event.target];
+    const [userId, offset, btn] = [event.target.dataset.userId, event.target.dataset.offset, event.target];
     
-    const [idValid, minValid, maxValid] = [validDigit(userId), validDigit(min), validDigit(max)];
+    const [idValid, offsetValid] = [validDigit(userId), validDigit(offset)];
     
-    if (!minValid || !maxValid) {
+    if (!offsetValid) {
         return
     }
 
@@ -542,11 +542,11 @@ async function loadTweets() {
         if (!idValid) {
             return 
         }
-        connection = await fetch(`/tweets/${userId}/following/${min}/${max}`, {
+        connection = await fetch(`/tweets/${userId}/following/${offset}`, {
             method: "GET"
         });
     } else {
-        connection = await fetch(`/tweets/${min}/${max}`, {
+        connection = await fetch(`/tweets/${offset}`, {
             method: "GET"
         })
     }
@@ -563,8 +563,7 @@ async function loadTweets() {
     if (tweets.length < 10) {
         btn.remove();
     } else {
-        btn.setAttribute("data-min", parseInt(max));
-        btn.setAttribute("data-max", parseInt(max) + 10);
+        btn.setAttribute("data-offset", parseInt(offset) + 10);
     }
 
     tweets.forEach(tweet => {
@@ -609,19 +608,19 @@ function displayTweets() {
 }
 
 async function loadProfileTweets(isLikedTweets, destId) {
-    const [userId, min, max, btn] = [event.target.dataset.userId, event.target.dataset.min, event.target.dataset.max, event.target];
-    const [idValid, minValid, maxValid] = [validDigit(userId), validDigit(min), validDigit(max)];
-    if (!idValid || !minValid || !maxValid) {
+    const [userId, offset, btn] = [event.target.dataset.userId, event.target.dataset.offset, event.target];
+    const [idValid, offsetValid] = [validDigit(userId), validDigit(offset)];
+    if (!idValid || !offsetValid) {
         return
     }
     
     let connection;
     if (!isLikedTweets) {
-        connection = await fetch(`/tweets/${userId}/${min}/${max}`, {
+        connection = await fetch(`/tweets/${userId}/${offset}`, {
             method: "GET"
         });
     } else {
-        connection = await fetch(`/liked/tweets/${userId}/${min}/${max}`, {
+        connection = await fetch(`/liked/tweets/${userId}/${offset}`, {
             method: "GET"
         })
     }
@@ -638,8 +637,7 @@ async function loadProfileTweets(isLikedTweets, destId) {
     if (tweets.length < 10) {
         btn.remove();
     } else {
-        btn.setAttribute("data-min", parseInt(max));
-        btn.setAttribute("data-max", parseInt(max) + 10);
+        btn.setAttribute("data-offset", parseInt(offset) + 10);
     }
 
     tweets.forEach(tweet => {
@@ -663,6 +661,54 @@ async function loadProfileTweets(isLikedTweets, destId) {
         }
 
         const dest = document.querySelector(destId);
+        dest.appendChild(clone);
+    })
+}
+
+async function loadAdminTweets() {
+    const [offset, btn] = [event.target.dataset.offset, event.target];
+    
+    const [offsetValid] = [validDigit(offset)];
+    
+    if (!offsetValid) {
+        return
+    }
+
+    const connection = await fetch(`/tweets/${offset}`, {
+        method: "GET"
+    })
+
+    if (!connection.ok) {
+        return
+    }
+    if (connection.status === 204) {
+        btn.remove();
+        return
+    }
+    const tweets = await connection.json();
+
+    if (tweets.length < 10) {
+        btn.remove();
+    } else {
+        btn.setAttribute("data-offset", parseInt(offset) + 10);
+    }
+
+    tweets.forEach(tweet => {
+        const temp = document.querySelector("#tweet_temp");
+        const clone = temp.cloneNode(true).content;
+        clone.querySelector("#tweet-").setAttribute("id", `tweet-${tweet.tweet_id}`);
+        clone.querySelector(".user_image").src = `/images/${tweet.user_image_src}`;
+        clone.querySelector(".user_name").textContent = `${tweet.user_first_name} ${tweet.user_last_name}`;
+        clone.querySelector(".user_handle").textContent += tweet.user_handle;
+        clone.querySelector(".tweet_created_at_date").textContent = tweet.tweet_created_at_date;
+        clone.querySelector(".tweet_text").textContent = tweet.tweet_text;
+        if (tweet.tweet_image != "") {
+            clone.querySelector(".tweet_image").src = `/images/${tweet.tweet_image}`;
+        } else {
+            clone.querySelector(".tweet_image").remove();
+        }
+        clone.querySelector("a").setAttribute("data-tweet-id", tweet.tweet_id);
+        const dest = document.querySelector("#tweets");
         dest.appendChild(clone);
     })
 }
