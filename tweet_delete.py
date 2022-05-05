@@ -33,6 +33,10 @@ def _(language="en", tweet_id=""):
         counter = db.rowcount
         if not counter: return g._SEND(204, "")
 
+        db.execute("DELETE from likes WHERE like_tweet_id = %s", (tweet_id,))
+        counter = db.rowcount
+        if not counter: return g._SEND(204, "")
+
         response.status = 200
         db_connect.commit()
         return {"info":"Tweet deleted"}
