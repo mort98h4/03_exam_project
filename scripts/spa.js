@@ -11,6 +11,7 @@ const STALE_TIME = 10000;
 })();
 
 async function spa(spaURL, replace_state = true) {
+  window.scrollTo(0, 0);
   spaURL = typeof spaURL === "string" ? spaURL : spaURL.getAttribute("href");
 
   console.log("Loading SPA page:", spaURL);
