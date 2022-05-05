@@ -1302,6 +1302,10 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   max-width: 115px;
 }
 
+.max-w-\[80\%\]{
+  max-width: 80%;
+}
+
 .flex-1{
   flex: 1 1 0%;
 }
