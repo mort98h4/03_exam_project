@@ -101,13 +101,13 @@
                     % end
                 % end
             </div>
-            <div class="flex justify-center py-4" data-tweets-container-id="#tweets">
+            <div class="flex justify-center py-4 relative" data-tweets-container-id="#tweets">
                 % if tweets:
                 <button onclick="loadProfileTweets(false, '#tweets')" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="{{ display_user['user_id'] }}" data-offset="10">Load more</button>
                 % elif not tweets and user == display_user:
-                <div class="text-center">
-                    <h3 class="text-2xl font-bold mb-2">Twat something!</h3>
-                    <p class="text-twitter-grey1">Your Twats will appear here.</p>
+                <div class="max-w-[80%] text-center">
+                    <h3 class="text-2xl font-bold mb-2">You don't have any Twats yet</h3>
+                    <p class="text-twitter-grey1">Share a Twat. When you do, it'll show up here.</p>
                 </div>
                 % end
             </div>
@@ -120,13 +120,18 @@
                     % end
                 % end
             </div>
-            <div class="flex justify-center py-4 hidden" data-tweets-container-id="#liked_tweets">
+            <div class="flex justify-center py-4 hidden relative" data-tweets-container-id="#liked_tweets">
                 % if liked_tweets:
                 <button onclick="loadProfileTweets(true, '#liked_tweets')" class="text-twitter-blue1 transition hover:text-twitter-blue2" data-user-id="{{ display_user['user_id'] }}" data-offset="10">Load more</button>
                 % elif not liked_tweets and user == display_user:
-                <div class="text-center">
-                    <h3 class="text-2xl font-bold mb-2">Like some Twats!</h3>
-                    <p class="text-twitter-grey1">The Twats that you like will appear here.</p>
+                <div class="max-w-[80%] text-center">
+                    <h3 class="text-2xl font-bold mb-2">You don't have any likes yet</h3>
+                    <p class="text-twitter-grey1">Tap the heart on any Twat to show it some love. When you do, it’ll show up here.</p>
+                </div>
+                % else:
+                <div class="max-w-[80%] text-center">
+                    <h3 class="text-2xl font-bold mb-2">{{ display_user['user_first_name'] }} doesn't have any likes yet</h3>
+                    <p class="text-twitter-grey1">The Twats that {{ display_user['user_first_name'] }} like will appear here.</p>
                 </div>
                 % end
             </div>
