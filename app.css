@@ -1016,6 +1016,18 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   left: -.5rem;
 }
 
+.top-\[42px\]{
+  top: 42px;
+}
+
+.top-\[58px\]{
+  top: 58px;
+}
+
+.top-\[60px\]{
+  top: 60px;
+}
+
 .z-\[2\]{
   z-index: 2;
 }
@@ -1164,6 +1176,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   margin-right: 0.5rem;
 }
 
+.ml-6{
+  margin-left: 1.5rem;
+}
+
+.mt-2{
+  margin-top: 0.5rem;
+}
+
 .block{
   display: block;
 }
@@ -1246,6 +1266,14 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
   min-height: 100vh;
 }
 
+.min-h-\[250px\]{
+  min-height: 250px;
+}
+
+.min-h-\[150px\]{
+  min-height: 150px;
+}
+
 .w-full{
   width: 100%;
 }
@@ -1288,6 +1316,26 @@ input:not(:placeholder-shown):invalid:not(:focus) ~ .hint, input.invalid:focus ~
 
 .w-\[350px\]{
   width: 350px;
+}
+
+.w-\[56px\]{
+  width: 56px;
+}
+
+.w-\[256px\]{
+  width: 256px;
+}
+
+.w-\[253px\]{
+  width: 253px;
+}
+
+.w-\[280px\]{
+  width: 280px;
+}
+
+.w-\[304px\]{
+  width: 304px;
 }
 
 .min-w-\[276px\]{
