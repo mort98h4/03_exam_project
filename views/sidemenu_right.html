@@ -2,10 +2,14 @@
     <div class="fixed w-1/4 xl:w-1/5">
         <div class="w-full pl-6 pr-2 my-4">
             <div class="relative h-[42px]">
-                <input class="w-full h-full pl-12 pr-4 outline outline-solid outline-offset-0 outline-white bg-twitter-grey1-10 rounded-full focus:bg-white focus:outline-twitter-blue1" type="search" placeholder="Search Twatter">
+                <input id="searchInput" onfocus="toggleSearchResults()" onblur="toggleSearchResults()" oninput="usersByHandle()" class="w-full h-full pl-12 pr-4 outline outline-solid outline-offset-0 outline-white bg-twitter-grey1-10 rounded-full focus:bg-white focus:outline-twitter-blue1" type="search" placeholder="Search Twatter">
                 <div class="absolute top-0 left-4 h-full flex items-center pointer-events-none">
                     <i class="fa-solid fa-magnifying-glass text-twitter-grey1"></i>
                 </div>
+            </div>
+            <div id="searchResults" class="absolute left-0 top-[60px] w-[304px] z-[2] bg-white shadow-md shadow-twitter-grey1-50 rounded-lg hidden overflow-hidden">
+                <p class="text-twitter-grey1 text-center p-4">Try searching for people</p>
+                <div id="searchUsers" class="w-full h-full my-2"></div>
             </div>
         </div>
         <div class="w-full pl-6 pr-2 my-2">
@@ -56,4 +60,19 @@
             </div>
         </div>
     </div>
+
+    <template id="searchUsersTemp">
+        <a class="px-4 py-2 flex gap-2 transition hover:bg-twitter-grey1-10 items-center" 
+        href=""
+        onmousedown="spa(this); return false"
+        onmouseup="removeSearchValue()">
+            <div class="max-w-[48px]">
+                <img src="" class="user_image rounded-full h-[48px] w-[48px] object-cover">
+            </div>
+            <div class="flex-1">
+                <p class="user_name font-semibold"></p>
+                <p class="user_handle text-twitter-grey1"></p>
+            </div>
+        </a>
+    </template>
 </aside>

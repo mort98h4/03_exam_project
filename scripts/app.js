@@ -972,3 +972,63 @@ function hideFollows() {
         btn.classList.remove("active");
     });
 }
+
+function toggleSearchResults() {
+    setTimeout(() => {
+        document.querySelector("#searchResults").classList.toggle("hidden");
+    }, 100)
+}
+
+async function usersByHandle() {
+    const userHandle = event.target;
+
+    const searchResultsMessage = document.querySelector("#searchResults p");
+    const dest = document.querySelector("#searchUsers");
+    dest.innerHTML = "";
+
+    if (userHandle.value.length === 0) {
+        searchResultsMessage.classList.remove("hidden");
+        searchResultsMessage.textContent = "Try searching for people";
+        return;
+    }
+    if (userHandle.value.length < 2) {
+        searchResultsMessage.classList.remove("hidden");
+        searchResultsMessage.textContent = "Search must be at least two characters";
+        return;
+    }
+    searchResultsMessage.classList.add("hidden");
+    
+    const connection = await fetch(`/users/${userHandle.value}`, {
+        method: "GET"
+    });
+    if (!connection.ok) {
+        return
+    }
+    if (connection.status === 204) {
+        searchResultsMessage.textContent = "Sorry, no users found"
+        searchResultsMessage.classList.remove("hidden");
+        return
+    }
+
+    const users = await connection.json()
+
+    users.forEach(user => { 
+        const temp = document.querySelector("#searchUsersTemp");
+        const clone = temp.cloneNode(true).content;
+
+        clone.querySelector("a").setAttribute("href", `/profile/${user.user_handle}`);
+        clone.querySelector(".user_image").src = `/images/${user.user_image_src}`;
+        clone.querySelector(".user_name").textContent = `${user.user_first_name} ${user.user_last_name}`;
+        clone.querySelector(".user_handle").textContent = `@${user.user_handle}`;
+
+        dest.appendChild(clone);
+    });
+}
+
+function removeSearchValue() {
+    document.querySelector('#searchInput').value = '';
+    document.querySelector("#searchInput").blur();
+    document.querySelector("#searchResults p").textContent = "Try searching for people"
+    document.querySelector("#searchResults p").classList.remove("hidden");
+    document.querySelector("#searchUsers").innerHTML = "";
+}
