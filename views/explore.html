@@ -36,6 +36,8 @@
 %include("tweet_delete_modal")
 %include("profile_update_user_modal", user=user)
 %include("profile_temps")
+% else:
+%include("tweet_temps", user_id="0")
 % end
 %include("follows_temp")
 % include("footer")
