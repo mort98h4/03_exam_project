@@ -63,8 +63,16 @@ def _(user_id="", offset=None, language="en"):
         if not counter: return g._SEND(204, "")
         for tweet in tweets:
             tweet['tweet_created_at_date'] = g._DATE_STRING(int(tweet['tweet_created_at']))
+
+        response_to_client = {"tweets":tweets, "liked_tweets":[], "follows":[], "user_id":user_id}
+        db.execute("SELECT * FROM likes WHERE like_user_id = %s", (user_id,))
+        liked_tweets = db.fetchall()
+        for liked_tweet in liked_tweets:
+            response_to_client['liked_tweets'].append(liked_tweet['like_tweet_id'])
+        response_to_client['follows'] = g._GET_FOLLOWS_USER_IDS(user_id, language)
+
         response.status = 200
-        return json.dumps(tweets)
+        return json.dumps(response_to_client)
     except Exception as ex:
         print(ex)
         return g._SEND(500, g.ERRORS[f"{language}_server_error"])
