@@ -4,16 +4,14 @@ import pymysql
 import json
 
 ##############################
-@get("/liked/tweets/<user_id>/<min>/<max>")
-@get("<language>/liked/tweets/<user_id>/<min>/<max>")
-def _(user_id="", min=None, max=None, language="en"):
+@get("/liked/tweets/<user_id>/<offset>")
+@get("<language>/liked/tweets/<user_id>/<offset>")
+def _(user_id="", offset=None, language="en"):
     try:
         if f"{language}_server_error" not in g.ERRORS : language = "en"
         user_id, error = g._IS_DIGIT(user_id, language)
         if error: return g._SEND(400, error)
-        min, error = g._IS_DIGIT(min, language)
-        if error: return g._SEND(400, error)
-        max, error = g._IS_DIGIT(max, language)
+        offset, error = g._IS_DIGIT(offset, language)
         if error: return g._SEND(400, error)
     except Exception as ex:
         print(ex)
@@ -41,8 +39,8 @@ def _(user_id="", min=None, max=None, language="en"):
             JOIN likes ON tweets.tweet_id = likes.like_tweet_id
             WHERE likes.like_user_id = %s 
             ORDER BY tweet_created_at DESC
-            LIMIT %s,%s;
-        """, (user_id, int(min), int(max)))
+            LIMIT %s,10;
+        """, (user_id, int(offset)))
         tweets = db.fetchall()
         counter = db.rowcount
         if not counter: return g._SEND(204, "")
