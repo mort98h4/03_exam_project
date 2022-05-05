@@ -870,6 +870,7 @@ async function getFollowing(followsListVisible) {
 
     if (!followsListVisible) {
         window.scrollTo(0, 0);
+        document.querySelector("#profile").classList.add("hidden");
         document.querySelector("#follows").classList.remove("hidden");
         document.querySelector("[data-list='following']").classList.add("active");
     } else {
@@ -921,6 +922,7 @@ async function getFollowers(followsListVisible) {
 
     if (!followsListVisible) {
         window.scrollTo(0, 0);
+        document.querySelector("#profile").classList.add("hidden");
         document.querySelector("#follows").classList.remove("hidden");
         document.querySelector("[data-list='followers']").classList.add("active");
     } else {
@@ -963,7 +965,7 @@ async function getFollowers(followsListVisible) {
 }
 
 function hideFollows() {
-    document.querySelector("body").classList.remove("overflow-hidden");
+    document.querySelector("#profile").classList.remove("hidden");
     document.querySelector("#follows").classList.add("hidden");
     document.querySelector("#follows-list").innerHTML = "";
     document.querySelectorAll("#follows .btn-profile-menu-item").forEach(btn => {
