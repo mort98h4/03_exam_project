@@ -399,6 +399,12 @@ async function followUser() {
             parent.appendChild(clone);
             item.remove();
             closeAllMenus();
+
+            const followingEl = document.querySelector("#numFollowing");
+            if (followingEl && followingEl.parentElement.dataset.userId === userId) {
+                const numFollowers = parseInt(followingEl.textContent);
+                followingEl.textContent = numFollowers + 1;
+            }
         });
     }
     
@@ -449,6 +455,12 @@ async function unfollowUser() {
             parent.appendChild(clone);
             item.remove();
             closeAllMenus();
+
+            const followingEl = document.querySelector("#numFollowing");
+            if (followingEl && followingEl.parentElement.dataset.userId === userId) {
+                const numFollowers = parseInt(followingEl.textContent);
+                followingEl.textContent = numFollowers - 1;
+            }
         })
     }
 

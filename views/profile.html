@@ -6,7 +6,7 @@
 % end
     <main
       data-spa_url="/profile/{{title}}" 
-      data-spa_title="@{{title}}"
+      data-spa_title="{{title}}"
       class="min-h-screen relative"
     >
         <header class="px-4 h-[60px] sticky top-0 z-10 bg-white bg-opacity-80 backdrop-blur-sm flex items-center ">
@@ -66,7 +66,7 @@
             </div>
             <div class="col-span-4 pb-4 px-4">
                 <a onclick="getFollowing(false)" class="cursor-pointer mr-4 hover:underline" data-user-id="{{ display_user['user_id'] }}">
-                    <span class="font-semibold pointer-events-none">{{ display_user['user_total_follows'] }}</span>
+                    <span id="numFollowing" class="font-semibold pointer-events-none">{{ display_user['user_total_follows'] }}</span>
                     <span class="text-twitter-grey1 pointer-events-none">Following</span>
                 </a>
                 <a onclick="getFollowers(false)" class="cursor-pointer hover:underline" data-user-id="{{ display_user['user_id'] }}">
