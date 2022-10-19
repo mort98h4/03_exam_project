@@ -71,7 +71,7 @@ def _(language="en", user_handle=""):
             return dict(tabs=tabs, title=user_handle, is_fetch=is_fetch, user=user, follows=follows, likes=likes, display_user=display_user, tweets=tweets, liked_tweets=liked_tweets)
 
         display_user['user_created_at_date'] = datetime.datetime.fromtimestamp(int(display_user['user_created_at'])).strftime('%B %Y')
-        user['user_created_at_date'] = datetime.datetime.fromtimestamp(int(user['user_created_at'])).strftime('%B %Y')
+        # user['user_created_at_date'] = datetime.datetime.fromtimestamp(int(user['user_created_at'])).strftime('%B %Y')
         db.execute("""
                 SELECT tweets.tweet_id, 
                 tweets.tweet_text, 
